@@ -152,7 +152,7 @@ void kernel_PSV(int ishot, // shot index
         // 3.1: Firing the source terms
         if(nsrc){ // source seismograms exist
             // Adding source term corresponding to velocity
-            std::cout <<"The source applied here: "<<std::endl;
+            //std::cout <<"The source applied here: "<<std::endl;
             vsrc2(vz, vx, rho_zp, rho_xp, nsrc, stf_type, stf_z, stf_x, 
                 z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx);
         }

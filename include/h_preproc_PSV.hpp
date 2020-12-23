@@ -10,7 +10,7 @@
 #define H_PREPROC_PSV_H		
 
 #include "h_globvar.hpp"
-#include "h_contiguous_arrays.hpp"
+#include "d_contiguous_arrays.hpp"
 
 // Allocate the input variables in the host
 void alloc_varpre_PSV( real *&hc, int *&isurf, int *&npml, // holberg coefficients, surface indices and number pml in each side

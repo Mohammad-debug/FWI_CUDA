@@ -75,7 +75,7 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     // -----------------------------------------------------------------------------------------------------
 
     // Internal variables
-     bool accu = true, grad = false; 
+    bool accu = true, grad = false; 
 
 
     // int nt, nz, nx; // grid sizes
@@ -83,17 +83,6 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     // int fdorder; // order of the finite difference
     // int nsrc, nrec
 
-    // Allocating arrays for array inputs
-    /*
-    alloc_varin_PSV(hc, isurf, lam, mu, rho, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
-        a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, z_src, x_src, src_shot_to_fire, 
-        stf_z, stf_x, z_rec, x_rec, rtf_z_true, rtf_x_true, fdorder, surf, pml_z, pml_x, 
-        nsrc, nrec, rtf_true, nt, nz, nx);
-    */
-    // get array inputs
-    // ..............TO BE ADDED LATER ....
-
-    
     // allocating main computational arrays
     alloc_varmain_PSV(vz, vx, uz, ux, We, We_adj, szz, szx, sxx, dz_z, dx_z, dz_x, dx_x, 
     mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
@@ -136,11 +125,48 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     
 }
 
-/*
 
-void fwi_simulate(){
+
+void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx, 
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2, int snap_dt, int snap_dz, int snap_dx, 
+    bool surf, bool pml_z, bool pml_x, int nsrc, int nrec, int nshot, int stf_type, int rtf_type, 
+    bool rtf_true, int fdorder, real scalar_lam, real scalar_mu, real scalar_rho,
+    real *&hc, int *&isurf, real **&lam, real **&mu, real **&rho, 
+    real *&a_z, real *&b_z, real *&K_z, real *&a_half_z, real *&b_half_z, real *&K_half_z,
+    real *&a_x, real *&b_x, real *&K_x, real *&a_half_x, real *&b_half_x, real *&K_half_x,
+    int *&z_src, int *&x_src, int *&z_rec, int *&x_rec,
+    int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real **&rtf_z_true, real **&rtf_x_true){
     // full waveform inversion modelling
     // fwinv = true for this case
+    // Internal variables
+    bool accu = true, grad = false; 
+    int *a_stf_type; // adjoint source type
+    int *rec_shot_to_fire;
+    rec_shot_to_fire = new int [nrec];
+    real L2_norm[500];
+    // -------------------------------------------------------------------------------------------------------
+    // Internally computational arrays
+    // --------------------------------------------------------------------------------------------------------
+    real **vz, **vx, **uz, **ux; // Tensors: velocity, displacement
+    real **We, **We_adj, **szz, **szx, **sxx; // Tensors: Energy fwd and adj, stress (We_adj used as temp grad)
+    real **dz_z, **dx_z, **dz_x, **dx_x; // spatial derivatives
+    real **mem_vz_z, **mem_vx_z, **mem_szz_z, **mem_szx_z; // PML spatial derivative memories: z-direction
+    real **mem_vz_x, **mem_vx_x, **mem_szx_x, **mem_sxx_x; // PML spatial derivative memories: x-direction
+    real **mu_zx, **rho_zp, **rho_xp; // Material averages
+    real **grad_lam, **grad_mu, **grad_rho; // Gradients of material (full grid)
+    real **grad_lam_shot, **grad_mu_shot, **grad_rho_shot; // Gradient of materials in each shot (snapped)
+    real **rtf_uz, **rtf_ux; // receiver time functions (displacements)
+    real ***accu_vz, ***accu_vx, ***accu_szz, ***accu_szx, ***accu_sxx; // forward accumulated storage arrays
+    // -----------------------------------------------------------------------------------------------------
+
+    // allocating main computational arrays
+    alloc_varmain_PSV(vz, vx, uz, ux, We, We_adj, szz, szx, sxx, dz_z, dx_z, dz_x, dx_x, 
+    mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
+    mu_zx, rho_zp, rho_xp, grad_lam, grad_mu, grad_rho, grad_lam_shot, grad_mu_shot, grad_rho_shot,
+    rtf_uz, rtf_ux, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
+    pml_z, pml_x, nrec, accu, grad, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 
+    nt, nz, nx);
+
     //-----------------------------------------------
     // 0.0. OUTER PREPROCESSING (IN EVERY FWI LOOPS)
     // ----------------------------------------------
@@ -154,106 +180,109 @@ void fwi_simulate(){
 
 
     // Start of FWI iteration loop
-    int iter; iter = 0;
-    while (iter<10){ // currently 10 just for test (check the conditions later)
+    bool iter; iter = true;
+    int iterstep = 0;
+    int maxIter = 5; 
+    while (iter){ // currently 10 just for test (check the conditions later)
 	
         //-----------------------------------------------
         // 1.0. INNER PREPROCESSING (IN EVERY FWI LOOPS)
         // ----------------------------------------------
-
-
-        // calculate material averages
-        // mu_zx, rho_zp, rho_xp, C_lam, C_mu, C_rho
-		// Reset gradient matrices: grad_lam, grad_mu, grad_rho; 
-    
-        for (int i_shot = 0; i_shot < n_shots; ++i_shot){
+		// Reset gradient matrices: grad_lam, grad_mu, grad_rho;??
         
+        // calculate material average
+        mat_av2(lam, mu, rho, mu_zx, rho_zp, rho_xp, 
+            scalar_lam, scalar_mu, scalar_rho, nz, nx);
+    
+        for (int ishot = 0; ishot < nshot; ishot++){
         
             // -----------------------------------
             // 2.0. FORWARD MODELLING
             // ------------------------------------
             
-            adj_kernel = false;
-            accu = true;
-            // Allocate the accumulated storage kernels (deallocated in each shot)
-            // Different shots may require different accumulation arrays
-            // accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, //fwi memory
-
             // Seismic forward kernel
-            seismic_kernel2(nt, nz, nx, dt, dx, dz, surf, hc, fdorder, //grids
-                    vx, vz, ux, uz, sxx, szx, szz, We, // wave parameters
-                    vz_z, vx_z, vz_x, vx_x, szz_z, szx_z, szx_x, sxx_x, //spatial derivatives
-                    lam, mu, mu_zx, rho_zp, rho_xp, // Medium
-                    grad_lam_shot, grad_mu_shot, grad_rho_shot, // gradients
-                    pml, a, b, K, a_half, b_half, K_half, // PML var
-                    mem_vx_x, mem_vx_z, mem_vz_x, mem_vz_z, // PML memory
-                    mem_sxx_x, mem_szx_x, mem_szz_z, mem_szx_z, // PML memory
-                    nsrc, stf_type, stf_z, stf_x, z_src, x_src, // source
-                    nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec, // recievers
-                    accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, //fwi memory
-                    snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, // grid
-                    adj_kernel);
+            accu = true; // Accumulated storage for output
+            grad = false; // no gradient computation in forward kernel
+            kernel_PSV(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
+                vz, vx,  uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x, 
+                lam, mu, mu_zx, rho_zp, rho_xp, grad, grad_lam_shot, grad_mu_shot, grad_rho_shot,
+                pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
+                pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
+                mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z,
+                mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
+                nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
+                nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
+                accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
+                snap_z1, snap_z2, snap_x1, snap_x2, 
+                snap_dt, snap_dz, snap_dx);
 
             // -----------------------------------------------
             // 3.0. RESIDUALS AND ADJOINT SOURCE COMPUTATION
             // ------------------------------------------------
 
             // calculating L2 norm and adjoint sources
-            L2_norm = adjsrc2(a_stf_type, a_stf_uz, a_stf_ux, rtf_type, rtf_uz_true, rtf_ux_true,
+            L2_norm[iterstep] = adjsrc2(a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
                             rtf_uz, rtf_ux, dt, nrec, nt);
 
             // -----------------------------------
             // 4.0. ADJOING MODELLING
             // ------------------------------------
-    
-            adj_kernel = true;
+            
+            // Preparing adjoint shot to fire in the shot
+            // Fire all adjoint sources in this shot
+            for(int ir=0; ir<nrec; ir++){
+                rec_shot_to_fire[ir] = ishot;
+            }
             
             // Seismic adjoint kernel
-            seismic_kernel2(nt, nz, nx, dt, dx, dz, surf, hc, fdorder, //grids
-                    vx, vz, ux, uz, sxx, szx, szz, We_adj, // wave parameters
-                    vz_z, vx_z, vz_x, vx_x, szz_z, szx_z, szx_x, sxx_x, //spatial derivatives
-                    lam, mu, mu_zx, rho_zp, rho_xp, // Medium
-                    grad_lam_shot, grad_mu_shot, grad_rho_shot, // gradients
-                    pml, a, b, K, a_half, b_half, K_half, // PML var
-                    mem_vx_x, mem_vx_z, mem_vz_x, mem_vz_z, // PML memory
-                    mem_sxx_x, mem_szx_x, mem_szz_z, mem_szx_z, // PML memory
-                    nrec, *a_stf_type, a_stf_uz, a_stf_ux, z_rec, x_rec, // adjoint source
-                    nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec, // recievers
-                    accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, //accumulated tensor memory
-                    snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, // grid
-                    adj_kernel);
-
-			
-			// Deallocate accu_storage matrices
+            accu = false; // Accumulated storage for output
+            grad = true; // no gradient computation in forward kernel
+            kernel_PSV(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
+                vz, vx,  uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x, 
+                lam, mu, mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
+                pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
+                pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
+                mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z,
+                mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
+                nrec, *a_stf_type, rtf_uz, rtf_ux, z_rec, x_rec, rec_shot_to_fire,
+                nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
+                accu, accu_vz,accu_vx, accu_szz, accu_szx, accu_sxx, 
+                snap_z1, snap_z2, snap_x1, snap_x2, 
+                snap_dt, snap_dz, snap_dx);
 			
             // Smooth gradients
 
             // Calculate Energy Weights
             energy_weights2(We, We_adj, snap_z1, snap_z2, snap_x1, snap_x2);
 
+            // [We_adj used as temporary gradient here after]
+            
             // GRAD_LAM
+            // ----------------------------------------
             // Interpolate gradients to temporary array
-            interpol_grad2(grad_temp, grad_lam_shot, snap_z1, snap_z2, 
+            interpol_grad2(We_adj, grad_lam_shot, snap_z1, snap_z2, 
                         snap_x1, snap_x2, snap_dz, snap_dx);
             // Scale to energy weight and add to global array 
-            scale_grad_E2(grad_lam, grad_temp, lam_av, We,
-                snap_z1, snap_z2, snap_x1, snap_x2);
+            scale_grad_E2(grad_lam, We_adj, scalar_lam, We,
+                    snap_z1, snap_z2, snap_x1, snap_x2);
 
             // GRAD_MU
+            // ----------------------------------------
             // Interpolate gradients to temporary array
-            interpol_grad2(grad_temp, grad_mu_shot, snap_z1, snap_z2, 
+            interpol_grad2(We_adj, grad_mu_shot, snap_z1, snap_z2, 
                         snap_x1, snap_x2, snap_dz, snap_dx);
             // Scale to energy weight and add to global array 
-            scale_grad_E2(grad_mu, grad_temp, lam_av, We,
-                snap_z1, snap_z2, snap_x1, snap_x2);
+            scale_grad_E2(grad_mu, We_adj, scalar_mu, We,
+                    snap_z1, snap_z2, snap_x1, snap_x2);
 
             // GRAD_RHO
+            // ----------------------------------------
             // Interpolate gradients to temporary array
-            interpol_grad2(grad_temp, grad_rho_shot, snap_z1, snap_z2, 
+            interpol_grad2(We_adj, grad_rho_shot, snap_z1, snap_z2, 
                         snap_x1, snap_x2, snap_dz, snap_dx);
             // Scale to energy weight and add to global array 
-            scale_grad_E2(grad_rho, grad_temp, lam_av, We,
-                snap_z1, snap_z2, snap_x1, snap_x2);
+            scale_grad_E2(grad_rho, We_adj, scalar_rho, We,
+                    snap_z1, snap_z2, snap_x1, snap_x2);
 
         }
 
@@ -279,10 +308,12 @@ void fwi_simulate(){
         update_mat2(rho, grad_rho, 0.5*step_length, nz, nx);
 
 		// smooth model
-        
+       iterstep++ ;
+       iter = (iterstep < maxIter) ? true : false; // Temporary condition
+
     }
 
 
 
 }
-*/
+

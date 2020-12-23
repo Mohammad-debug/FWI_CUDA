@@ -26,6 +26,15 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     int *&z_src, int *&x_src, int *&z_rec, int *&x_rec,
     int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real **&rtf_z_true, real **&rtf_x_true,
     bool accu_save);
-//void fwi_simulate();
+
+void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx, 
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2, int snap_dt, int snap_dz, int snap_dx, 
+    bool surf, bool pml_z, bool pml_x, int nsrc, int nrec, int nshot, int stf_type, int rtf_type, 
+    bool rtf_true, int fdorder, real scalar_lam, real scalar_mu, real scalar_rho,
+    real *&hc, int *&isurf, real **&lam, real **&mu, real **&rho, 
+    real *&a_z, real *&b_z, real *&K_z, real *&a_half_z, real *&b_half_z, real *&K_half_z,
+    real *&a_x, real *&b_x, real *&K_x, real *&a_half_x, real *&b_half_x, real *&K_half_x,
+    int *&z_src, int *&x_src, int *&z_rec, int *&x_rec,
+    int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real **&rtf_z_true, real **&rtf_x_true);
 
 #endif

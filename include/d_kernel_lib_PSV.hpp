@@ -156,7 +156,8 @@ void energy_weights2(
 
 void scale_grad_E2(
     // Gradients, material average and energy weights
-    real **&grad, real **&grad_shot, real mat_av, real **&We,
+    real **&grad, real **&grad_shot, 
+    real mat_av, real **&We,
     // space snap parameters
     int snap_z1, int snap_z2, int snap_x1, int snap_x2);
 

@@ -651,7 +651,8 @@ void energy_weights2(
 
 void scale_grad_E2(
     // Gradients, material average and energy weights
-    real **&grad, real **&grad_shot, real mat_av, real **&We,
+    real **&grad, real **&grad_shot, 
+    real mat_av, real **&We,
     // space snap parameters
     int snap_z1, int snap_z2, int snap_x1, int snap_x2){
     // Scale gradients to the Energy Weight
@@ -659,10 +660,8 @@ void scale_grad_E2(
     // grad and grad shot here have same dimensions (grad_shot = temp grad from each shot)
     // Scale gradients to the energy weight
     for (int iz=snap_z1;iz<snap_z2;iz++){
-        for (int ix=snap_x1;ix<snap_x2;ix++){
-            
+        for (int ix=snap_x1;ix<snap_x2;ix++){    
             grad[iz][ix] += grad_shot[iz][ix]/ (We[iz][ix] * mat_av * mat_av);
-            
 
         }
     }
