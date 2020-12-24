@@ -55,6 +55,7 @@ bool h_FWINV; // 0.fwd, 1.fwu
 int FDORDER, FPAD; // FD order and the numerical padding in each side
 real *HC; // Holberg coefficients
 bool ACCU_SAVE; // if to write accumulated tensor storage to disk
+int MAT_SAVE_INTERVAL; // The iteration step interval for material save 
 
 // --------------------------
 // MATERIAL PARAMETERS
@@ -93,7 +94,7 @@ void simulate_PSV(){
     std::cout << "Reading input parameters <INT>."<<std::endl;
     read_input_metaint(SURF, PML_Z, PML_X, ACCU_SAVE, h_FWINV, RTF_MEAS_TRUE, NT, NZ, NX, 
     SNAP_T1, SNAP_T2, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
-    NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, FPAD); 
+    NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, FPAD, MAT_SAVE_INTERVAL); 
 
     // Allocate the arrays for preprocessing in host
     std::cout << "Allocating memory for the variables."<<std::endl;
@@ -141,13 +142,17 @@ void simulate_PSV(){
     // Calling now the device codes
     if (h_FWINV){
         // Full Waveform Inversion
+        std::cout << "Full Waveform Inversion...."<<std::endl;
+        //
         simulate_fwi_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
         SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, RTF_MEAS_TRUE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
         HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
-        K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE);
+        K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL);
     }
     else{
         // Forward Modelling
+        std::cout << "Forward Modelling only...."<<std::endl;
+        //
         simulate_fwd_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
         SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, RTF_MEAS_TRUE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
         HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,

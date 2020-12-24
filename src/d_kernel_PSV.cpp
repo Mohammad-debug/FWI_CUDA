@@ -80,7 +80,6 @@ void kernel_PSV(int ishot, // shot index
 					snap_z1, snap_z2, snap_x1, snap_x2,
 					snap_dz, snap_dx);
 	} 
-    
         
     for(int jt=0; jt<nt; jt++){
         if(grad){ // Adjoint kernel

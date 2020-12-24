@@ -33,17 +33,6 @@ void alloc_varpre_PSV( real *&hc, int *&isurf, int *&npml, // holberg coefficien
     bool pml_z, bool pml_x, int nsrc, int nrec,
     int nt, int nz, int nx);
 
-void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, bool &fwinv, bool &rtf_meas_true, 
-    int &nt, int &nz, int &nx, int &snap_t1, int &snap_t2, int &snap_z1, int &snap_z2, int &snap_x1, int &snap_x2, 
-	int &snap_dt, int &snap_dz, int &snap_dx,int &nsrc, int &nrec, int &nshot, int &stf_type, int &rtf_type, 
-	int &fdorder, int &fpad);
-
-void read_input_int_array(int *&npml, int *&isurf, int *&z_src, int *&x_src, int *&src_shot_to_fire, 
-    int *&z_rec, int *&x_rec, int nsrc, int nrec);
-
-void read_inp_metafloat(real &dt, real &dz, real &dx, real &npower_pml, real &damp_v_pml, 
-    real &rcoef_pml, real &k_max_pml, real &freq_pml, real &scalar_lam, real &scalar_mu, real &scalar_rho);
-
 // Staggering of scalar material over the grid
 void mat_stag_PSV(real **&lam, real **&mu, real **&rho, real scalar_lam, real scalar_mu, real scalar_rho, 
                 int nz, int nx);

@@ -7,7 +7,7 @@ data.tofile("./bin/sample.npy")
 
 # Getting the input directly in this preprocessor file
 # Geometric data
-nt = 1/0.2e-3; nz = 801; nx = 801 # grid numbers
+nt = 20; nz = 801; nx = 801 # grid numbers
 
 dt = 0.2e-3; dz = 2.0; dx = 2.0 # grid intervals
 
@@ -50,8 +50,8 @@ freq_pml = 15.0 # PML frequency in Hz
 
 #Boolen values
  
-accu_save = True; fwinv = False; 
-rtf_meas_true = False # RTF field measurement exists
+accu_save = False; fwinv = True; mat_save_interval = 1;
+rtf_meas_true = True # RTF field measurement exists
 
 # Creating source locations
 zsrc = np.array([nz/2], dtype=np.int32)
@@ -69,7 +69,7 @@ xrec = np.array([nx/3, nx/2, 3*nx/4], dtype=np.int32)
 # Creating boolen arrays
 metabool = np.array([surf, pml_z, pml_x, accu_save, fwinv, rtf_meas_true], dtype=np.bool_)
 # Creating integer arrays and subsequent concatenation of the related fields
-metaint = np.array([nt, nz, nx, snap_t1, snap_t2, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nsrc, nrec, nshot, stf_type, rtf_type, fdorder, fpad], dtype=np.int32)
+metaint = np.array([nt, nz, nx, snap_t1, snap_t2, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nsrc, nrec, nshot, stf_type, rtf_type, fdorder, fpad, mat_save_interval], dtype=np.int32)
 metaint = np.concatenate((metabool, metaint), axis=None)
 
 intarray = np.array([npml_top, npml_bottom, npml_left, npml_right, isurf_top, isurf_bottom, isurf_left, isurf_right], dtype=np.int32)

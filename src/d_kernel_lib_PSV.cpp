@@ -543,6 +543,7 @@ real adjsrc2(int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         for(int is=0; is<nseis; is++){ // for all seismograms
             for(int it=0;it<nt;it++){ // for all time steps
                 // calculating adjoint sources
+                //std::cout << "check 1.1. "<<is <<", "<< it<< std::endl;
                 a_stf_uz[is][it] = rtf_uz_mod[is][it] - rtf_uz_true[is][it];
                 a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[is][it];
 
@@ -551,8 +552,11 @@ real adjsrc2(int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
                 L2 += 0.5 * dt * pow(a_stf_ux[is][it], 2);
 
             }
+            std::cout << std::endl;
         }
-    *a_stf_type = rtf_type; // Calculating displacement adjoint sources
+
+        a_stf_type = &rtf_type; // Calculating displacement adjoint sources
+    
     }
     
     return L2;
