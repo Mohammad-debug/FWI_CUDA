@@ -49,7 +49,11 @@ vz_dat = read_tensor("./bin/shot0_vz.bin", np.float64, (snap_nt, snap_nz, snap_n
 #    print(i, vz_dat.dtype, vz_dat[i,:,:])
 #    print("...........................")
 
-clip = 0.01
+# finding maximum value for the clip in the tensor array
+clip_plus = np.amax(vz_dat)
+clip_minus = np.amin(vz_dat)
+clip = max([clip_plus, np.abs(clip_minus)])
+print("Vz: max = ", clip_plus, ", min = ", clip_minus, ", clip = ", clip, ".")
 for ii in range(1,snap_nt):
     # reading data from csv file
 	data = vz_dat[ii,:,:] # np.fromfile("../bin/shot0_vz", dtype=np.float64)
@@ -72,12 +76,12 @@ for ii in range(1,snap_nt):
 	#pyplot.savefig('./io/vz_snap'+numpy.str(ii)+'.pdf', format='pdf',figsize=(10,7), dpi=1000)
 	#pyplot.show()
 	pyplot.draw()
-	pyplot.pause(1.0)
+	pyplot.pause(0.01)
 
 	if (ii<100):
 		pyplot.clf()
 	else:
 		pyplot.show()
 		
-	print('Figure '+np.str(ii)+' plotted.')
+	#print('Figure '+np.str(ii)+' plotted.')
 	del vz
