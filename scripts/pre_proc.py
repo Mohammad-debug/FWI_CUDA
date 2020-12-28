@@ -1,13 +1,9 @@
 # preprocessing of the files
 import numpy as np
-# create a sample numpy array
-data = np.array([1.0e-3, 2.0e-7], dtype=np.float64)
-print(data)
-data.tofile("./bin/sample.npy")
 
 # Getting the input directly in this preprocessor file
 # Geometric data
-nt = 20; nz = 801; nx = 801 # grid numbers
+nt = 2000; nz = 801; nx = 801 # grid numbers
 
 dt = 0.2e-3; dz = 2.0; dx = 2.0 # grid intervals
 
@@ -21,7 +17,7 @@ fdorder = 2; fpad = 1
 
 # Number of PMLs in each direction
 pml_z = True; pml_x = True # PML exist in both direction
-npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
+npml_top = 5; npml_bottom = 5; npml_left = 5; npml_right = 5
 
 # Surface grid index in each direction (0 = no surface)
 surf = False # surface exist
@@ -50,8 +46,8 @@ freq_pml = 15.0 # PML frequency in Hz
 
 #Boolen values
  
-accu_save = False; fwinv = True; mat_save_interval = 1;
-rtf_meas_true = True # RTF field measurement exists
+accu_save = True; fwinv = False; mat_save_interval = 0;
+rtf_meas_true = False # RTF field measurement exists
 
 # Creating source locations
 zsrc = np.array([nz/2], dtype=np.int32)

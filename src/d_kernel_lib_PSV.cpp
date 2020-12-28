@@ -574,11 +574,11 @@ void interpol_grad2(
 
     jz = 0; 
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
-        
+        std::cout<< "[iz: " << iz << ", jz: " << jz << "] ::";
         // Fist filling only the snap grids and along the x-axis
         jx = 0;
         for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
-
+            std::cout<< " ix: " << ix << ", jx: " << jx;
             grad[iz][ix] = grad_shot[jz][jx];
 
             if (ix!=snap_x1){
@@ -589,11 +589,9 @@ void interpol_grad2(
                 }
             }
 
-            
-
 			jx++;
         }
-
+        std::cout << std::endl;
         // After filling along the x, now interpolate to z direction
         if (iz!=snap_z1){
             for (int kz = 1; kz<snap_dz; kz++){
