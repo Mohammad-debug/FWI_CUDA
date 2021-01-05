@@ -16,15 +16,15 @@
 #include <string>
 
 
-void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, bool &fwinv, bool &rtf_meas_true, 
+void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, bool &seismo_save, bool &fwinv, bool &rtf_meas_true, 
     int &nt, int &nz, int &nx, int &snap_t1, int &snap_t2, int &snap_z1, int &snap_z2, int &snap_x1, int &snap_x2, 
 	int &snap_dt, int &snap_dz, int &snap_dx,int &nsrc, int &nrec, int &nshot, int &stf_type, int &rtf_type, 
-	int &fdorder, int &fpad, int &mat_save_interval){
+	int &fdorder, int &fpad, int &mat_save_interval, int &mat_grid){
 	// ------------------------------------------------------------
     // Reads the input data from the binary file created in python
     // ---------------------------------------------------------------------
     // integer values for boolen
-    int surf_inp, pml_z_inp, pml_x_inp, accu_save_inp, fwinv_inp, rtf_meas_true_inp;
+    int surf_inp, pml_z_inp, pml_x_inp, accu_save_inp, seismo_save_inp, fwinv_inp, rtf_meas_true_inp;
 
 
     // Loading the integer input file "metaint"
@@ -39,6 +39,7 @@ void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, b
     metaint.read(reinterpret_cast<char*> (&pml_z_inp), sizeof(int32_t));
     metaint.read(reinterpret_cast<char*> (&pml_x_inp), sizeof(int32_t));
     metaint.read(reinterpret_cast<char*> (&accu_save_inp), sizeof(int32_t));
+    metaint.read(reinterpret_cast<char*> (&seismo_save_inp), sizeof(int32_t));
     metaint.read(reinterpret_cast<char*> (&fwinv_inp), sizeof(int32_t));
     metaint.read(reinterpret_cast<char*> (&rtf_meas_true_inp), sizeof(int32_t));
 
@@ -48,6 +49,7 @@ void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, b
     pml_z = (pml_z_inp == 0) ? false : true;
     pml_x = (pml_x_inp == 0) ? false : true;
     accu_save = (accu_save_inp == 0) ? false : true;
+    seismo_save = (seismo_save_inp == 0) ? false : true;
     fwinv = (fwinv_inp == 0) ? false : true;
     rtf_meas_true = (rtf_meas_true_inp == 0) ? false : true;
     // ------------------------------------------------------------------------
@@ -78,10 +80,12 @@ void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, b
     // Finite difference order and respective padding
     metaint.read(reinterpret_cast<char*> (&fdorder), sizeof(int32_t));
     metaint.read(reinterpret_cast<char*> (&fpad), sizeof(int32_t));
-    
 
     // The iteration intervals to save the updated material in fwi
     metaint.read(reinterpret_cast<char*> (&mat_save_interval), sizeof(int32_t));
+
+    // The material grid available or not 0:scalar material 1:material grid
+    metaint.read(reinterpret_cast<char*> (&mat_grid), sizeof(int32_t));
     
     metaint.close();
 }
@@ -144,7 +148,6 @@ void read_input_int_array(int *&npml, int *&isurf, int *&z_src, int *&x_src, int
 }
 
 
-
 void read_inp_metafloat(real &dt, real &dz, real &dx, real &npower_pml, real &damp_v_pml, 
     real &rcoef_pml, real &k_max_pml, real &freq_pml, real &scalar_lam, real &scalar_mu, real &scalar_rho){
 	// ------------------------------------------------------------
@@ -179,6 +182,48 @@ void read_inp_metafloat(real &dt, real &dz, real &dx, real &npower_pml, real &da
     
 }
 
+void read_material_array(real **&lam, real **&mu, real **&rho,  int nz, int nx){
+	// ------------------------------------------------------------
+    	// Reads the input data from the binary file created in python (BOOLENS)
+    	// ---------------------------------------------------------------------
+	
+    // Loading the integer input file "metaint"
+    std::ifstream matfile("./bin/mat.bin", std::ios::in | std::ios::binary);
+    if(!matfile) {
+        std::cout << "Cannot open input file <MATERIAL>.";
+        return;
+    }
+       
+    // Reading  material parameters
+
+    // First parameter
+    std::cout << "LAM <FLOAT>."<<std::endl;
+    for(int iz=0; iz<nz; iz++){
+        for(int ix=0; ix<nx; ix++){
+            //std::cout << "LAM <FLOAT>."<<iz <<"," << ix<< std::endl;
+            matfile.read(reinterpret_cast<char*> (&lam[iz][ix]), sizeof(real));
+        }
+    }
+
+    // Second parameter
+    std::cout << "MU <FLOAT>."<<std::endl;
+    for(int iz=0; iz<nz; iz++){
+        for(int ix=0; ix<nx; ix++){
+            matfile.read(reinterpret_cast<char*> (&mu[iz][ix]), sizeof(real));
+        }
+    }
+
+    // Third parameter
+    std::cout << "RHO <FLOAT>."<<std::endl;
+    for(int iz=0; iz<nz; iz++){
+        for(int ix=0; ix<nx; ix++){
+            matfile.read(reinterpret_cast<char*> (&rho[iz][ix]), sizeof(real));
+        }
+    }
+
+    matfile.close();
+    
+}
 
 
 // Saving Accumulation Array to hard disk binary file
@@ -225,6 +270,64 @@ void write_accu(real ***&accu_vz, real ***&accu_vx,
     outfile_sxx.close();
 
 }
+
+
+// Saving Receiver Seismogram to hard disk binary file
+void write_seismo(real **&rtf_uz, real **&rtf_ux, 
+            int nrec, int nt, int ishot){
+    // Saves data to bin folder
+
+    std::string fpath = "./bin/shot";
+
+    // saving accumulated tensors
+    std::ofstream outfile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_uz.bin", std::ios::out | std::ios::binary);
+    std::ofstream outfile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_ux.bin", std::ios::out | std::ios::binary);
+   
+    if(!outfile_rtf_uz || !outfile_rtf_ux ){
+        std::cout << "Cannot open output files.";
+        return;
+    }
+
+    for (int ir=0; ir<nrec; ir++){
+        for (int it=0; it<nt; it++){
+            outfile_rtf_uz.write(reinterpret_cast<const char*> (&rtf_uz[ir][it]), sizeof(real));
+            outfile_rtf_ux.write(reinterpret_cast<const char*> (&rtf_ux[ir][it]), sizeof(real));
+        }
+    }
+   
+    outfile_rtf_uz.close();
+    outfile_rtf_ux.close();
+
+}
+
+// Reading Receiver Seismogram to hard disk binary file
+void read_seismo(real **&rtf_uz, real **&rtf_ux, 
+            int nrec, int nt, int ishot){
+    // Saves data to bin folder
+
+    std::string fpath = "./io/shot";
+
+    // saving accumulated tensors
+    std::ifstream infile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_uz.bin", std::ios::in | std::ios::binary);
+    std::ifstream infile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_ux.bin", std::ios::in | std::ios::binary);
+   
+    if(!infile_rtf_uz || !infile_rtf_ux ){
+        std::cout << "Cannot open output files.";
+        return;
+    }
+
+    for (int ir=0; ir<nrec; ir++){
+        for (int it=0; it<nt; it++){
+            infile_rtf_uz.read(reinterpret_cast<char*> (&rtf_uz[ir][it]), sizeof(real));
+            infile_rtf_ux.read(reinterpret_cast<char*> (&rtf_ux[ir][it]), sizeof(real));
+        }
+    }
+   
+    infile_rtf_uz.close();
+    infile_rtf_ux.close();
+
+}
+
 
 // Saving Material Arrays to the hard disk binary file
 void write_mat(real **&lam, real **&mu, real **&rho, int nz, int nx, int iterstep){

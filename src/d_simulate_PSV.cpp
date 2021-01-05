@@ -22,7 +22,7 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real *&a_x, real *&b_x, real *&K_x, real *&a_half_x, real *&b_half_x, real *&K_half_x,
     int *&z_src, int *&x_src, int *&z_rec, int *&x_rec,
     int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real **&rtf_z_true, real **&rtf_x_true,
-    bool accu_save){ // forward accumulated storage arrays){
+    bool accu_save, bool seismo_save){ // forward accumulated storage arrays){
     // Forward modelling in PSV
     
 
@@ -121,6 +121,14 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             std::cout <<" <DONE>"<< std::endl;
         }
 
+        // Saving the Accumulative storage file to a binary file for every shots
+        if (seismo_save){
+            // Writing the accumulation array
+            std::cout << "Writing accu to binary file for SHOT " << ishot ;
+            write_seismo(rtf_uz, rtf_ux, nrec, nt, ishot);
+            std::cout <<" <DONE>"<< std::endl;
+        }
+
     }
     
 }
@@ -184,7 +192,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     // Start of FWI iteration loop
     bool iter; iter = true;
     int iterstep = 0;
-    int maxIter = 5; 
+    int maxIter = 3; 
     while (iter){ // currently 10 just for test (check the conditions later)
         std::cout << "FWI: Iteration "<< iterstep << std::endl;
         //-----------------------------------------------
@@ -226,6 +234,8 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             // calculating L2 norm and adjoint sources
             L2_norm[iterstep] = adjsrc2(a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
                             rtf_uz, rtf_ux, dt, nrec, nt);
+
+            std::cout<<"L2 NORM: " << L2_norm[iterstep] << std::endl;
             
             // -----------------------------------
             // 4.0. ADJOING MODELLING
@@ -250,7 +260,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
                 nrec, *a_stf_type, rtf_uz, rtf_ux, z_rec, x_rec, rec_shot_to_fire,
                 nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
-                accu, accu_vz,accu_vx, accu_szz, accu_szx, accu_sxx, 
+                accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
                 snap_z1, snap_z2, snap_x1, snap_x2, 
                 snap_dt, snap_dz, snap_dx);
 			
@@ -260,17 +270,17 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             energy_weights2(We, We_adj, snap_z1, snap_z2, snap_x1, snap_x2);
             std::cout << "check 2."<<std::endl;
             // [We_adj used as temporary gradient here after]
-            
+            exit(0);
             // GRAD_LAM
             // ----------------------------------------
             // Interpolate gradients to temporary array
             interpol_grad2(We_adj, grad_lam_shot, snap_z1, snap_z2, 
                         snap_x1, snap_x2, snap_dz, snap_dx);
-            std::cout << "check 3."<<std::endl;
+            
             // Scale to energy weight and add to global array 
             scale_grad_E2(grad_lam, We_adj, scalar_lam, We,
                     snap_z1, snap_z2, snap_x1, snap_x2);
-            std::cout << "check 4."<<std::endl;
+            
             // GRAD_MU
             // ----------------------------------------
             // Interpolate gradients to temporary array
@@ -290,7 +300,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                     snap_z1, snap_z2, snap_x1, snap_x2);
 
         }
-
+        /*
 		// Smooth the global gradient with taper functions
 		
 		// Preconditioning of Gradients
@@ -314,7 +324,8 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
         //
         // Saving the Accumulative storage file to a binary file for every shots
-        if (mat_save_interval>0 && !iterstep%mat_save_interval){
+        std::cout<<"Iteration step: " <<iterstep<<", "<<mat_save_interval<<", "<<!iterstep%mat_save_interval<<std::endl;
+        if (mat_save_interval>0 && !(iterstep%mat_save_interval)){
             // Writing the accumulation array
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep ;
             write_mat(lam, mu, rho, nz, nx, iterstep);
@@ -324,7 +335,8 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 	   // smooth model
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition
-
+       */
+       exit(0);
     }
 
     // Saving the Accumulative storage file to a binary file for every shots

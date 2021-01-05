@@ -571,42 +571,55 @@ void interpol_grad2(
     int snap_dz, int snap_dx){
     // Interpolates the gradients to the missing material variables
     int jz, jx;
+    real temp_grad; // temporary scalar gradiant
 
+    // --------------------------------------
+    // FOR LOOP SET 1
+    // -----------------------------------
     jz = 0; 
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
-        std::cout<< "[iz: " << iz << ", jz: " << jz << "] ::";
+        //std::cout<< "[iz: " << iz << ", jz: " << jz << "] ::";
         // Fist filling only the snap grids and along the x-axis
         jx = 0;
         for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
-            std::cout<< " ix: " << ix << ", jx: " << jx;
+            
             grad[iz][ix] = grad_shot[jz][jx];
-
-            if (ix!=snap_x1){
-                for(int kx=1;kx<snap_dx;kx++){
-                    grad[iz][ix-kx] = (grad_shot[jz][jx] - grad_shot[jz][jx-1] ) 
-                                            * (real) kx /(real) snap_dx;
- 
-                }
-            }
-
+            
 			jx++;
         }
-        std::cout << std::endl;
-        // After filling along the x, now interpolate to z direction
-        if (iz!=snap_z1){
-            for (int kz = 1; kz<snap_dz; kz++){
-                for(int kx=snap_x1;kx<=snap_x2;kx++){
-                    grad[iz-kz][kx] = (grad[iz][kx] - grad_shot[iz-1][kx] ) 
-                                                * (real) kz /(real) snap_dz;
-                      
-                }
-
-            }
-                
-        }
-		
+        
 		jz++;
 
+    }
+
+
+    // --------------------------------------
+    // FOR LOOP SET 2
+    // -----------------------------------
+    // Now the grad at major snap grids are updated
+    // now updating the snap rows only
+    for(int iz=snap_z1; iz<snap_z2; iz+=snap_dz){
+        for(int ix=snap_x1; ix<snap_x2; ix+=snap_dx){
+            temp_grad = (grad[iz][ix+snap_dx] - grad[iz][ix])/snap_dx;
+            for(int kx=1;kx<snap_dx;kx++){
+                grad[iz][ix+kx] = grad[iz][ix] + temp_grad*kx;
+            }
+        }
+    }
+
+    // --------------------------------------
+    // FOR LOOP SET 3
+    // -----------------------------------
+    // now updating all the columns
+    for(int iz=snap_z1; iz<snap_z2; iz+=snap_dz){
+        for(int ix=snap_x1; ix<snap_x2; ix++){
+            temp_grad = (grad[iz+snap_dz][ix] - grad[iz][ix])/snap_dz;
+            for(int kz=1;kz<snap_dz;kz++){
+                
+                grad[iz+kz][ix] = grad[iz][ix] + temp_grad*kz;
+            }
+            
+        }
     }
  
 }
@@ -644,8 +657,9 @@ void energy_weights2(
         for (int ix=snap_x1;ix<snap_x2;ix++){
             
             We[iz][ix] += epsilon_We *  max_We;
-
+            std::cout << We[iz][ix] <<", ";
         }
+        std::cout << std::endl;
     }
 
 }
@@ -662,10 +676,11 @@ void scale_grad_E2(
     // grad and grad shot here have same dimensions (grad_shot = temp grad from each shot)
     // Scale gradients to the energy weight
     for (int iz=snap_z1;iz<snap_z2;iz++){
-        for (int ix=snap_x1;ix<snap_x2;ix++){    
+        for (int ix=snap_x1;ix<snap_x2;ix++){      
             grad[iz][ix] += grad_shot[iz][ix]/ (We[iz][ix] * mat_av * mat_av);
 
         }
+        std::cout << std::endl;
     }
 
 }
@@ -675,14 +690,17 @@ void update_mat2(real **&mat, real **&grad_mat,
     // update gradients to the material
 
     // Material update to whole array
+    std::cout<<"MAT:"<<std::endl;
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
-            
+            std::cout << grad_mat[iz][ix];
             mat[iz][ix] += step_length * grad_mat[iz][ix];
             
 
         }
+        std::cout << std::endl;
     }
+    std::cout<<std::endl;
 
 }
 
