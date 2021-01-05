@@ -251,7 +251,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             accu = false; // Accumulated storage for output
             grad = true; // no gradient computation in forward kernel
             kernel_PSV(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
-                vz, vx,  uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x, 
+                vz, vx,  uz, ux, szz, szx, sxx, We_adj, dz_z, dx_z, dz_x, dx_x, 
                 lam, mu, mu_zx, rho_zp, rho_xp, 
                 grad, grad_lam_shot, grad_mu_shot, grad_rho_shot,
                 pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
@@ -265,12 +265,12 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 snap_dt, snap_dz, snap_dx);
 			
             // Smooth gradients
-            std::cout << "check 1."<<std::endl;
+        
             // Calculate Energy Weights
             energy_weights2(We, We_adj, snap_z1, snap_z2, snap_x1, snap_x2);
-            std::cout << "check 2."<<std::endl;
+            
             // [We_adj used as temporary gradient here after]
-            exit(0);
+            
             // GRAD_LAM
             // ----------------------------------------
             // Interpolate gradients to temporary array
@@ -300,7 +300,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                     snap_z1, snap_z2, snap_x1, snap_x2);
 
         }
-        /*
+        
 		// Smooth the global gradient with taper functions
 		
 		// Preconditioning of Gradients
@@ -328,15 +328,14 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         if (mat_save_interval>0 && !(iterstep%mat_save_interval)){
             // Writing the accumulation array
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep ;
-            write_mat(lam, mu, rho, nz, nx, iterstep);
+            write_mat(grad_lam, grad_mu, grad_rho, nz, nx, iterstep);
             std::cout <<" <DONE>"<< std::endl;
         }
 
 	   // smooth model
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition
-       */
-       exit(0);
+       
     }
 
     // Saving the Accumulative storage file to a binary file for every shots
