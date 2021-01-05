@@ -13,7 +13,7 @@
 // ----------------------------------
 // HOST GLOBAL SIMULATION VARIABLES
 // ---------------------------------
-
+bool gpu_code = false;
 // Device global variables to be copied from the host
 // --------------------------
 // GEOMETRIC PARAMETERS
@@ -165,25 +165,38 @@ void simulate_PSV(){
     // --------------------------------------------------------------------------
     // C. MEMORY COPY TO THE DEVICE 
     // -------------------------------------------------------------------------
-    // Calling now the device codes
-    if (h_FWINV){
-        // Full Waveform Inversion
-        std::cout << "Full Waveform Inversion...."<<std::endl;
-        //
-        simulate_fwi_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
-        SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, RTF_MEAS_TRUE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
-        HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
-        K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL);
+
+    if (gpu_code){
+        // Calling now the device codes
+        std::cout << "THE COMPUTATION STARTS IN GPU" << std::endl;
+
+
     }
     else{
-        // Forward Modelling
-        std::cout << "Forward Modelling only...."<<std::endl;
-        //
-        simulate_fwd_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
-        SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, RTF_MEAS_TRUE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
-        HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
-        K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE, ACCU_SAVE, SEISMO_SAVE);
+        // Calling the codes in the host only
+        std::cout << "THE COMPUTATION STARTS IN CPU" << std::endl;
+        
+        if (h_FWINV){
+            // Full Waveform Inversion
+            std::cout << "Full Waveform Inversion...."<<std::endl;
+            //
+            simulate_fwi_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
+            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, RTF_MEAS_TRUE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
+            HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
+            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL);
+        }
+        else{
+            // Forward Modelling
+            std::cout << "Forward Modelling only...."<<std::endl;
+            //
+            simulate_fwd_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
+            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, RTF_MEAS_TRUE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
+            HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
+            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE, ACCU_SAVE, SEISMO_SAVE);
+        }
+
     }
+    
     
     
     std::cout<< "Simulation Complete" << std::endl;

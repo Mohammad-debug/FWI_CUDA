@@ -193,6 +193,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     bool iter; iter = true;
     int iterstep = 0;
     int maxIter = 3; 
+    
     while (iter){ // currently 10 just for test (check the conditions later)
         std::cout << "FWI: Iteration "<< iterstep << std::endl;
         //-----------------------------------------------
