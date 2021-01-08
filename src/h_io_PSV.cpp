@@ -1,4 +1,4 @@
-//io_PSV.cpp
+//h_io_PSV.cpp
 
 /* 
 * Created by: Min Basnet
@@ -9,7 +9,7 @@
 // preprocessing in host
 // staggering material & PML coefficients computation
 
-#include "d_io_PSV.hpp"
+#include "h_io_PSV.hpp"
 #include <math.h>
 #include <iostream>
 #include <fstream>
