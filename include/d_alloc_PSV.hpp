@@ -49,8 +49,11 @@ void alloc_varmain_PSV(
     real **&mem_szx_x, real **&mem_sxx_x,
     // Material average arrays
     real **&mu_zx, real **&rho_zp, real **&rho_xp,
+    // Copy old material while updating
+    real **&lam_copy, real **&mu_copy, real **&rho_copy,
     // Gradients of the medium
-    real **&grad_lam, real **&grad_mu, real **&grad_rho, 
+    real **&grad_lam, real **&grad_mu, real **&grad_rho,
+    // Gradients for each shot 
     real **&grad_lam_shot, real **&grad_mu_shot, real **&grad_rho_shot,
     // reciever time functions
     real **&rtf_uz, real **&rtf_ux,

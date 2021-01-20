@@ -52,25 +52,28 @@ snap_nx = 1 + (snap[4] - snap[5])//snap[8]
 if (fwinv):
     print("Plotting material for iteration in fwi")
     
-    for ii in range(0,20,2):
+    for ii in range(0,1,1):
         # reading data from csv file
-        mat_dat = read_tensor("./bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
-        print(mat_dat)
+        mat_dat = read_tensor("./bin/iter"+np.str(4002)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
+        #mat_dat1 = read_tensor("./bin/iter"+np.str(ii+1)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
+        #mat_dat2 = read_tensor("./bin/iter"+np.str(ii+2)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
+        
+        
         plt.figure(1)
-        plt.subplot(221)
-        plt.imshow(mat_dat[0][:][:], animated=True, interpolation='nearest')#, vmin=-clip, vmax=clip)
+        plt.subplot(131)
+        plt.imshow(mat_dat[0][:][:], animated=True, cmap=cm.seismic, interpolation='nearest')#, vmin=1700, vmax=1900)
         plt.colorbar()
-        plt.title('Material [Iteration'+np.str(ii)+']', y=-0.2)
+        #plt.title('Material [Iteration'+np.str(ii)+']', y=-0.2)
         plt.xlabel('X [no. of grids]')
         plt.ylabel('Z [no. of grids]'+np.str(ii))
-        plt.subplot(222)
-        plt.imshow(mat_dat[1][:][:], animated=True,  interpolation='nearest')#, vmin=-clip, vmax=clip)
+        plt.subplot(132)
+        plt.imshow(mat_dat[1][:][:], animated=True, cmap=cm.seismic,  interpolation='nearest')#, vmin=1700, vmax=1900)
         plt.colorbar()
-        plt.title('Material [Iteration'+np.str(ii)+']', y=-0.2)
+        #plt.title('Material [Iteration'+np.str(ii)+']', y=-0.2)
         plt.xlabel('X [no. of grids]')
         plt.ylabel('Z [no. of grids]'+np.str(ii))
-        plt.subplot(223)
-        plt.imshow(mat_dat[2][:][:], animated=True,  interpolation='nearest')#, vmin=-clip, vmax=clip)
+        plt.subplot(133)
+        plt.imshow(mat_dat[2][:][:], animated=True, cmap=cm.seismic,  interpolation='nearest')#, vmin=1700, vmax=1900)
         plt.colorbar()
         plt.title('Material [Iteration'+np.str(ii)+']', y=-0.2)
         plt.xlabel('X [no. of grids]')
@@ -81,8 +84,8 @@ if (fwinv):
         #pyplot.savefig('./io/vz_snap'+numpy.str(ii)+'.pdf', format='pdf',figsize=(10,7), dpi=1000)
         #pyplot.show()
         plt.draw()
-        plt.pause(2.0)
         plt.show()
+        #plt.pause(2.0)
         #plt.clf()
         
         #print('Figure '+np.str(ii)+' plotted.')
@@ -104,32 +107,42 @@ else:
     plt.subplot(211)
     for ii in range(0, nrec):   
         plt.plot(rtf_uz[ii][:])
+        plt.grid()
     plt.subplot(212)
     for ii in range(0, nrec):
         plt.plot(rtf_ux[ii][:])
+        plt.grid()
     plt.show()
     
-    vz_dat = read_tensor("./bin/shot0_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vz_dat = read_tensor("./bin/shot0_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vx_dat = read_tensor("./bin/shot0_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     
-    clip_plus = np.amax(vz_dat)
-    clip_minus = np.amin(vz_dat)
-    clip = max([clip_plus, np.abs(clip_minus)])
-    print("Vz: max = ", snap_nt, ", min = ", clip_minus, ", clip = ", clip, ".")
+    clip_pz = np.amax(vz_dat)
+    clip_mz = np.amin(vz_dat)
+    clipz = 0.3*max([clip_pz, np.abs(clip_mz)])
+    
+    clip_px = np.amax(vx_dat)
+    clip_mx = np.amin(vx_dat)
+    clipx = 0.3*max([clip_px, np.abs(clip_mx)])
+    
+    plt.figure(1)
     for ii in range(1,snap_nt):
         # reading data from csv file
-        data = vz_dat[ii,:,:] # np.fromfile("../bin/shot0_vz", dtype=np.float64)
-        # removing nan from the end due to extra ',' in the end
-        vz = np.zeros((data.shape[0]-10, data.shape[1]-11))
-        
-        for j in range(0,vz.shape[0]):
-            for i in range(0,vz.shape[1]):
-                vz[j][i] = data[j+5][i+5]
-                
-        del data
-        
-        plt.imshow(vz, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clip, vmax=clip)
+        vz = vz_dat[ii,:,:]
+        vx = vx_dat[ii,:,:]  
+        plt.subplot(121)
+        plt.imshow(vz, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clipz, vmax=clipz)
         plt.colorbar()
         plt.title('Vz [Time snap '+np.str(ii)+']', y=-0.2)
+        plt.xlabel('X [no. of grids]'+np.str(ii))
+        plt.ylabel('Z [no. of grids]')
+        #pyplot.gca().invert_yaxis()
+        #pyplot.axis('equal')
+        plt.grid()
+        plt.subplot(122)
+        plt.imshow(vx, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clipx, vmax=clipx)
+        plt.colorbar()
+        plt.title('Vx [Time snap '+np.str(ii)+']', y=-0.2)
         plt.xlabel('X [no. of grids]'+np.str(ii))
         plt.ylabel('Z [no. of grids]')
         #pyplot.gca().invert_yaxis()

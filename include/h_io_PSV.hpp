@@ -33,9 +33,10 @@ void read_seismo(real **&rtf_uz, real **&rtf_ux, int nrec, int nt, int ishot);
 
 
 // Writing the accumulative data for velocity and stress tensor to the disk
+//void write_accu(real ***&accu_vz, real ***&accu_vx, 
 void write_accu(real ***&accu_vz, real ***&accu_vx, 
             real ***&accu_szz, real ***&accu_szx, real ***&accu_sxx, 
-            int nt, int nz, int nx, int snap_z1, int snap_z2, int snap_x1, 
+            int nt, int snap_z1, int snap_z2, int snap_x1, 
             int snap_x2, int snap_dt, int snap_dz, int snap_dx, int ishot);
 
 // Saving Receiver Seismogram to hard disk binary file

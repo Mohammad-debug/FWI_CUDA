@@ -7,9 +7,16 @@ ftype = np.float64
 
 # Getting the input directly in this preprocessor file
 # Geometric data
-nt = 1200; nz = 401; nx = 151 # grid numbers
+dt = 0.2e-3; dz = 2.0; dx = 2.0 # grid intervals
+nt = 1.0/dt; nz = 401; nx = 201 # grid numbers
 
-dt = 0.25e-3; dz = 2.0; dx = 2.0 # grid intervals
+# Number of PMLs in each direction
+pml_z = True; pml_x = True # PML exist in both direction
+npml_top = 10; npml_bottom = 10; npml_left = 10; npml_right = 10
+
+# Surface grid index in each direction (0 = no surface)
+surf = False # surface exists
+isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
 snap_z1 = 0; snap_z2 = nz-1; snap_x1 = 0; snap_x2 = nx-1 # snap boundaries
@@ -19,14 +26,15 @@ nshot = 1 #; nsrc = 3; nrec = 10;
 stf_type = 1; rtf_type = 0
 fdorder = 2; fpad = 1
 
-# Number of PMLs in each direction
-pml_z = True; pml_x = True # PML exist in both direction
-npml_top = 10; npml_bottom = 10; npml_left = 10; npml_right = 10
-
-# Surface grid index in each direction (0 = no surface)
-surf = False # surface exist
-isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
-
+#Boolen values
+fwinv = True
+if (fwinv):
+    accu_save = False; seismo_save=True
+    mat_save_interval = 1; rtf_meas_true = True # RTF field measurement exists
+else:
+    accu_save = True; seismo_save=True
+    mat_save_interval = -1; rtf_meas_true = False # RTF field measurement exists
+    
 # scalar material variables
 Cp = 4000.0
 Cs = 2310.
@@ -43,12 +51,14 @@ mu = np.full((nz, nx), scalar_mu)
 rho = np.full((nz, nx), scalar_rho)
 
 # modifying density parameter
-'''
-for iz in range(0, nz):
-    for ix in range(0, nx):
-        if (((nx/2-ix)**2+(nz/2-iz)**2)<(nx*nx/16)):
-            rho[iz][ix] = 1.5*rho[iz][ix]
-''' 
+if (fwinv==False):
+    for iz in range(0, nz):
+        for ix in range(0, nx):
+            if (((nx/2-ix)**2+(nz/2-iz)**2)<(nx*nx/49)):
+                rho[iz][ix] = 1.5 * rho[iz][ix]
+                mu[iz][ix] = 0.8 * mu[iz][ix]
+                lam[iz][ix] = 1.2 * lam[iz][ix]
+
 # Plotting modified material
 print('Plotting initial materials')
 plt.figure(1)
@@ -69,21 +79,18 @@ rcoef = 0.001
 k_max_pml = 1.0
 freq_pml = 50.0 # PML frequency in Hz
 
-#Boolen values
- 
-accu_save = False; seismo_save=False; fwinv = True; mat_save_interval = 2
-rtf_meas_true = True # RTF field measurement exists
 
 # Creating source locations
-zsrc = np.array([nz/4, nz/2, 3*nz/4], dtype=np.int32)
-xsrc = np.array([npml_left*2, npml_left*2, npml_left*2], dtype=np.int32)
+zsrc = np.arange(50, 351, 50, dtype=np.int32)
+xsrc = np.full((zsrc.size,), 20, dtype=np.int32)
+
 nsrc = zsrc.size
 # Creating source to fire arrays
 src_shot_to_fire = np.zeros((nsrc,), dtype=np.int32)
 
 # Creating reciever locations
-zrec = np.array([nz/10, 2*nz/10, 3*nz/10, 4*nz/10, 5*nz/10, 6*nz/10, 7*nz/10, 8*nz/10, 9*nz/10], dtype=np.int32)
-xrec = np.array([nx-npml_right*2, nx-npml_right*2, nx-npml_right*2, nx-npml_right*2, nx-npml_right*2, nx-npml_right*2, nx-npml_right*2,nx-npml_right*2, nx-npml_right*2], dtype=np.int32)
+zrec = np.arange(50, 351, 25, dtype=np.int32)
+xrec = np.full((zrec.size,), 180, dtype=np.int32)
 nrec = zrec.size
 
 

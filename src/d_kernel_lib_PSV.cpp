@@ -279,6 +279,7 @@ void surf_mirror(
     // -----------------------------
     if (surf[0]>0){
         isurf = surf[0];
+        //std::cout << std::endl << "SURF INDEX: "<< isurf<<std::endl;
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -290,6 +291,7 @@ void surf_mirror(
             for (int sz=1; sz<isurf-nz1+1; sz++){ // mirroring 
                 szx[isurf-sz][ix] = -szx[isurf+sz][ix];
                 szz[isurf-sz][ix] = -szz[isurf+sz][ix];
+                //std::cout<<"surf: "<< isurf-sz <<", " << isurf+sz <<", ::" ;
             }
         }
 
@@ -300,6 +302,7 @@ void surf_mirror(
     // -----------------------------
     if (surf[1]>0){
         isurf = surf[1];
+        
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -307,10 +310,12 @@ void surf_mirror(
             sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
-
+            
             for (int sz=1; sz<=nz2-isurf; sz++){ // mirroring 
                 szx[isurf+sz][ix] = -szx[isurf-sz][ix];
                 szz[isurf+sz][ix] = -szz[isurf-sz][ix];
+                
+                
             }
         }
 
@@ -320,7 +325,7 @@ void surf_mirror(
     // 3. LEFT SURFACE
     // -----------------------------
     if (surf[2]>0){
-        isurf = surf[0];
+        isurf = surf[2];
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -331,7 +336,7 @@ void surf_mirror(
 
             for (int sx=1; sx<isurf-nx1+1; sx++){ // mirroring 
                 szx[iz][isurf-sx] = -szx[iz][isurf+sx];
-                sxx[iz][isurf-sx] = -szz[iz][isurf+sx];
+                sxx[iz][isurf-sx] = -sxx[iz][isurf+sx];
             }
         }
 
@@ -343,7 +348,7 @@ void surf_mirror(
     // 4. RIGHT SURFACE
     // -----------------------------
     if (surf[3]>0){
-        isurf = surf[0];
+        isurf = surf[3];
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -354,7 +359,7 @@ void surf_mirror(
 
             for (int sx=1; sx<=nx2-isurf; sx++){ // mirroring 
                 szx[iz][isurf+sx] = -szx[iz][isurf-sx];
-                sxx[iz][isurf+sx] = -szz[iz][isurf-sx];
+                sxx[iz][isurf+sx] = -sxx[iz][isurf-sx];
             }
         }
 
@@ -391,8 +396,8 @@ void gard_fwd_storage2(
             accu_szx[itf][jz][jx]  = szx[iz][ix];
             accu_szz[itf][jz][jx]  = szz[iz][ix];
 
-            accu_vx[itf][jz][jx] = vx[iz][ix]; // /dt;
-            accu_vz[itf][jz][jx] = vz[iz][ix]; // /dt;
+            accu_vx[itf][jz][jx] = vx[iz][ix]/dt;
+            accu_vz[itf][jz][jx] = vz[iz][ix]/dt;
             
             jx++;
         }
@@ -424,10 +429,10 @@ void fwi_grad2(
         jx = 0;
         for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
 
-            s1 = (accu_sxx[tf][jz][jx] + accu_szz[tf][jz][jx]) * (sxx[iz][ix] + szz[iz][ix])
-               *0.25 /((lam[iz][ix] + mu[iz][ix])*(lam[iz][ix] + mu[iz][ix]));
+            s1 = 0.25 * (accu_szz[tf][jz][jx] + accu_sxx[tf][jz][jx]) * (szz[iz][ix] + sxx[iz][ix])
+                / ((lam[iz][ix] + mu[iz][ix])*(lam[iz][ix] + mu[iz][ix]));
 
-            s2 = (accu_sxx[tf][jz][jx] - accu_szz[tf][jz][jx]) * (sxx[iz][ix] - szz[iz][ix])
+            s2 = 0.25 * (accu_szz[tf][jz][jx] - accu_sxx[tf][jz][jx]) * (szz[iz][ix] - sxx[iz][ix])
                 / (mu[iz][ix]*mu[iz][ix]) ;
 
             s3 = (accu_szx[tf][jz][jx] * szx[iz][ix] )/ (mu[iz][ix]*mu[iz][ix]);
@@ -435,8 +440,8 @@ void fwi_grad2(
             // The time derivatives of the velocity may have to be computed differently
             s4 = ux[iz][ix] * accu_vx[tf][jz][jx] + uz[iz][ix] * accu_vz[tf][jz][jx];
 
-            grad_lam[jz][jx] += snap_dt * dt *  s1 ; 
-            grad_mu[jz][jx]  +=  snap_dt * dt * (s3 + s1 + s2) ;
+            grad_lam[jz][jx] -= snap_dt * dt * s1 ; 
+            grad_mu[jz][jx]  -= snap_dt * dt  *(s3 + s1 + s2) ;
             grad_rho[jz][jx] -= snap_dt * dt * s4 ;
 			
 			jx++;
@@ -547,9 +552,10 @@ real adjsrc2(int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
                 a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[is][it];
 
                 // Calculating L2 norm
-                L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2);
+                L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2); 
                 L2 += 0.5 * dt * pow(a_stf_ux[is][it], 2);
-
+                //std::cout<< rtf_uz_mod[is][it] <<", "<<rtf_ux_mod[is][it];
+                
             }
             
         }
@@ -557,7 +563,7 @@ real adjsrc2(int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         a_stf_type = &rtf_type; // Calculating displacement adjoint sources
     
     }
-    
+    //std::cout<< "Calculated norm: " << L2 << std::endl;
     return L2;
 
 }
@@ -660,7 +666,7 @@ void energy_weights2(
         }
         
     }
-
+    std::cout << "Max. Energy Weight = " << max_We << std::endl;
 }
 
 
@@ -674,27 +680,64 @@ void scale_grad_E2(
     // We: input as forward energy weight, and output as combined energy weight
     // grad and grad shot here have same dimensions (grad_shot = temp grad from each shot)
     // Scale gradients to the energy weight
-    for (int iz=snap_z1;iz<snap_z2;iz++){
-        for (int ix=snap_x1;ix<snap_x2;ix++){      
-            grad[iz][ix] += grad_shot[iz][ix]/ (We[iz][ix] * mat_av * mat_av);
 
+    if(mat_av>0){
+        for (int iz=snap_z1;iz<snap_z2;iz++){
+            for (int ix=snap_x1;ix<snap_x2;ix++){      
+                grad[iz][ix] += grad_shot[iz][ix] / (We[iz][ix] * mat_av * mat_av);
+
+            }   
         }
-       
     }
+
 
 }
 
-void update_mat2(real **&mat, real **&grad_mat, 
-            real step_length, int nz, int nx){
+void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat, 
+            real &mat_max, real &mat_min, real step_length, int nz, int nx){
     // update gradients to the material
+    real mat_av=0, mat_av_old=0, mat_av_grad=0;
 
-    // Material update to whole array
-    
+    // Scale factors for gradients
+    real grad_max = 0.0, mat_array_max = 0.0, step_factor;
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
             
-            mat[iz][ix] += step_length * grad_mat[iz][ix];
+            grad_max = std::max(grad_max, abs(grad_mat[iz][ix]));
+            mat_array_max = std::max(mat_max, abs(mat_old[iz][ix]));
+
+        } 
+    }
+    step_factor = mat_array_max/grad_max;
+    //std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << std::endl;
+
+    // Material update to whole array
+    for (int iz=0;iz<nz;iz++){
+        for (int ix=0;ix<nx;ix++){
             
+            mat[iz][ix] = mat_old[iz][ix] + step_length * step_factor * grad_mat[iz][ix];
+            if (mat[iz][ix] > mat_max){ mat[iz][ix] = mat_max;}
+            if (mat[iz][ix] < mat_min){ mat[iz][ix] = mat_min;}
+
+            mat_av += mat[iz][ix];
+            mat_av_old += mat_old[iz][ix];
+            mat_av_grad += grad_mat[iz][ix];
+
+        }
+        
+    }
+    //std::cout << "Mat update: SL = " <<step_length <<", new = " << mat_av <<", old = " << mat_av_old <<", grad = " << mat_av_grad << std::endl;;
+}
+void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
+        real **&lam, real **&mu,  real **&rho, int nz, int nx){
+
+    // Copy material values for storage
+    for (int iz=0;iz<nz;iz++){
+        for (int ix=0;ix<nx;ix++){
+            
+            lam_copy[iz][ix] = lam[iz][ix];
+            mu_copy[iz][ix] = mu[iz][ix];
+            rho_copy[iz][ix] = rho[iz][ix];
 
         }
         

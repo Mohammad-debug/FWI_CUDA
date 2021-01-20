@@ -140,12 +140,16 @@ void simulate_PSV(){
      
     // Computation of PML Coefficients in z and x directions
     if (PML_Z){
+        
         cpml_PSV(A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, h_NPOWER, h_DAMP_V_PML, h_RCOEF, h_K_MAX_PML, 
         h_FREQ_PML, h_NPML[0], h_NPML[1], FPAD, NZ, DT, DZ);
+        
     }
     if (PML_X){
+        
         cpml_PSV(A_X, B_X, K_X, A_HALF_X, B_HALF_X, K_HALF_X, h_NPOWER, h_DAMP_V_PML, h_RCOEF, h_K_MAX_PML, 
         h_FREQ_PML, h_NPML[2], h_NPML[3], FPAD, NX, DT, DX);
+        
     }
 
     // Value of Holberg coefficient
@@ -181,7 +185,7 @@ void simulate_PSV(){
             std::cout << "Full Waveform Inversion...."<<std::endl;
             //
             simulate_fwi_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
-            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, RTF_MEAS_TRUE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
+            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
             HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
             K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL);
         }
@@ -190,9 +194,9 @@ void simulate_PSV(){
             std::cout << "Forward Modelling only...."<<std::endl;
             //
             simulate_fwd_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
-            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, RTF_MEAS_TRUE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
+            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
             HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
-            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE, ACCU_SAVE, SEISMO_SAVE);
+            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X,  ACCU_SAVE, SEISMO_SAVE);
         }
 
     }

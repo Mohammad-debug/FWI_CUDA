@@ -1,5 +1,5 @@
 CXX      := g++-9
-CXXFLAGS := # -std=c++17 -pedantic-errors -Wall -Wextra -Werror
+CXXFLAGS := #-std=c++17 -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS  := -L/usr/lib -lstdc++ -lm 
 OBJ_DIR  := obj
 APP_DIR  := bin

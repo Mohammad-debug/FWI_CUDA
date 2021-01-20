@@ -88,9 +88,10 @@ void kernel_PSV(int ishot, // shot index
         else{
             it = jt; // Forward modelling
         }
-        std::cout << "Time step: " <<it<< " of " << nt-1 << std::endl;
         
-       
+        if (!(it%1000) || (it==nt-1)){
+            std::cout << "Time step: " <<it<< " of " << nt-1 << std::endl;
+        }
         
         // -----------------------------------------------------------------------
         // STEP 1: UPDATING STRESS TENSOR
@@ -193,17 +194,7 @@ void kernel_PSV(int ishot, // shot index
             }
 
         }
-        // Temp print function
-       /*
-        for (int iz = 0; iz<nz; iz++){
-            std::cout << "vz:";
-            for (int ix = 0; ix<nx; ix++){
-                std::cout <<vz[iz][ix]<<", ";
-            }
-            std::cout<< "\b\b"<<std::endl;
-        }
-        */
-        
+         
     }
 
 }

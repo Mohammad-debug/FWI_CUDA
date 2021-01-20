@@ -11,17 +11,18 @@
 
 #include "d_simulate_PSV.hpp"
 #include <iostream>
+#include <math.h>
 
 
 void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx, 
     int snap_z1, int snap_z2, int snap_x1, int snap_x2, int snap_dt, int snap_dz, int snap_dx, 
     bool surf, bool pml_z, bool pml_x, int nsrc, int nrec, int nshot, int stf_type, int rtf_type, 
-    bool rtf_true, int fdorder, real scalar_lam, real scalar_mu, real scalar_rho,
+    int fdorder, real scalar_lam, real scalar_mu, real scalar_rho,
     real *&hc, int *&isurf, real **&lam, real **&mu, real **&rho, 
     real *&a_z, real *&b_z, real *&K_z, real *&a_half_z, real *&b_half_z, real *&K_half_z,
     real *&a_x, real *&b_x, real *&K_x, real *&a_half_x, real *&b_half_x, real *&K_half_x,
     int *&z_src, int *&x_src, int *&z_rec, int *&x_rec,
-    int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real **&rtf_z_true, real **&rtf_x_true,
+    int *&src_shot_to_fire, real **&stf_z, real **&stf_x, 
     bool accu_save, bool seismo_save){ // forward accumulated storage arrays){
     // Forward modelling in PSV
     
@@ -68,7 +69,9 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real **mem_vz_z, **mem_vx_z, **mem_szz_z, **mem_szx_z; // PML spatial derivative memories: z-direction
     real **mem_vz_x, **mem_vx_x, **mem_szx_x, **mem_sxx_x; // PML spatial derivative memories: x-direction
     real **mu_zx, **rho_zp, **rho_xp; // Material averages
+    real **lam_copy, **mu_copy, **rho_copy; // Old material storage while updating (only in fwi)
     real **grad_lam, **grad_mu, **grad_rho; // Gradients of material (full grid)
+    //real **grad_lam_old, **grad_mu_old, **grad_rho_old; // Storing old material gradients for optimization
     real **grad_lam_shot, **grad_mu_shot, **grad_rho_shot; // Gradient of materials in each shot (snapped)
     real **rtf_uz, **rtf_ux; // receiver time functions (displacements)
     real ***accu_vz, ***accu_vx, ***accu_szz, ***accu_szx, ***accu_sxx; // forward accumulated storage arrays
@@ -76,7 +79,6 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
     // Internal variables
     bool accu = true, grad = false; 
-
 
     // int nt, nz, nx; // grid sizes
     // bool surf, pml_z, pml_x;
@@ -86,10 +88,11 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     // allocating main computational arrays
     alloc_varmain_PSV(vz, vx, uz, ux, We, We_adj, szz, szx, sxx, dz_z, dx_z, dz_x, dx_x, 
     mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
-    mu_zx, rho_zp, rho_xp, grad_lam, grad_mu, grad_rho, grad_lam_shot, grad_mu_shot, grad_rho_shot,
-    rtf_uz, rtf_ux, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
-    pml_z, pml_x, nrec, accu, grad, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 
-    nt, nz, nx);
+    mu_zx, rho_zp, rho_xp, lam_copy, mu_copy, rho_copy, grad_lam, grad_mu, grad_rho, 
+    grad_lam_shot, grad_mu_shot, grad_rho_shot, rtf_uz, rtf_ux, accu_vz, accu_vx, 
+    accu_szz, accu_szx, accu_sxx, pml_z, pml_x, nrec, accu, grad, snap_z1, 
+    snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nt, nz, nx);
+
 
     // calculate material average
     mat_av2(lam, mu, rho, mu_zx, rho_zp, rho_xp, 
@@ -116,7 +119,7 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         if (accu_save){
             // Writing the accumulation array
             std::cout << "Writing accu to binary file for SHOT " << ishot ;
-            write_accu(accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, nt, nz, nx, snap_z1, snap_z2, snap_x1, 
+            write_accu(accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, nt, snap_z1, snap_z2, snap_x1, 
             snap_x2, snap_dt, snap_dz, snap_dx, ishot);
             std::cout <<" <DONE>"<< std::endl;
         }
@@ -138,7 +141,7 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx, 
     int snap_z1, int snap_z2, int snap_x1, int snap_x2, int snap_dt, int snap_dz, int snap_dx, 
     bool surf, bool pml_z, bool pml_x, int nsrc, int nrec, int nshot, int stf_type, int rtf_type, 
-    bool rtf_true, int fdorder, real scalar_lam, real scalar_mu, real scalar_rho,
+    int fdorder, real scalar_lam, real scalar_mu, real scalar_rho,
     real *&hc, int *&isurf, real **&lam, real **&mu, real **&rho, 
     real *&a_z, real *&b_z, real *&K_z, real *&a_half_z, real *&b_half_z, real *&K_half_z,
     real *&a_x, real *&b_x, real *&K_x, real *&a_half_x, real *&b_half_x, real *&K_half_x,
@@ -152,7 +155,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     int *a_stf_type; // adjoint source type
     int *rec_shot_to_fire;
     rec_shot_to_fire = new int [nrec];
-    real L2_norm[500];
+   
     // -------------------------------------------------------------------------------------------------------
     // Internally computational arrays
     // --------------------------------------------------------------------------------------------------------
@@ -162,7 +165,12 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real **mem_vz_z, **mem_vx_z, **mem_szz_z, **mem_szx_z; // PML spatial derivative memories: z-direction
     real **mem_vz_x, **mem_vx_x, **mem_szx_x, **mem_sxx_x; // PML spatial derivative memories: x-direction
     real **mu_zx, **rho_zp, **rho_xp; // Material averages
+    real **lam_copy, **mu_copy, **rho_copy; // Old material storage while updating
     real **grad_lam, **grad_mu, **grad_rho; // Gradients of material (full grid)
+    //real **grad_lam_old, **grad_mu_old, **grad_rho_old; // Storing old material gradients for optimization
+    real **PCG_lam, **PCG_dir_lam; // Old conjugate gradient storages
+    real **PCG_mu, **PCG_dir_mu;
+    real **PCG_rho, **PCG_dir_rho;
     real **grad_lam_shot, **grad_mu_shot, **grad_rho_shot; // Gradient of materials in each shot (snapped)
     real **rtf_uz, **rtf_ux; // receiver time functions (displacements)
     real ***accu_vz, ***accu_vx, ***accu_szz, ***accu_szx, ***accu_sxx; // forward accumulated storage arrays
@@ -172,10 +180,32 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     accu = true; grad = true;
     alloc_varmain_PSV(vz, vx, uz, ux, We, We_adj, szz, szx, sxx, dz_z, dx_z, dz_x, dx_x, 
     mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
-    mu_zx, rho_zp, rho_xp, grad_lam, grad_mu, grad_rho, grad_lam_shot, grad_mu_shot, grad_rho_shot,
-    rtf_uz, rtf_ux, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
-    pml_z, pml_x, nrec, accu, grad, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 
-    nt, nz, nx);
+    mu_zx, rho_zp, rho_xp, lam_copy, mu_copy, rho_copy, grad_lam, grad_mu, grad_rho, 
+    grad_lam_shot, grad_mu_shot, grad_rho_shot, rtf_uz, rtf_ux, accu_vz, accu_vx, 
+    accu_szz, accu_szx, accu_sxx, pml_z, pml_x, nrec, accu, grad, snap_z1, 
+    snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nt, nz, nx);
+
+    // Allocating PCG variables
+    //PCG_new = new real[nz*nx*3];
+    //PCG_old = new real[nz*nx*3];
+    //PCG_dir = new real[nz*nx*3];
+    //allocate_array(PCG_new, nz, nx);
+    allocate_array(PCG_lam, nz, nx);
+    allocate_array(PCG_mu, nz, nx);
+    allocate_array(PCG_rho, nz, nx);
+
+    allocate_array(PCG_dir_lam, nz, nx);
+    allocate_array(PCG_dir_mu, nz, nx);
+    allocate_array(PCG_dir_rho, nz, nx);
+    real beta_PCG, beta_i, beta_j;
+    for (int iz=0;iz<nz;iz++){
+        for (int ix=0;ix<nx;ix++){
+            PCG_dir_lam[iz][ix] = 0.0;
+            PCG_dir_mu[iz][ix] = 0.0;
+            PCG_dir_rho[iz][ix] = 0.0;
+        }
+    }
+
 
     //-----------------------------------------------
     // 0.0. OUTER PREPROCESSING (IN EVERY FWI LOOPS)
@@ -190,16 +220,24 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
 
     // Start of FWI iteration loop
-    bool iter; iter = true;
+    bool iter = true;
     int iterstep = 0;
-    int maxIter = 3; 
+    int maxIter = 200; 
+    real L2_norm[500]; // size is maxIter
+    real step_length = 0.01; // step length set to initial
     
     while (iter){ // currently 10 just for test (check the conditions later)
+        std::cout << std::endl << std::endl;
+        std::cout << "==================================" << std::endl;
         std::cout << "FWI: Iteration "<< iterstep << std::endl;
+        std::cout << "==================================" << std::endl;
         //-----------------------------------------------
         // 1.0. INNER PREPROCESSING (IN EVERY FWI LOOPS)
         // ----------------------------------------------
 		// Reset gradient matrices: grad_lam, grad_mu, grad_rho;??
+
+        // Copy updated material for old material storage
+        copy_mat(lam_copy, mu_copy, rho_copy, lam, mu,  rho, nz, nx);
         
         // calculate material average
         mat_av2(lam, mu, rho, mu_zx, rho_zp, rho_xp, 
@@ -236,7 +274,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             L2_norm[iterstep] = adjsrc2(a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
                             rtf_uz, rtf_ux, dt, nrec, nt);
 
-            std::cout<<"L2 NORM: " << L2_norm[iterstep] << std::endl;
+            std::cout<<"L2 NORM: " << L2_norm[iterstep]/L2_norm[0] << ", " << L2_norm[iterstep]<< std::endl;
             
             // -----------------------------------
             // 4.0. ADJOING MODELLING
@@ -307,33 +345,148 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 		// Preconditioning of Gradients
     
         // -------------------
-        // 5.0. OPTIMIZATION
-        // -------------------
-		
+        // 5.0. OPTIMIZATION (Directly computed here)
+        // ----------------------------------
 
+        // Congugate Gradient Method
+        // -------------------------------
+        std::cout << "Applying Preconditioning" << std::endl;
+        // Applying Conjugate Gradient Method
+        //PCG_PSV(PCG_dir_lam, PCG_lam, grad_lam, nz, nx);
+        //PCG_PSV(PCG_dir_mu, PCG_mu, grad_mu, nz, nx);
+        //PCG_PSV(PCG_dir_rho, PCG_rho, grad_rho, nz, nx);
+
+        
+        write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1));
+        
+        // Applying Tukey Taper
+        int taper_x = 60, taper_z = 60;
+        for (int iz=0;iz<nz;iz++){
+            for (int ix=0;ix<nx;ix++){
+                We_adj[iz][ix]= 0.0;
+            }
+        }
+        for (int iz=20;iz<380;iz++){
+            for (int ix=20;ix<180;ix++){
+
+                // Tukey taper function
+                // Horizontal taper
+                if (ix<(taper_x+20)){
+                    We_adj[iz][ix] = 0.5*(1.0-cos(PI*(ix-snap_x1)/taper_x));
+                }
+                else if(ix>(180-taper_x)){
+                    We_adj[iz][ix] = 0.5*(1.0-cos(PI*(snap_x2-ix)/taper_x));
+                }
+                else{
+
+                    We_adj[iz][ix] = 1.0;
+                }      
+            }
+        }
+
+        for (int iz=20;iz<380;iz++){
+            for (int ix=20;ix<180;ix++){
+
+                // Tukey taper function
+                // Vertical taper over already existing horizontal taper
+                if (iz<(taper_z+20)){
+                    We_adj[iz][ix] *= 0.5*(1.0-cos(PI*(iz-snap_z1)/taper_z));
+                }
+                else if(iz>(380-taper_z)){
+                    We_adj[iz][ix] *= 0.5*(1.0-cos(PI*(snap_z2-iz)/taper_z));
+                }
+                else{
+                    We_adj[iz][ix] *= 1.0;
+                }
+            }
+        }
+
+        // Applying taper function to the gradients
+        for (int iz=0;iz<nz;iz++){
+            for (int ix=0;ix<nx;ix++){
+                grad_lam[iz][ix] *= We_adj[iz][ix];
+                grad_mu[iz][ix] *= We_adj[iz][ix];
+                grad_rho[iz][ix] *= We_adj[iz][ix];
+            }
+        }
+        
+        write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
+        // Applying PSG method
+        
+        for (int iz=0;iz<nz;iz++){
+            for (int ix=0;ix<nx;ix++){
+
+                // Fletcher-Reeves [Fletcher and Reeves, 1964]:
+                beta_i += grad_lam[iz][ix] * grad_lam[iz][ix];
+                beta_i += grad_mu[iz][ix] * grad_mu[iz][ix];
+                beta_i += grad_rho[iz][ix] * grad_rho[iz][ix];
+
+                beta_j += PCG_lam[iz][ix] * PCG_lam[iz][ix];
+                beta_j += PCG_mu[iz][ix] * PCG_mu[iz][ix];
+                beta_j += PCG_rho[iz][ix] * PCG_rho[iz][ix];
+
+                PCG_lam[iz][ix] = -grad_lam[iz][ix]; 
+                PCG_mu[iz][ix] = -grad_mu[iz][ix]; 
+                PCG_rho[iz][ix] = -grad_rho[iz][ix]; 
+           
+            }
+        }
+        beta_PCG = (iterstep) ? beta_i/beta_j : 0.0;
+        std::cout << "beta = "<< beta_PCG ;
+        beta_PCG = (beta_PCG >0) ? beta_PCG : 0.0;
+        std::cout << " || adopted: " << beta_PCG<< std::endl;
+  
+        for (int iz=0;iz<nz;iz++){
+            for (int ix=0;ix<nx;ix++){
+                PCG_dir_lam[iz][ix] = PCG_lam[iz][ix] + beta_PCG * PCG_dir_lam[iz][ix]; // Getting PCG direction
+                PCG_dir_mu[iz][ix] = PCG_mu[iz][ix] + beta_PCG * PCG_dir_mu[iz][ix]; // Getting PCG direction
+                PCG_dir_rho[iz][ix] = PCG_rho[iz][ix] + beta_PCG * PCG_dir_rho[iz][ix]; // Getting PCG direction
+
+                grad_lam[iz][ix] = PCG_dir_lam[iz][ix]; // Getting PCG_dir to gradient vectors
+                grad_mu[iz][ix] = PCG_dir_mu[iz][ix]; // Getting PCG_dir to gradient vectors
+                grad_rho[iz][ix] = PCG_dir_rho[iz][ix]; // Getting PCG_dir to gradient vectors
+           
+            }
+        }
+        
+        write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+2);
         // ----------------------
         // 6.0. MATERIAL UPDATE
         // ---------------------
 		
 		// Step length estimation
-		real step_length = 0.005;
         
+        step_length = step_length_PSV(step_length, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
+            vz, vx,  uz, ux, szz, szx, sxx,  We, dz_z, dx_z, dz_x, dx_x, 
+            lam, mu, rho, lam_copy, mu_copy, rho_copy, 
+            mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
+            pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
+            pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
+            mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, 
+            mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
+            nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
+            nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
+            rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx,  accu_szz, accu_szx, accu_sxx, 
+            snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx);
+     
         // Update material parameters to the gradients !!
-		update_mat2(lam, grad_lam, step_length, nz, nx);
-        update_mat2(mu, grad_mu, step_length, nz, nx);
-        update_mat2(rho, grad_rho, 0.5*step_length, nz, nx);
+		update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, step_length, nz, nx);
+        update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, step_length, nz, nx);
+        update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.5, 0.5*step_length, nz, nx);
 
         //
         // Saving the Accumulative storage file to a binary file for every shots
-        std::cout<<"Iteration step: " <<iterstep<<", "<<mat_save_interval<<", "<<!iterstep%mat_save_interval<<std::endl;
+        std::cout<<"Iteration step: " <<iterstep<<", "<<mat_save_interval<<", "<< iterstep%mat_save_interval<<std::endl;
         if (mat_save_interval>0 && !(iterstep%mat_save_interval)){
             // Writing the accumulation array
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep ;
-            write_mat(grad_lam, grad_mu, grad_rho, nz, nx, iterstep);
+            write_mat(lam, mu, rho, nz, nx, iterstep);
             std::cout <<" <DONE>"<< std::endl;
         }
 
 	   // smooth model
+
+       //
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition
        

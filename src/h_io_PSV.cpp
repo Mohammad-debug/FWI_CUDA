@@ -229,7 +229,7 @@ void read_material_array(real **&lam, real **&mu, real **&rho,  int nz, int nx){
 // Saving Accumulation Array to hard disk binary file
 void write_accu(real ***&accu_vz, real ***&accu_vx, 
             real ***&accu_szz, real ***&accu_szx, real ***&accu_sxx, 
-            int nt, int nz, int nx, int snap_z1, int snap_z2, int snap_x1, 
+            int nt, int snap_z1, int snap_z2, int snap_x1, 
             int snap_x2, int snap_dt, int snap_dz, int snap_dx, int ishot){
     // Saves data to bin folder
 

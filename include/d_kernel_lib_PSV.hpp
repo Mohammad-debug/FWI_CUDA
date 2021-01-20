@@ -161,8 +161,11 @@ void scale_grad_E2(
     // space snap parameters
     int snap_z1, int snap_z2, int snap_x1, int snap_x2);
 
-void update_mat2(real **&mat, real **&grad_mat, 
-            real step_length, int nz, int nx);
+void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat, 
+            real mat_max, real mat_min, real step_length, int nz, int nx);
+
+void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
+        real **&lam, real **&mu,  real **&rho, int nz, int nx);
 
 void mat_av2(
     // Medium arguments

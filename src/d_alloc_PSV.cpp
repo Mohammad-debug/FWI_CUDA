@@ -108,8 +108,11 @@ void alloc_varmain_PSV(
     real **&mem_szx_x, real **&mem_sxx_x,
     // Material average arrays
     real **&mu_zx, real **&rho_zp, real **&rho_xp,
+    // Copy old material while updating
+    real **&lam_copy, real **&mu_copy, real **&rho_copy,
     // Gradients of the medium
     real **&grad_lam, real **&grad_mu, real **&grad_rho, 
+    // Gradients for each shot
     real **&grad_lam_shot, real **&grad_mu_shot, real **&grad_rho_shot,
     // reciever time functions
     real **&rtf_uz, real **&rtf_ux,
@@ -166,6 +169,7 @@ void alloc_varmain_PSV(
     allocate_array(rho_zp, nz, nx);
     allocate_array(rho_xp, nz, nx);
 
+
     // rtf (used as adjoint sources in adjoint modelling)
     allocate_array(rtf_uz, nrec, nt);
     allocate_array(rtf_ux, nrec, nt);
@@ -192,15 +196,21 @@ void alloc_varmain_PSV(
             allocate_array(grad_mu, nz, nx);
             allocate_array(grad_rho, nz, nx);
 
+            // Allocating variables for old material storages
+            allocate_array(lam_copy, nz, nx);
+            allocate_array(mu_copy, nz, nx);
+            allocate_array(rho_copy, nz, nx);
+
             // Allocate Energy for reverse modelling
             allocate_array(We_adj, nz, nx); // used later as temporary gradient
 
             // Allocating medium gradient for each shot
             allocate_array(grad_lam_shot, snap_nz, snap_nx);
             allocate_array(grad_mu_shot, snap_nz, snap_nx);
-            allocate_array(grad_rho_shot, snap_nz, snap_nx);
+            allocate_array(grad_rho_shot, snap_nz, snap_nx); 
+
         }
+        
     }
-    
 
 }

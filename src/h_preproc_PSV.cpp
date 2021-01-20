@@ -129,7 +129,6 @@ void cpml_PSV( real *&a, real *&b, real *&K,
         K[ih] = 1.0; K_half[ih] = 1.0;
     }
     
-
     // --------------------------------------------------------------------------
     // Left/ top / h1 side of the PML layer
     if (npml_h1){
@@ -150,7 +149,7 @@ void cpml_PSV( real *&a, real *&b, real *&K,
             alpha_prime = 0.0; alpha_prime_half = 0.0;
 
             xval = dh*real(i); // value of the absissa
-
+            
             // define damping profile at the grid points 
             abscissa_in_PML = xorigin_PML - xval;
             if (abscissa_in_PML >=0){
@@ -203,6 +202,10 @@ void cpml_PSV( real *&a, real *&b, real *&K,
        
         // zero index in the start of PML decay and advancing towards the end
         xorigin_PML = dh*(nh-fpad-npml_h2-1);
+
+        // compute d0 from INRIA report section 6.1 
+        d0 = - (npower + 1) * damp_v_PML * log(rcoef) / (2.0 * thickness_PML);
+
         for(int i=nh-fpad-npml_h2-1; i<nh-fpad; i++){
 
             // Initialize and reset the variables
@@ -211,16 +214,17 @@ void cpml_PSV( real *&a, real *&b, real *&K,
             alpha_prime = 0.0; alpha_prime_half = 0.0;
 
             xval = dh*real(i); // value of the absissa
-
+            
             // define damping profile at the grid points 
             abscissa_in_PML = xval -xorigin_PML ;
             if (abscissa_in_PML >=0){
                 abscissa_normalized = abscissa_in_PML/thickness_PML;
                 d = d0 * pow(abscissa_normalized,npower);
-
+                
                 // this taken from Gedney page 8.2 
                 K[i] = 1.0 + (k_max_PML - 1.0) * pow(abscissa_normalized,npower);
                 alpha_prime = alpha_max_PML * (1.0 - abscissa_normalized);
+                
             }
 
             // define damping profile at half the grid points 
@@ -250,6 +254,7 @@ void cpml_PSV( real *&a, real *&b, real *&K,
                 a_half[i] = d_half * (b_half[i] - 1.0) / 
                     (K_half[i] * (d_half + K_half[i] * alpha_prime_half));
             }
+            //std::cout << "d:" << a[i] <<"," <<i<<", "<<alpha_prime<<", "<< npower<<std::endl;
 
         }
 
