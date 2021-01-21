@@ -153,7 +153,12 @@ void simulate_PSV(){
     }
 
     // Value of Holberg coefficient
-    HC[0] = 0; HC[1] = 1.0;
+    const int MAXRELERROR = 1;
+    holbergcoeff(FDORDER, MAXRELERROR, HC);
+
+    // STABILITY AND DISPERSION CHECK
+    checkfd_ssg_elastic(NZ, NX, DZ, DT, h_FREQ_PML, h_NPML[1], RHO, LAM, MU, HC);
+
     for (int is=0;is<NSRC;is++){
         wavelet(STF_Z[is], NT, DT, 0.0, h_FREQ_PML, 0.0, 1); // Creating one Ricker wavelet 
         wavelet(STF_X[is], NT, DT, 1.0, h_FREQ_PML, 0.0, 1); // zero amplitude wavelet

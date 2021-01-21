@@ -7,8 +7,8 @@ ftype = np.float64
 
 # Getting the input directly in this preprocessor file
 # Geometric data
-dt = 0.2e-3; dz = 2.0; dx = 2.0 # grid intervals
-nt = 1.0/dt; nz = 401; nx = 201 # grid numbers
+dt = 0.2e-3; dz = 1.4; dx = 1.4 # grid intervals
+nt = 1500; nz = 401; nx = 201 # grid numbers
 
 # Number of PMLs in each direction
 pml_z = True; pml_x = True # PML exist in both direction
@@ -19,8 +19,8 @@ surf = False # surface exists
 isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
-snap_z1 = 0; snap_z2 = nz-1; snap_x1 = 0; snap_x2 = nx-1 # snap boundaries
-snap_dt = 3; snap_dz = 2; snap_dx = 2; # the snap intervals
+snap_z1 = 100; snap_z2 = nz-101; snap_x1 = 50; snap_x2 = 150 # snap boundaries
+snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap intervals
 
 nshot = 1 #; nsrc = 3; nrec = 10; 
 stf_type = 1; rtf_type = 0

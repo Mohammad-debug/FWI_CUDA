@@ -39,7 +39,7 @@ void alloc_varpre_PSV( real *&hc, int *&isurf, int *&npml, // holberg coefficien
     // Every shots should have same number of time steps
 
     // Allocating holberg coefficient
-    hc = new real[fdorder];
+    hc = new real[6];
     // Allocating surface indices & npml
     isurf = new int[4]; // four sized in the surface
     npml = new int[4]; // number of PMLs in each side

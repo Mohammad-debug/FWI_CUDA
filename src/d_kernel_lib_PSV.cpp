@@ -694,7 +694,7 @@ void scale_grad_E2(
 }
 
 void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat, 
-            real &mat_max, real &mat_min, real step_length, int nz, int nx){
+            real mat_max, real mat_min, real step_length, int nz, int nx){
     // update gradients to the material
     real mat_av=0, mat_av_old=0, mat_av_grad=0;
 

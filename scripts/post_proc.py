@@ -52,9 +52,9 @@ snap_nx = 1 + (snap[4] - snap[5])//snap[8]
 if (fwinv):
     print("Plotting material for iteration in fwi")
     
-    for ii in range(0,1,1):
+    for ii in range(4,100,1):
         # reading data from csv file
-        mat_dat = read_tensor("./bin/iter"+np.str(4002)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
+        mat_dat = read_tensor("./bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
         #mat_dat1 = read_tensor("./bin/iter"+np.str(ii+1)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
         #mat_dat2 = read_tensor("./bin/iter"+np.str(ii+2)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
         
@@ -84,9 +84,9 @@ if (fwinv):
         #pyplot.savefig('./io/vz_snap'+numpy.str(ii)+'.pdf', format='pdf',figsize=(10,7), dpi=1000)
         #pyplot.show()
         plt.draw()
-        plt.show()
-        #plt.pause(2.0)
-        #plt.clf()
+        #plt.show()
+        plt.pause(0.2)
+        plt.clf()
         
         #print('Figure '+np.str(ii)+' plotted.')
 
@@ -149,9 +149,9 @@ else:
         #pyplot.axis('equal')
         plt.grid()
         #pyplot.savefig('./io/vz_snap'+numpy.str(ii)+'.pdf', format='pdf',figsize=(10,7), dpi=1000)
-        #pyplot.show()
-        plt.draw()
-        plt.pause(0.01)
+        pyplot.show()
+        #plt.draw()
+        #plt.pause(0.01)
         
         plt.clf()
         

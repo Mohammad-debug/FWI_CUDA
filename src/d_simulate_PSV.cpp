@@ -358,7 +358,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
         
         write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1));
-        
+        /*
         // Applying Tukey Taper
         int taper_x = 60, taper_z = 60;
         for (int iz=0;iz<nz;iz++){
@@ -409,7 +409,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 grad_rho[iz][ix] *= We_adj[iz][ix];
             }
         }
-        
+        */
         write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
         // Applying PSG method
         

@@ -488,6 +488,10 @@ real calc_opt_step(real L2[3], real sl[3]){
         opteps = sl[1];
     }
 
+    if (L2[1]<L2[0] && L2[2]<L2[1]){
+        opteps = sl[2];
+    }
+
     std::cout << ", <adopted> " << opteps <<std::endl;
 
     return opteps;
