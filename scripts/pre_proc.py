@@ -27,7 +27,7 @@ stf_type = 1; rtf_type = 0
 fdorder = 2; fpad = 1
 
 #Boolen values
-fwinv = True
+fwinv = False
 if (fwinv):
     accu_save = False; seismo_save=True
     mat_save_interval = 1; rtf_meas_true = True # RTF field measurement exists
@@ -56,8 +56,8 @@ if (fwinv==False):
         for ix in range(0, nx):
             if (((nx/2-ix)**2+(nz/2-iz)**2)<(nx*nx/49)):
                 rho[iz][ix] = 1.5 * rho[iz][ix]
-                mu[iz][ix] = 0.8 * mu[iz][ix]
-                lam[iz][ix] = 1.2 * lam[iz][ix]
+                #mu[iz][ix] = 0.8 * mu[iz][ix]
+                #lam[iz][ix] = 1.2 * lam[iz][ix]
 
 # Plotting modified material
 print('Plotting initial materials')

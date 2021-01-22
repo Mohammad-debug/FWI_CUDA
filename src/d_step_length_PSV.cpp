@@ -81,8 +81,8 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 		    //
 		    // Material update test
 
-            update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, est_step_length, nz, nx);
-            update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, est_step_length, nz, nx);
+            //update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, est_step_length, nz, nx);
+            //update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, est_step_length, nz, nx);
             update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.5, step_factor_rho*est_step_length, nz, nx);
 
             // calculate material average

@@ -442,8 +442,8 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 PCG_dir_mu[iz][ix] = PCG_mu[iz][ix] + beta_PCG * PCG_dir_mu[iz][ix]; // Getting PCG direction
                 PCG_dir_rho[iz][ix] = PCG_rho[iz][ix] + beta_PCG * PCG_dir_rho[iz][ix]; // Getting PCG direction
 
-                grad_lam[iz][ix] = PCG_dir_lam[iz][ix]; // Getting PCG_dir to gradient vectors
-                grad_mu[iz][ix] = PCG_dir_mu[iz][ix]; // Getting PCG_dir to gradient vectors
+                //grad_lam[iz][ix] = PCG_dir_lam[iz][ix]; // Getting PCG_dir to gradient vectors
+                //grad_mu[iz][ix] = PCG_dir_mu[iz][ix]; // Getting PCG_dir to gradient vectors
                 grad_rho[iz][ix] = PCG_dir_rho[iz][ix]; // Getting PCG_dir to gradient vectors
            
             }

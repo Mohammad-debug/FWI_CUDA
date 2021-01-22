@@ -12,8 +12,8 @@
 #include "h_globvar.hpp"
 #include "h_preproc_PSV.hpp"
 #include "h_io_PSV.hpp"
-#include "checkfd_ssg_elastic.cpp"
-#include "holbergcoeff.cpp"
+#include "checkfd_ssg_elastic.hpp"
+#include "holbergcoeff.hpp"
 
 #include "d_simulate_PSV.hpp"
 

@@ -6,11 +6,10 @@
  *
  *  ----------------------------------------------------------*/
 
-
 //#include "fd.h"
 #include <cmath>
 #include <iostream>
-#include "h_globvar.hpp"
+#include "checkfd_ssg_elastic.hpp"
 
 void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW, 
 	real ** prho, real ** ppi, real ** pu, real *hc){
