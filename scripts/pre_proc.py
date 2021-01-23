@@ -7,8 +7,8 @@ ftype = np.float64
 
 # Getting the input directly in this preprocessor file
 # Geometric data
-dt = 0.2e-3; dz = 1.4; dx = 1.4 # grid intervals
-nt = 1500; nz = 401; nx = 201 # grid numbers
+dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
+nt = 3000; nz = 401; nx = 201 # grid numbers
 
 # Number of PMLs in each direction
 pml_z = True; pml_x = True # PML exist in both direction
@@ -19,15 +19,15 @@ surf = False # surface exists
 isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
-snap_z1 = 100; snap_z2 = nz-101; snap_x1 = 50; snap_x2 = 150 # snap boundaries
-snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap intervals
+snap_z1 = 50; snap_z2 = nz-51; snap_x1 = 25; snap_x2 = 175 # snap boundaries
+snap_dt = 1; snap_dz = 1; snap_dx = 1; # the snap intervals
 
 nshot = 1 #; nsrc = 3; nrec = 10; 
 stf_type = 1; rtf_type = 0
 fdorder = 2; fpad = 1
 
 #Boolen values
-fwinv = False
+fwinv = True
 if (fwinv):
     accu_save = False; seismo_save=True
     mat_save_interval = 1; rtf_meas_true = True # RTF field measurement exists
@@ -36,11 +36,11 @@ else:
     mat_save_interval = -1; rtf_meas_true = False # RTF field measurement exists
     
 # scalar material variables
-Cp = 4000.0
-Cs = 2310.
-scalar_rho = 1800.0
+Cp = 2000.0
+Cs = 700.0
+scalar_rho = 1500.0
 scalar_mu = Cs*Cs*scalar_rho
-scalar_lam = Cp*Cp*scalar_rho - 2.9*scalar_mu
+scalar_lam = Cp*Cp*scalar_rho - 2.0*scalar_mu
 mat_grid = 1 # 0 for scalar and 1 for grid
 
 
@@ -50,14 +50,23 @@ lam = np.full((nz, nx), scalar_lam)
 mu = np.full((nz, nx), scalar_mu)
 rho = np.full((nz, nx), scalar_rho)
 
+
+# scalar material variables
+Cp1 = 1800.0
+Cs1 = 500.0
+scalar_rho = 1500.0
+mu1 = Cs1*Cs1*scalar_rho
+lam1 = Cp1*Cp1*scalar_rho - 2.0*scalar_mu
+mat_grid = 1 # 0 for scalar and 1 for grid
+
 # modifying density parameter
 if (fwinv==False):
     for iz in range(0, nz):
         for ix in range(0, nx):
             if (((nx/2-ix)**2+(nz/2-iz)**2)<(nx*nx/49)):
-                rho[iz][ix] = 1.5 * rho[iz][ix]
-                #mu[iz][ix] = 0.8 * mu[iz][ix]
-                #lam[iz][ix] = 1.2 * lam[iz][ix]
+                #rho[iz][ix] = 1.5 * rho[iz][ix]
+                mu[iz][ix] = mu1
+                lam[iz][ix] = lam1
 
 # Plotting modified material
 print('Plotting initial materials')
@@ -81,7 +90,7 @@ freq_pml = 50.0 # PML frequency in Hz
 
 
 # Creating source locations
-zsrc = np.arange(50, 351, 50, dtype=np.int32)
+zsrc = np.arange(20, 381, 1, dtype=np.int32)
 xsrc = np.full((zsrc.size,), 20, dtype=np.int32)
 
 nsrc = zsrc.size
@@ -89,7 +98,7 @@ nsrc = zsrc.size
 src_shot_to_fire = np.zeros((nsrc,), dtype=np.int32)
 
 # Creating reciever locations
-zrec = np.arange(50, 351, 25, dtype=np.int32)
+zrec = np.arange(20, 381, 2, dtype=np.int32)
 xrec = np.full((zrec.size,), 180, dtype=np.int32)
 nrec = zrec.size
 

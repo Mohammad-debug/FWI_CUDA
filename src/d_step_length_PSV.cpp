@@ -52,8 +52,8 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 
 	real step_factor_rho = 0.5; // Scale factor for updating density
     real scalefac = 2.0; // Step factor in next approximation
-    real stepmax = 6; // The maximum number of steps to find optimum step length
-
+    real stepmax_1 = 15; // The maximum number of steps to find optimum step length
+    real stepmax_2 = 6;
     
     int *a_stf_type;
     real scalar_lam_local, scalar_mu_local, scalar_rho_local;
@@ -81,8 +81,8 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 		    //
 		    // Material update test
 
-            //update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, est_step_length, nz, nx);
-            //update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, est_step_length, nz, nx);
+            update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, est_step_length, nz, nx);
+            update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, est_step_length, nz, nx);
             update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.5, step_factor_rho*est_step_length, nz, nx);
 
             // calculate material average
@@ -160,14 +160,14 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 
         // *step3=0;
 
-	    if((step1==0)&&(countstep>stepmax)){
+	    if((step1==0)&&(countstep>stepmax_1)){
             std::cout << " Steplength estimation failed!"<<std::endl; 
 	        //*step3=1;
 	        //break;
             exit(0);
 	    }
 
-        if((step1==1)&&(countstep>stepmax)){
+        if((step1==1)&&(countstep>stepmax_2)){
 	        std::cout << "Could not found a proper 3rd step length which brackets the minimum" <<std::endl;
 	        step1=1;
 	        step2=1;
@@ -487,7 +487,7 @@ real calc_opt_step(real L2[3], real sl[3]){
     if (opteps < 0.0){
         opteps = sl[1];
     }
-
+    
     if (L2[1]<L2[0] && L2[2]<L2[1]){
         opteps = sl[2];
     }

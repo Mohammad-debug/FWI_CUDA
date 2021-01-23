@@ -275,6 +275,10 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                             rtf_uz, rtf_ux, dt, nrec, nt);
 
             std::cout<<"L2 NORM: " << L2_norm[iterstep]/L2_norm[0] << ", " << L2_norm[iterstep]<< std::endl;
+            if (iterstep > 2){
+                std::cout<<"L2 Diff: " << abs(L2_norm[iterstep]-L2_norm[iterstep-2])/L2_norm[iterstep-2] << std::endl;
+            }
+            
             
             // -----------------------------------
             // 4.0. ADJOING MODELLING
@@ -358,23 +362,23 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
         
         write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1));
-        /*
+        
         // Applying Tukey Taper
-        int taper_x = 60, taper_z = 60;
+        int taper_x = snap_x1*2, taper_z = snap_z1*2;
         for (int iz=0;iz<nz;iz++){
             for (int ix=0;ix<nx;ix++){
                 We_adj[iz][ix]= 0.0;
             }
         }
-        for (int iz=20;iz<380;iz++){
-            for (int ix=20;ix<180;ix++){
+        for (int iz=snap_z1;iz<snap_z2;iz++){
+            for (int ix=snap_x1;ix<snap_x2;ix++){
 
                 // Tukey taper function
                 // Horizontal taper
-                if (ix<(taper_x+20)){
+                if (ix<(taper_x)){
                     We_adj[iz][ix] = 0.5*(1.0-cos(PI*(ix-snap_x1)/taper_x));
                 }
-                else if(ix>(180-taper_x)){
+                else if(ix>(nx-taper_x)){
                     We_adj[iz][ix] = 0.5*(1.0-cos(PI*(snap_x2-ix)/taper_x));
                 }
                 else{
@@ -384,15 +388,15 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             }
         }
 
-        for (int iz=20;iz<380;iz++){
-            for (int ix=20;ix<180;ix++){
+        for (int iz=snap_z1;iz<snap_z2;iz++){
+            for (int ix=snap_x1;ix<snap_x2;ix++){
 
                 // Tukey taper function
                 // Vertical taper over already existing horizontal taper
-                if (iz<(taper_z+20)){
+                if (iz<(taper_z)){
                     We_adj[iz][ix] *= 0.5*(1.0-cos(PI*(iz-snap_z1)/taper_z));
                 }
-                else if(iz>(380-taper_z)){
+                else if(iz>(nz-taper_z)){
                     We_adj[iz][ix] *= 0.5*(1.0-cos(PI*(snap_z2-iz)/taper_z));
                 }
                 else{
@@ -409,10 +413,10 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 grad_rho[iz][ix] *= We_adj[iz][ix];
             }
         }
-        */
+        
         write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
         // Applying PSG method
-        
+        /*
         for (int iz=0;iz<nz;iz++){
             for (int ix=0;ix<nx;ix++){
 
@@ -442,13 +446,13 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 PCG_dir_mu[iz][ix] = PCG_mu[iz][ix] + beta_PCG * PCG_dir_mu[iz][ix]; // Getting PCG direction
                 PCG_dir_rho[iz][ix] = PCG_rho[iz][ix] + beta_PCG * PCG_dir_rho[iz][ix]; // Getting PCG direction
 
-                //grad_lam[iz][ix] = PCG_dir_lam[iz][ix]; // Getting PCG_dir to gradient vectors
-                //grad_mu[iz][ix] = PCG_dir_mu[iz][ix]; // Getting PCG_dir to gradient vectors
-                grad_rho[iz][ix] = PCG_dir_rho[iz][ix]; // Getting PCG_dir to gradient vectors
+                grad_lam[iz][ix] = -PCG_dir_lam[iz][ix]; // Getting PCG_dir to gradient vectors
+                grad_mu[iz][ix] = -PCG_dir_mu[iz][ix]; // Getting PCG_dir to gradient vectors
+                grad_rho[iz][ix] = -PCG_dir_rho[iz][ix]; // Getting PCG_dir to gradient vectors
            
             }
         }
-        
+        */
         write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+2);
         // ----------------------
         // 6.0. MATERIAL UPDATE

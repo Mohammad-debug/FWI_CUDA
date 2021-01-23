@@ -246,13 +246,15 @@ void update_v2(
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
+            // Calculating displacement from previous velocity
+            uz[iz][ix] += dt * vz[iz][ix];
+            ux[iz][ix] += dt * vx[iz][ix];
+
             // update particle velocities
             vz[iz][ix] += dt * rho_zp[iz][ix]*(szx_x[iz][ix]+szz_z[iz][ix]);
             vx[iz][ix] += dt * rho_xp[iz][ix]*(sxx_x[iz][ix]+szx_z[iz][ix]);
 
-            // Displacements and Energy weights
-            uz[iz][ix] += dt * vz[iz][ix];
-            ux[iz][ix] += dt * vx[iz][ix];
+            // Displacements and Energy weights      
             We[iz][ix] += vx[iz][ix] * vx[iz][ix] + vz[iz][ix] * vz[iz][ix];
             
         }
@@ -422,13 +424,14 @@ void fwi_grad2(
     // Calculates the gradient of medium from stored forward tensors & current tensors
 
     real s1, s2, s3, s4; // Intermediate variables for gradient calculation
+    //real lm;
     int jz, jx; // mapping for storage with intervals
     
     jz = 0; 
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
         jx = 0;
         for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
-
+            
             s1 = 0.25 * (accu_szz[tf][jz][jx] + accu_sxx[tf][jz][jx]) * (szz[iz][ix] + sxx[iz][ix])
                 / ((lam[iz][ix] + mu[iz][ix])*(lam[iz][ix] + mu[iz][ix]));
 
@@ -440,10 +443,35 @@ void fwi_grad2(
             // The time derivatives of the velocity may have to be computed differently
             s4 = ux[iz][ix] * accu_vx[tf][jz][jx] + uz[iz][ix] * accu_vz[tf][jz][jx];
 
-            grad_lam[jz][jx] -= snap_dt * dt * s1 ; 
-            grad_mu[jz][jx]  -= snap_dt * dt  *(s3 + s1 + s2) ;
+            grad_lam[jz][jx] += snap_dt * dt * s1 ; 
+            grad_mu[jz][jx]  += snap_dt * dt  *(s3 + s1 + s2) ;
             grad_rho[jz][jx] -= snap_dt * dt * s4 ;
-			
+            
+            /*
+            lm = lam[iz][ix] + 2.0 *mu[iz][ix];
+            grad_rho[jz][jx] -=
+              snap_dt * dt *
+              (accu_vx[tf][jz][jx] * ux[iz][ix] + accu_vz[tf][jz][jx] * uz[iz][ix]);
+           
+            grad_lam[jz][jx] +=
+              snap_dt * dt *
+              (((accu_sxx[tf][jz][jx] - (accu_szz[tf][jz][jx] * lam[iz][ix]) / lm) +
+                (accu_szz[tf][jz][jx] - (accu_sxx[tf][jz][jx] * lam[iz][ix]) / lm)) *
+               ((sxx[iz][ix] - (szz[iz][ix] * lam[iz][ix]) / lm) +
+                (szz[iz][ix] - (sxx[iz][ix] * lam[iz][ix]) / lm))) /
+              ((lm - ((lam[iz][ix] * lam[iz][ix]) / (lm))) *
+               (lm - ((lam[iz][ix] * lam[iz][ix]) / (lm))));
+           
+            grad_mu[jz][jx] +=
+              snap_dt * dt * 2 *
+              ((((sxx[iz][ix] - (szz[iz][ix] * lam[iz][ix]) / lm) *
+                 (accu_sxx[tf][jz][jx] - (accu_szz[tf][jz][jx] * lam[iz][ix]) / lm)) +
+                ((szz[iz][ix] - (sxx[iz][ix] * lam[iz][ix]) / lm) *
+                 (accu_szz[tf][jz][jx] - (accu_sxx[tf][jz][jx] * lam[iz][ix]) / lm))) /
+                   ((lm - ((lam[iz][ix] * lam[iz][ix]) / (lm))) *
+                    (lm - ((lam[iz][ix] * lam[iz][ix]) / (lm)))) +
+               2.0 * (szx[iz][ix] * accu_szx[tf][jz][jx] / (4.0 * mu[iz][ix] * mu[iz][ix])));
+			*/
 			jx++;
         }
 		
@@ -597,37 +625,34 @@ void interpol_grad2(
 
     }
 
-
-    // --------------------------------------
-    // FOR LOOP SET 2
-    // -----------------------------------
-    // Now the grad at major snap grids are updated
-    // now updating the snap rows only
-    for(int iz=snap_z1; iz<snap_z2; iz+=snap_dz){
-        for(int ix=snap_x1; ix<snap_x2; ix+=snap_dx){
-            temp_grad = (grad[iz][ix+snap_dx] - grad[iz][ix])/snap_dx;
-            for(int kx=1;kx<snap_dx;kx++){
-                grad[iz][ix+kx] = grad[iz][ix] + temp_grad*kx;
+    if(snap_dx>1){
+        // now updating the snap rows only
+        for(int iz=snap_z1; iz<snap_z2; iz+=snap_dz){
+            for(int ix=snap_x1; ix<snap_x2; ix+=snap_dx){
+                temp_grad = (grad[iz][ix+snap_dx] - grad[iz][ix])/snap_dx;
+                for(int kx=1;kx<snap_dx;kx++){
+                    grad[iz][ix+kx] = grad[iz][ix] + temp_grad*kx;
+                }
             }
         }
     }
-
-    // --------------------------------------
-    // FOR LOOP SET 3
-    // -----------------------------------
-    // now updating all the columns
-    for(int iz=snap_z1; iz<snap_z2; iz+=snap_dz){
-        for(int ix=snap_x1; ix<snap_x2; ix++){
-            temp_grad = (grad[iz+snap_dz][ix] - grad[iz][ix])/snap_dz;
-            for(int kz=1;kz<snap_dz;kz++){
+   
+    
+    if(snap_dz>1){
+        // now updating all the columns
+        for(int iz=snap_z1; iz<snap_z2; iz+=snap_dz){
+            for(int ix=snap_x1; ix<snap_x2; ix++){
+                temp_grad = (grad[iz+snap_dz][ix] - grad[iz][ix])/snap_dz;
+                for(int kz=1;kz<snap_dz;kz++){
                 
-                grad[iz+kz][ix] = grad[iz][ix] + temp_grad*kz;
-            }
+                    grad[iz+kz][ix] = grad[iz][ix] + temp_grad*kz;
+                }
             
+            }
         }
-    }
- 
+    }   
 }
+
 
 void energy_weights2(
     // Energy Weights (forward and reverse)
