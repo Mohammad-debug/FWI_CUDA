@@ -114,10 +114,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                 step_length[itest] = est_step_length;
 	            step_length[0] = 0.0;
 
-            }
-
-			
-	    
+            }   
         } 
         // multiple tests performed
 

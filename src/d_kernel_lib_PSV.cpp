@@ -445,7 +445,7 @@ void fwi_grad2(
 
             grad_lam[jz][jx] += snap_dt * dt * s1 ; 
             grad_mu[jz][jx]  += snap_dt * dt  *(s3 + s1 + s2) ;
-            grad_rho[jz][jx] -= snap_dt * dt * s4 ;
+            grad_rho[jz][jx] += snap_dt * dt * s4 ;
             
             /*
             lm = lam[iz][ix] + 2.0 *mu[iz][ix];

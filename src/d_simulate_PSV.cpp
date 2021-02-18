@@ -175,6 +175,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real **rtf_uz, **rtf_ux; // receiver time functions (displacements)
     real ***accu_vz, ***accu_vx, ***accu_szz, ***accu_szx, ***accu_sxx; // forward accumulated storage arrays
     // -----------------------------------------------------------------------------------------------------
+    real beta_PCG, beta_i, beta_j;
 
     // allocating main computational arrays
     accu = true; grad = true;
@@ -197,7 +198,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     allocate_array(PCG_dir_lam, nz, nx);
     allocate_array(PCG_dir_mu, nz, nx);
     allocate_array(PCG_dir_rho, nz, nx);
-    real beta_PCG, beta_i, beta_j;
+    
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
             PCG_dir_lam[iz][ix] = 0.0;
@@ -223,7 +224,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     bool iter = true;
     int iterstep = 0;
     int maxIter = 200; 
-    real L2_norm[500]; // size is maxIter
+    real L2_norm[1000]; // size is maxIter
     real step_length = 0.01; // step length set to initial
     
     while (iter){ // currently 10 just for test (check the conditions later)
@@ -361,7 +362,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         //PCG_PSV(PCG_dir_rho, PCG_rho, grad_rho, nz, nx);
 
         
-        write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1));
+        //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1));
         
         // Applying Tukey Taper
         int taper_x = snap_x1*2, taper_z = snap_z1*2;
@@ -413,17 +414,17 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 grad_rho[iz][ix] *= We_adj[iz][ix];
             }
         }
-        
-        write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
-        // Applying PSG method
         /*
+        //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
+        // Applying PSG method
+        beta_i = 0.0; beta_j = 0.0;
         for (int iz=0;iz<nz;iz++){
             for (int ix=0;ix<nx;ix++){
 
                 // Fletcher-Reeves [Fletcher and Reeves, 1964]:
-                beta_i += grad_lam[iz][ix] * grad_lam[iz][ix];
-                beta_i += grad_mu[iz][ix] * grad_mu[iz][ix];
-                beta_i += grad_rho[iz][ix] * grad_rho[iz][ix];
+                beta_i += grad_lam[iz][ix] * (grad_lam[iz][ix] - PCG_lam[iz][ix]);
+                beta_i += grad_mu[iz][ix] * (grad_mu[iz][ix] - PCG_mu[iz][ix]);
+                beta_i += grad_rho[iz][ix] * (grad_rho[iz][ix] - PCG_rho[iz][ix]);
 
                 beta_j += PCG_lam[iz][ix] * PCG_lam[iz][ix];
                 beta_j += PCG_mu[iz][ix] * PCG_mu[iz][ix];
@@ -435,11 +436,13 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
            
             }
         }
-        beta_PCG = (iterstep) ? beta_i/beta_j : 0.0;
+        beta_PCG = (iterstep) ? (beta_i/beta_j) : 0.0;
         std::cout << "beta = "<< beta_PCG ;
         beta_PCG = (beta_PCG >0) ? beta_PCG : 0.0;
+        //beta_PCG = (beta_PCG <1.0e6) ? beta_PCG : 1.0e6;
         std::cout << " || adopted: " << beta_PCG<< std::endl;
-  
+
+        
         for (int iz=0;iz<nz;iz++){
             for (int ix=0;ix<nx;ix++){
                 PCG_dir_lam[iz][ix] = PCG_lam[iz][ix] + beta_PCG * PCG_dir_lam[iz][ix]; // Getting PCG direction
@@ -453,7 +456,8 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             }
         }
         */
-        write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+2);
+
+        //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+2);
         // ----------------------
         // 6.0. MATERIAL UPDATE
         // ---------------------
@@ -493,7 +497,10 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
        //
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition
-       
+       if (iterstep > 25){
+           iter = (abs((L2_norm[iterstep] - L2_norm[iterstep-2])/L2_norm[iterstep-2])<0.001) ? false : true; // Temporary condition
+           std::cout << "The change is less than minimal after " << iterstep << " iteration steps." << std::endl;
+       }
     }
 
     // Saving the Accumulative storage file to a binary file for every shots
@@ -503,7 +510,5 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         write_mat(lam, mu, rho, nz, nx, iterstep);
         std::cout <<" <DONE>"<< std::endl;
     }
-
-
 }
 
