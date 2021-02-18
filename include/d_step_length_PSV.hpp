@@ -46,7 +46,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                 int *&z_src, int *&x_src, int *&src_shot_to_fire,
                 // Reciever seismograms
                 int nrec, int rtf_type, real **&rtf_uz, real **&rtf_ux, int *&z_rec, int *&x_rec,
-                real **&rtf_z_true, real **&rtf_x_true,
+                real ***&rtf_z_true, real ***&rtf_x_true,
                 // Accumulate the snap of forward wavefield parameters
                 bool accu, real ***&accu_vz, real ***&accu_vx, //accumulated velocity memory over time
                 real ***&accu_szz, real ***&accu_szx, real ***&accu_sxx, //accumulated velocity memory over time

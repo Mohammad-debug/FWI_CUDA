@@ -27,10 +27,10 @@ void alloc_varpre_PSV( real *&hc, int *&isurf, int *&npml, // holberg coefficien
     real **&stf_z, real **&stf_x, // source time functions
     // Reciever seismograms
     int *&z_rec, int *&x_rec,
-    real **&rtf_z_true, real **&rtf_x_true, // Field measurements for receivers
+    real ***&rtf_z_true, real ***&rtf_x_true, // Field measurements for receivers
     // Scalar variables for allocation
     int fdorder, 
-    bool pml_z, bool pml_x, int nsrc, int nrec,
+    bool pml_z, bool pml_x, int nshot, int nsrc, int nrec,
     int nt, int nz, int nx);
 
 // Staggering of scalar material over the grid

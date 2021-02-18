@@ -121,8 +121,8 @@ else:
         plt.grid()
     plt.show()
     
-    vz_dat = read_tensor("./bin/shot0_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
-    vx_dat = read_tensor("./bin/shot0_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vz_dat = read_tensor("./bin/shot2_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vx_dat = read_tensor("./bin/shot2_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     
     clip_pz = np.amax(vz_dat)
     clip_mz = np.amin(vz_dat)
@@ -132,11 +132,12 @@ else:
     clip_mx = np.amin(vx_dat)
     clipx = 0.3*max([clip_px, np.abs(clip_mx)])
     
-    plt.figure(1)
+    
     for ii in range(1,snap_nt):
         # reading data from csv file
         vz = vz_dat[ii,:,:]
         vx = vx_dat[ii,:,:]  
+        plt.figure(1)
         plt.subplot(121)
         plt.imshow(vz, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clipz, vmax=clipz)
         plt.colorbar()
@@ -157,9 +158,9 @@ else:
         plt.grid()
         #pyplot.savefig('./io/vz_snap'+numpy.str(ii)+'.pdf', format='pdf',figsize=(10,7), dpi=1000)
         #plt.show()
-        plt.draw()
-        #plt.pause(0.01)
-        #plt.clf()
+        #plt.draw()
+        plt.pause(0.01)
+        plt.clf()
         
         #if (ii<100):
         #    pyplot.clf()

@@ -37,7 +37,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real *&a_z, real *&b_z, real *&K_z, real *&a_half_z, real *&b_half_z, real *&K_half_z,
     real *&a_x, real *&b_x, real *&K_x, real *&a_half_x, real *&b_half_x, real *&K_half_x,
     int *&z_src, int *&x_src, int *&z_rec, int *&x_rec,
-    int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real **&rtf_z_true, real **&rtf_x_true, 
+    int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real ***&rtf_z_true, real ***&rtf_x_true, 
     int mat_save_interval);
 
 #endif

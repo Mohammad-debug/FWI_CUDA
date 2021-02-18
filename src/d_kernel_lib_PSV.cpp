@@ -503,6 +503,8 @@ void vsrc2(
         case(0): // Displacement stf
             for(int is=0; is<nsrc; is++){
                 if (src_shot_to_fire[is] == ishot){
+
+                    //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it] << std::endl;;
                     vz[z_src[is]][x_src[is]] += dt*rho_zp[z_src[is]][x_src[is]]*stf_z[is][it]/(dz*dx);
                     vx[z_src[is]][x_src[is]] += dt*rho_xp[z_src[is]][x_src[is]]*stf_x[is][it]/(dz*dx);
                 }
@@ -513,6 +515,7 @@ void vsrc2(
         case(1): // velocity stf
             for(int is=0; is<nsrc; is++){
                 if (src_shot_to_fire[is] == ishot){
+                   // std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it];
                     vz[z_src[is]][x_src[is]] += stf_z[is][it];
                     vx[z_src[is]][x_src[is]] += stf_x[is][it];
                     //std::cout << "v:" << vz[z_src[is]][x_src[is]] <<", " << stf_z[is][it]<<std::endl;
@@ -560,8 +563,8 @@ void urec2(int rtf_type,
 }
 
 
-real adjsrc2(int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux, 
-            int rtf_type, real **&rtf_uz_true, real **&rtf_ux_true, 
+real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux, 
+            int rtf_type, real ***&rtf_uz_true, real ***&rtf_ux_true, 
             real **&rtf_uz_mod, real **&rtf_ux_mod,             
             real dt, int nseis, int nt){
     // Calculates adjoint sources and L2 norm
@@ -575,9 +578,10 @@ real adjsrc2(int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         // RTF type is displacement
         for(int is=0; is<nseis; is++){ // for all seismograms
             for(int it=0;it<nt;it++){ // for all time steps
+                //std::cout << rtf_uz_mod[is][it] <<"," << rtf_uz_true[ishot][is][it] << "::";
                 // calculating adjoint sources
-                a_stf_uz[is][it] = rtf_uz_mod[is][it] - rtf_uz_true[is][it];
-                a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[is][it];
+                a_stf_uz[is][it] = rtf_uz_mod[is][it] - rtf_uz_true[ishot][is][it];
+                a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[ishot][is][it];
 
                 // Calculating L2 norm
                 L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2); 
@@ -592,6 +596,7 @@ real adjsrc2(int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     
     }
     //std::cout<< "Calculated norm: " << L2 << std::endl;
+    //std::cout << a_stf_type << std::endl;
     return L2;
 
 }
@@ -663,10 +668,18 @@ void energy_weights2(
     // We: input as forward energy weight, and output as combined energy weight
 
     real max_We = 0;
+    real max_w1 = 0, max_w2=0;
     real epsilon_We = 0.005; 
     for (int iz=snap_z1;iz<snap_z2;iz++){
         for (int ix=snap_x1;ix<snap_x2;ix++){
+            if (We[iz][ix] > max_w1){
+                max_w1 = We[iz][ix];
+            }
+            if (We_adj[iz][ix] > max_w2){
+                max_w2 = We_adj[iz][ix];
+            }
             We[iz][ix] = sqrt(We[iz][ix]*We_adj[iz][ix]);
+            
         }
     }
 
@@ -692,6 +705,7 @@ void energy_weights2(
         
     }
     std::cout << "Max. Energy Weight = " << max_We << std::endl;
+    std::cout << "Max. Energy part = " << max_w1<<", "<< max_w2 << std::endl;
 }
 
 

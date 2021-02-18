@@ -42,7 +42,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                 int *&z_src, int *&x_src, int *&src_shot_to_fire,
                 // Reciever seismograms
                 int nrec, int rtf_type, real **&rtf_uz, real **&rtf_ux, int *&z_rec, int *&x_rec,
-                real **&rtf_z_true, real **&rtf_x_true,
+                real ***&rtf_z_true, real ***&rtf_x_true,
                 // Accumulate the snap of forward wavefield parameters
                 bool accu, real ***&accu_vz, real ***&accu_vx, //accumulated velocity memory over time
                 real ***&accu_szz, real ***&accu_szx, real ***&accu_sxx, //accumulated velocity memory over time
@@ -80,7 +80,6 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 	   for (unsigned int itest = itests; itest <= iteste; itest++){
 		    //
 		    // Material update test
-
             update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, est_step_length, nz, nx);
             update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, est_step_length, nz, nx);
             update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.5, step_factor_rho*est_step_length, nz, nx);
@@ -89,7 +88,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
             mat_av2(lam, mu, rho, mu_zx, rho_zp, rho_xp, 
                 scalar_lam_local, scalar_mu_local, scalar_rho_local, nz, nx);
 
-            for (int ishot=0;ishot<nshot;ishot++){
+            for (int ishot=1;ishot<2;ishot++){
                 // Now calling forward kernel with updated material
                 accu = true; // Accumulated storage for output
                 grad = false; // no gradient computation in forward kernel
@@ -107,7 +106,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                     snap_dt, snap_dz, snap_dx);
 
                 // calculating L2 norm and adjoint sources
-                L2_tmp = adjsrc2(a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
+                L2_tmp = adjsrc2(ishot, a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
                         rtf_uz, rtf_ux, dt, nrec, nt);
 
                 L2_test[itest] = L2_tmp;

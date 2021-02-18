@@ -301,25 +301,25 @@ void write_seismo(real **&rtf_uz, real **&rtf_ux,
 }
 
 // Reading Receiver Seismogram to hard disk binary file
-void read_seismo(real **&rtf_uz, real **&rtf_ux, 
+void read_seismo(real ***&rtf_uz, real ***&rtf_ux, 
             int nrec, int nt, int ishot){
     // Saves data to bin folder
 
     std::string fpath = "./io/shot";
-
+    
     // saving accumulated tensors
     std::ifstream infile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_uz.bin", std::ios::in | std::ios::binary);
     std::ifstream infile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_ux.bin", std::ios::in | std::ios::binary);
-   
+  
     if(!infile_rtf_uz || !infile_rtf_ux ){
         std::cout << "Cannot open output files.";
         return;
     }
-
+    
     for (int ir=0; ir<nrec; ir++){
         for (int it=0; it<nt; it++){
-            infile_rtf_uz.read(reinterpret_cast<char*> (&rtf_uz[ir][it]), sizeof(real));
-            infile_rtf_ux.read(reinterpret_cast<char*> (&rtf_ux[ir][it]), sizeof(real));
+            infile_rtf_uz.read(reinterpret_cast<char*> (&rtf_uz[ishot][ir][it]), sizeof(real));
+            infile_rtf_ux.read(reinterpret_cast<char*> (&rtf_ux[ishot][ir][it]), sizeof(real));
         }
     }
    

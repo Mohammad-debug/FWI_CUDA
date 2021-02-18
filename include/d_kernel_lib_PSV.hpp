@@ -136,8 +136,8 @@ void urec2(int rtf_type,
     int it, real dt, real dz, real dx);
 
 
-real adjsrc2(int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux, 
-            int rtf_type, real **&rtf_uz_true, real **&rtf_ux_true, 
+real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux, 
+            int rtf_type, real ***&rtf_uz_true, real ***&rtf_ux_true, 
             real **&rtf_uz_mod, real **&rtf_ux_mod,             
             real dt, int nseis, int nt);
 

@@ -22,7 +22,7 @@ snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
 snap_z1 = 50; snap_z2 = nz-51; snap_x1 = 25; snap_x2 = 175 # snap boundaries
 snap_dt = 2; snap_dz = 2; snap_dx = 3; # the snap intervals
 
-nshot = 1 #; nsrc = 3; nrec = 10; 
+#nshot = 1 #; nsrc = 3; nrec = 10; 
 stf_type = 1; rtf_type = 0
 fdorder = 2; fpad = 1
 
@@ -90,12 +90,15 @@ freq_pml = 50.0 # PML frequency in Hz
 
 
 # Creating source locations
-zsrc = np.arange(1, 401, 1, dtype=np.int32)
+zsrc = np.array([nz/4, nz/2, 3*nz/4], dtype=np.int32)
 xsrc = np.full((zsrc.size,), 20, dtype=np.int32)
 
 nsrc = zsrc.size
 # Creating source to fire arrays
-src_shot_to_fire = np.zeros((nsrc,), dtype=np.int32)
+src_shot_to_fire = np.arange(0,nsrc,1, dtype=np.int32)
+#src_shot_to_fire = np.zeros((nsrc,), dtype=np.int32)
+
+nshot = nsrc # fire each shot separately
 
 # Creating reciever locations
 zrec = np.arange(20, 381, 2, dtype=np.int32)

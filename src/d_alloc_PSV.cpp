@@ -25,10 +25,10 @@ void alloc_varin_PSV( real *&hc, int *&isurf, int *&npml, // holberg coefficient
     real **&stf_z, real **&stf_x, // source time functions
     // Reciever seismograms
     int *&z_rec, int *&x_rec,
-    real **&rtf_z_true, real **&rtf_x_true, // Field measurements for receivers
+    real ***&rtf_z_true, real ***&rtf_x_true, // Field measurements for receivers
     // Scalar variables for allocation
     int fdorder, 
-    bool pml_z, bool pml_x, int nsrc, int nrec, bool rtf_true,
+    bool pml_z, bool pml_x, int nshot, int nsrc, int nrec, bool rtf_true,
     int nt, int nz, int nx){
     // Allocates the variables that are to be...
     // Transferred from device to the host
@@ -85,8 +85,8 @@ void alloc_varin_PSV( real *&hc, int *&isurf, int *&npml, // holberg coefficient
 
         if (rtf_true){
             // rtf field measurements
-            allocate_array(rtf_z_true, nrec, nt);
-            allocate_array(rtf_x_true, nrec, nt);
+            allocate_array(rtf_z_true, nshot, nrec, nt);
+            allocate_array(rtf_x_true, nshot, nrec, nt);
         }
 
     }

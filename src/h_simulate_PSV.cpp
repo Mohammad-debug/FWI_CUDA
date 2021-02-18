@@ -47,7 +47,7 @@ int *Z_REC, *X_REC; // source coordinate indices
 // stf and rtf 
 int STF_TYPE, RTF_TYPE; // time function types 1.displacement
 real **STF_Z, **STF_X; // source time functions
-real **RTF_Z_TRUE, **RTF_X_TRUE; // rtf (measured (true) values)
+real ***RTF_Z_TRUE, ***RTF_X_TRUE; // rtf (measured (true) values)
 bool RTF_MEAS_TRUE; // if the true measurement exists
 
 // simulation parameters
@@ -102,7 +102,7 @@ void simulate_PSV(){
     std::cout << "Allocating memory for the variables."<<std::endl;
     alloc_varpre_PSV( HC, ISURF, h_NPML, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z,
     A_X, B_X, K_X, A_HALF_X, B_HALF_X, K_HALF_X, Z_SRC, X_SRC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, 
-    Z_REC, X_REC, RTF_Z_TRUE, RTF_X_TRUE, FDORDER, PML_Z, PML_X, NSRC, NREC, NT, NZ, NX);
+    Z_REC, X_REC, RTF_Z_TRUE, RTF_X_TRUE, FDORDER, PML_Z, PML_X, NSHOT, NSRC, NREC, NT, NZ, NX);
 
     // Reading integer arrays from input
     std::cout << "Reading input parameters <INTEGER ARAYS>."<<std::endl;
@@ -114,7 +114,11 @@ void simulate_PSV(){
     if(h_FWINV){
         if(RTF_MEAS_TRUE){
             std::cout << "Reading field measurements <FLOAT>."<<std::endl;
-            read_seismo(RTF_Z_TRUE, RTF_X_TRUE, NREC, NT, 0); // only shot 0 records till now
+            for(int ishot=0;ishot<NSHOT;ishot++){
+
+                read_seismo(RTF_Z_TRUE, RTF_X_TRUE, NREC, NT, ishot); // reading for each shot at a time
+            }
+            
         }
         else{
             std::cout<<"No field measurement exists. UNABLE to run FWI simulation." << std::endl;

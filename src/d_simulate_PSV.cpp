@@ -100,6 +100,7 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
   
     // Seismic forward kernel
     for (int ishot = 0; ishot < nshot; ishot++){
+        std::cout << "FORWARD KERNEL: SHOT " << ishot << " of " << nshot <<"." << std::endl;
         accu = true; // Accumulated storage for output
         grad = false; // no gradient computation in forward kernel
         kernel_PSV(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
@@ -146,7 +147,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real *&a_z, real *&b_z, real *&K_z, real *&a_half_z, real *&b_half_z, real *&K_half_z,
     real *&a_x, real *&b_x, real *&K_x, real *&a_half_x, real *&b_half_x, real *&K_half_x,
     int *&z_src, int *&x_src, int *&z_rec, int *&x_rec,
-    int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real **&rtf_z_true, real **&rtf_x_true,
+    int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real ***&rtf_z_true, real ***&rtf_x_true,
     int mat_save_interval){
     // full waveform inversion modelling
     // fwinv = true for this case
@@ -223,8 +224,9 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     // Start of FWI iteration loop
     bool iter = true;
     int iterstep = 0;
-    int maxIter = 200; 
+    int maxIter = 1000; 
     real L2_norm[1000]; // size is maxIter
+    for (int ll=0;ll<1000;ll++){ L2_norm[ll] = 0.0;}
     real step_length = 0.01; // step length set to initial
     
     while (iter){ // currently 10 just for test (check the conditions later)
@@ -245,7 +247,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             scalar_lam, scalar_mu, scalar_rho, nz, nx);
     
         for (int ishot = 0; ishot < nshot; ishot++){
-        
+            std::cout << "FWI KERNEL: SHOT " << ishot << " of " << nshot <<"." << std::endl;
             // -----------------------------------
             // 2.0. FORWARD MODELLING
             // ------------------------------------
@@ -272,7 +274,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             
             
             // calculating L2 norm and adjoint sources
-            L2_norm[iterstep] = adjsrc2(a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
+            L2_norm[iterstep] += adjsrc2(ishot, a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
                             rtf_uz, rtf_ux, dt, nrec, nt);
 
             std::cout<<"L2 NORM: " << L2_norm[iterstep]/L2_norm[0] << ", " << L2_norm[iterstep]<< std::endl;
@@ -302,7 +304,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
                 mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z,
                 mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
-                nrec, *a_stf_type, rtf_uz, rtf_ux, z_rec, x_rec, rec_shot_to_fire,
+                nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec, rec_shot_to_fire, //*a_stf_type = rtf_type
                 nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
                 accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
                 snap_z1, snap_z2, snap_x1, snap_x2, 
