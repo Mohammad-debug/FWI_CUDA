@@ -578,10 +578,16 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         // RTF type is displacement
         for(int is=0; is<nseis; is++){ // for all seismograms
             for(int it=0;it<nt;it++){ // for all time steps
-                //std::cout << rtf_uz_mod[is][it] <<"," << rtf_uz_true[ishot][is][it] << "::";
+
+                
                 // calculating adjoint sources
                 a_stf_uz[is][it] = rtf_uz_mod[is][it] - rtf_uz_true[ishot][is][it];
                 a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[ishot][is][it];
+
+                //if (!(abs(a_stf_uz[is][it])<1000.0 || abs(a_stf_uz[is][it])<1000.0)){
+                //    std::cout << rtf_uz_mod[is][it] <<"," << rtf_uz_true[ishot][is][it] << "::";
+                //}
+                
 
                 // Calculating L2 norm
                 L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2); 
@@ -595,7 +601,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         a_stf_type = &rtf_type; // Calculating displacement adjoint sources
     
     }
-    //std::cout<< "Calculated norm: " << L2 << std::endl;
+    std::cout<< "Calculated norm: " << L2 << std::endl;
     //std::cout << a_stf_type << std::endl;
     return L2;
 

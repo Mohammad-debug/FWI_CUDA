@@ -51,7 +51,7 @@ snap_nx = 1 + (snap[4] - snap[5])//snap[8]
 
 if (fwinv):
     print("Plotting material for iteration in fwi")
-    maxiter = 270
+    maxiter = 86
     for ii in range(0,maxiter,1):
         # reading data from csv file
         mat_dat = read_tensor("./bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
@@ -85,7 +85,7 @@ if (fwinv):
         #pyplot.axis('equal')
         plt.grid()
         #pyplot.savefig('./io/vz_snap'+numpy.str(ii)+'.pdf', format='pdf',figsize=(10,7), dpi=1000)
-        plt.show()
+        #plt.show()
         #plt.draw()
         if (ii==(maxiter-1)):
             plt.show()

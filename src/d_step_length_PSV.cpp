@@ -53,7 +53,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 	real step_factor_rho = 0.5; // Scale factor for updating density
     real scalefac = 2.0; // Step factor in next approximation
     real stepmax_1 = 15; // The maximum number of steps to find optimum step length
-    real stepmax_2 = 6;
+    real stepmax_2 = 4;
     
     int *a_stf_type;
     real scalar_lam_local, scalar_mu_local, scalar_rho_local;
@@ -87,8 +87,8 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
             // calculate material average
             mat_av2(lam, mu, rho, mu_zx, rho_zp, rho_xp, 
                 scalar_lam_local, scalar_mu_local, scalar_rho_local, nz, nx);
-
-            for (int ishot=1;ishot<2;ishot++){
+            L2_tmp = 0;
+            for (int ishot=0;ishot<nshot;ishot++){
                 // Now calling forward kernel with updated material
                 accu = true; // Accumulated storage for output
                 grad = false; // no gradient computation in forward kernel
@@ -106,15 +106,16 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                     snap_dt, snap_dz, snap_dx);
 
                 // calculating L2 norm and adjoint sources
-                L2_tmp = adjsrc2(ishot, a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
+                L2_tmp += adjsrc2(ishot, a_stf_type, rtf_uz, rtf_ux, rtf_type, rtf_z_true, rtf_x_true,
                         rtf_uz, rtf_ux, dt, nrec, nt);
 
-                L2_test[itest] = L2_tmp;
-                step_length[itest] = est_step_length;
-	            step_length[0] = 0.0;
-
             }   
+            L2_test[itest] = L2_tmp;
+            step_length[itest] = est_step_length;
+	        step_length[0] = 0.0;
         } 
+        std::cout << "Step Length: " << est_step_length << ", L2 = " << L2_tmp <<", counter = "<< countstep << std::endl;
+        std::cout << "L2_test = [" << L2_test[0] << ", " << L2_test[1] << ", " << L2_test[2] << " ]" <<std::endl;
         // multiple tests performed
 
         // Different conditions arise here, which need to be calculated
@@ -142,6 +143,8 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
             std::cout << "CASE 2.1" << std::endl;                  
 	    }   
 
+        
+
         /* found a step size which reduces the misfit function */
 	    if((step1==0)&&(L2_test[0]>L2_test[1])){
 	        step_length[1]=est_step_length; 
@@ -153,6 +156,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 	        est_step_length = est_step_length + (est_step_length/scalefac);
             std::cout << "CASE 1.2" << std::endl;
 	    }
+
 
         // *step3=0;
 
@@ -168,7 +172,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 	        step1=1;
 	        step2=1;
 	    }
-
+        std::cout << "-------------------------------------------------------" << std::endl;
         std::cout << "Step Length: " << est_step_length << ", L2 = " << L2_tmp <<", counter = "<< countstep << std::endl;
         std::cout << "step1 = " << step1 <<", step2 = " << step2 <<" itests = " << itests <<" iteste = " << iteste  <<std::endl;
 

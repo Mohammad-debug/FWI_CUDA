@@ -20,7 +20,7 @@ isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
 snap_z1 = 50; snap_z2 = nz-51; snap_x1 = 25; snap_x2 = 175 # snap boundaries
-snap_dt = 2; snap_dz = 2; snap_dx = 3; # the snap intervals
+snap_dt = 1; snap_dz = 1; snap_dx = 1; # the snap intervals
 
 #nshot = 1 #; nsrc = 3; nrec = 10; 
 stf_type = 1; rtf_type = 0
