@@ -37,7 +37,7 @@ release: CXXFLAGS += -O2
 release: all
 
 run:
-	python3 ./scripts/pre_proc.py
+	#python3 ./scripts/pre_proc.py
 	$(APP_DIR)/$(TARGET) 
 	#python3 ./scripts/post_proc.py
 

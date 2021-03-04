@@ -51,11 +51,11 @@ snap_nx = 1 + (snap[4] - snap[5])//snap[8]
 
 if (fwinv):
     print("Plotting material for iteration in fwi")
-    maxiter = 86
+    maxiter = 99
     for ii in range(0,maxiter,1):
         # reading data from csv file
         mat_dat = read_tensor("./bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
-        #mat_dat = read_tensor("./io/mat_save/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
+        #mat_dat = read_tensor("./io/mat_save/iter"+np.str(ii)+"_mat copy.bin", np.float64, (3, ndim[1], ndim[2]))
         
         lam = mat_dat[0][:][:]
         mu = mat_dat[1][:][:]
