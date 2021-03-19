@@ -9,7 +9,7 @@
 // full waveform simulation of 2D plane (P/SV) seismic wave problems
 
 
-#include "d_simulate_PSV.hpp"
+#include "n_simulate_PSV.hpp"
 #include <iostream>
 #include <math.h>
 

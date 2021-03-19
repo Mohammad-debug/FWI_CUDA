@@ -7,7 +7,7 @@
 */
 
 // Preconditioned Gradient Method for PSV gradients
-#include "d_PCG_PSV.hpp"
+#include "n_PCG_PSV.hpp"
 #include <iostream>
 
 void PCG_PSV(real **&PCG_dir, real **&PCG_old, real **&grad_mat, int nz, int nx){

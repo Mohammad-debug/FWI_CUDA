@@ -7,7 +7,7 @@
 */
 
 // Step length estimation for the computation of optimum step length for gradiant update
-#include "d_step_length_PSV.hpp"
+#include "n_step_length_PSV.hpp"
 #include <iostream>
 
 real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot index

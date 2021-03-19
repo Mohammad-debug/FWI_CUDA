@@ -16,7 +16,7 @@
 //#include "fd.h"           /* general include file for viscoelastic FD programs */
 #include <cmath>
 #include <iostream>
-#include "holbergcoeff.hpp"
+#include "h_holbergcoeff.hpp"
 
 void holbergcoeff(const int FDORDER, const int MAXRELERROR, real *hc) {
 

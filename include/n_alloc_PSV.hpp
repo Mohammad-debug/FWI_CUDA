@@ -9,8 +9,8 @@
 #ifndef SEISMIC_ALLOCATION2_H		
 #define SEISMIC_ALLOCATION2_H	
 
-#include "d_globvar.hpp"
-#include "d_contiguous_arrays.hpp"
+#include "n_globvar.hpp"
+#include "n_contiguous_arrays.hpp"
 
 // The arrays allocated to get external inputs
 void alloc_varin_PSV( real *&hc, int *&isurf, // holberg coefficients and surface indices

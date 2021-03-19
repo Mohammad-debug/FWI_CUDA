@@ -8,7 +8,7 @@
 
 // Allocation and deallocation of memory for PSV problems 
 
-#include "d_alloc_PSV.hpp"
+#include "n_alloc_PSV.hpp"
 
 
 void alloc_varin_PSV( real *&hc, int *&isurf, int *&npml, // holberg coefficients, surface indices and number pml in each side

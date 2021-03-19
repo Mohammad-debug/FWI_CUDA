@@ -1,20 +1,11 @@
-//d_step_length_PSV.hpp
 
-/* 
-* Created by: Min Basnet
-* 2021.January.09
-* Kathmandu, Nepal
-*/
+#ifndef KERNEL_PSV_H		
+#define KERNEL_PSV_H
 
-// Step length estimation for the computation of optimum step length for gradiant update
+#include "n_globvar.hpp"
+#include "n_kernel_lib_PSV.hpp"
 
-#include "d_globvar.hpp"
-#include "d_kernel_PSV.hpp"
-#include "d_kernel_lib_PSV.hpp"
-#include "d_solvelin.hpp"
-
-
-real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot index
+void kernel_PSV(int ishot, // shot index
                 int nt, int nz, int nx, // Time and space grid arguments
                 real dt, real dx, real dz, 
                 // surface incides (0.top, 1.bottom, 2.left, 3.right)
@@ -27,10 +18,8 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                 // Spatial derivatives (for internal computations)
                 real **&dz_z, real **&dx_z, real **&dz_x, real **&dx_x, 
                 // Medium arguments
-                real **&lam, real **&mu, real **&rho,
-                // Medium arguments old copy
-                real **&lam_copy, real **&mu_copy, real **&rho_copy,
-                real **&mu_zx, real **&rho_zp, real **&rho_xp, // inverse of density
+                real **&lam, real **&mu, real **&mu_zx, 
+                real **&rho_zp, real **&rho_xp, // inverse of density
                 // Gradients of the medium
                 bool grad, real **&grad_lam, real **&grad_mu, real **&grad_rho,
                 //PML arguments
@@ -46,7 +35,6 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                 int *&z_src, int *&x_src, int *&src_shot_to_fire,
                 // Reciever seismograms
                 int nrec, int rtf_type, real **&rtf_uz, real **&rtf_ux, int *&z_rec, int *&x_rec,
-                real ***&rtf_z_true, real ***&rtf_x_true,
                 // Accumulate the snap of forward wavefield parameters
                 bool accu, real ***&accu_vz, real ***&accu_vx, //accumulated velocity memory over time
                 real ***&accu_szz, real ***&accu_szx, real ***&accu_sxx, //accumulated velocity memory over time
@@ -54,5 +42,4 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                 int snap_dt, int snap_dz, int snap_dx // time n space grid intervals to save storage
                 );
 
-// Calculation of optimum step length from three points parabolic solution
-real calc_opt_step(real L2[4], real sl[4]);
+#endif

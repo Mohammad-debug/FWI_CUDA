@@ -9,7 +9,7 @@
 //#include "fd.h"
 #include <cmath>
 #include <iostream>
-#include "checkfd_ssg_elastic.hpp"
+#include "h_checkfd_ssg_elastic.hpp"
 
 void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW, 
 	real ** prho, real ** ppi, real ** pu, real *hc){

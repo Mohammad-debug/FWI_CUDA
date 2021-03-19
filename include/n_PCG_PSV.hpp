@@ -11,7 +11,7 @@
 #ifndef PCG_PSV_H		
 #define PCG_PSV_H	
 
-#include "d_globvar.hpp"
+#include "n_globvar.hpp"
 
 void PCG_PSV(real **&PCG_dir, real **&PCG_old, real **&grad_mat, int nz, int nx);
 

@@ -12,10 +12,10 @@
 #include "h_globvar.hpp"
 #include "h_preproc_PSV.hpp"
 #include "h_io_PSV.hpp"
-#include "checkfd_ssg_elastic.hpp"
-#include "holbergcoeff.hpp"
+#include "h_checkfd_ssg_elastic.hpp"
+#include "h_holbergcoeff.hpp"
 
-#include "d_simulate_PSV.hpp"
+#include "n_simulate_PSV.hpp"
 
 
 // The function call for PSV simulation

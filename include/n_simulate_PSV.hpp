@@ -10,11 +10,11 @@
 #ifndef SEISMIC_SIMULATE2_H			
 #define SEISMIC_SIMULATE2_H
 
-#include "d_globvar.hpp"
-#include "d_kernel_PSV.hpp"
-#include "d_alloc_PSV.hpp"
-#include "d_kernel_lib_PSV.hpp"
-#include "d_step_length_PSV.hpp"
+#include "n_globvar.hpp"
+#include "n_kernel_PSV.hpp"
+#include "n_alloc_PSV.hpp"
+#include "n_kernel_lib_PSV.hpp"
+#include "n_step_length_PSV.hpp"
 #include "h_io_PSV.hpp"
 //#include "d_PCG_PSV.hpp"
 
