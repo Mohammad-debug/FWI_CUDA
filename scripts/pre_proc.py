@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 
 ftype = np.float64
 
+cuda_computation = False # True: computation in GPU, False: in CPU
+
 # Getting the input directly in this preprocessor file
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
@@ -27,7 +29,7 @@ stf_type = 1; rtf_type = 0
 fdorder = 2; fpad = 1
 
 #Boolen values
-fwinv = True
+fwinv = False
 if (fwinv):
     accu_save = False; seismo_save=True
     mat_save_interval = 1; rtf_meas_true = True # RTF field measurement exists
@@ -108,7 +110,7 @@ nrec = zrec.size
 
 # ---------------------------------------------------------------------------------
 # Creating boolen arrays
-metabool = np.array([surf, pml_z, pml_x, accu_save, seismo_save, fwinv, rtf_meas_true], dtype=np.bool_)
+metabool = np.array([cuda_computation, surf, pml_z, pml_x, accu_save, seismo_save, fwinv, rtf_meas_true], dtype=np.bool_)
 # Creating integer arrays and subsequent concatenation of the related fields
 metaint = np.array([nt, nz, nx, snap_t1, snap_t2, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nsrc, nrec, nshot, stf_type, rtf_type, fdorder, fpad, mat_save_interval, mat_grid], dtype=np.int32)
 metaint = np.concatenate((metabool, metaint), axis=None)

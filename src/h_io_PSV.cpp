@@ -16,7 +16,7 @@
 #include <string>
 
 
-void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, bool &seismo_save, bool &fwinv, bool &rtf_meas_true, 
+void read_input_metaint(bool &gpu_code, bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, bool &seismo_save, bool &fwinv, bool &rtf_meas_true, 
     int &nt, int &nz, int &nx, int &snap_t1, int &snap_t2, int &snap_z1, int &snap_z2, int &snap_x1, int &snap_x2, 
 	int &snap_dt, int &snap_dz, int &snap_dx,int &nsrc, int &nrec, int &nshot, int &stf_type, int &rtf_type, 
 	int &fdorder, int &fpad, int &mat_save_interval, int &mat_grid){
@@ -24,7 +24,7 @@ void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, b
     // Reads the input data from the binary file created in python
     // ---------------------------------------------------------------------
     // integer values for boolen
-    int surf_inp, pml_z_inp, pml_x_inp, accu_save_inp, seismo_save_inp, fwinv_inp, rtf_meas_true_inp;
+    int gpu_code_inp, surf_inp, pml_z_inp, pml_x_inp, accu_save_inp, seismo_save_inp, fwinv_inp, rtf_meas_true_inp;
 
 
     // Loading the integer input file "metaint"
@@ -35,6 +35,7 @@ void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, b
     }
     // -----------------------------------------------------------------
     // Boolen values (Temp: as int)
+    metaint.read(reinterpret_cast<char*> (&gpu_code_inp), sizeof(int32_t));
     metaint.read(reinterpret_cast<char*> (&surf_inp), sizeof(int32_t));
     metaint.read(reinterpret_cast<char*> (&pml_z_inp), sizeof(int32_t));
     metaint.read(reinterpret_cast<char*> (&pml_x_inp), sizeof(int32_t));
@@ -45,6 +46,7 @@ void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, b
 
 
     // Assign the actual boolen values from integers
+    gpu_code = (gpu_code_inp == 0) ? false : true;
     surf = (surf_inp == 0) ? false : true;
     pml_z = (pml_z_inp == 0) ? false : true;
     pml_x = (pml_x_inp == 0) ? false : true;
@@ -86,6 +88,8 @@ void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, b
 
     // The material grid available or not 0:scalar material 1:material grid
     metaint.read(reinterpret_cast<char*> (&mat_grid), sizeof(int32_t));
+
+    
     
     metaint.close();
 }

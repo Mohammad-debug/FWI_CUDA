@@ -16,7 +16,7 @@ using real = double;
 #define PI 3.14159265
 
 
-void read_input_metaint(bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, bool &seismo_save, bool &fwinv, bool &rtf_meas_true, 
+void read_input_metaint(bool &gpu_code, bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, bool &seismo_save, bool &fwinv, bool &rtf_meas_true, 
     int &nt, int &nz, int &nx, int &snap_t1, int &snap_t2, int &snap_z1, int &snap_z2, int &snap_x1, int &snap_x2, 
 	int &snap_dt, int &snap_dz, int &snap_dx,int &nsrc, int &nrec, int &nshot, int &stf_type, int &rtf_type, 
 	int &fdorder, int &fpad, int &mat_save_interval, int &mat_grid);

@@ -13,7 +13,7 @@
 // ----------------------------------
 // HOST GLOBAL SIMULATION VARIABLES
 // ---------------------------------
-bool gpu_code = false;
+bool GPU_CODE;
 // Device global variables to be copied from the host
 // --------------------------
 // GEOMETRIC PARAMETERS
@@ -94,7 +94,7 @@ void simulate_PSV(){
     
     // Reading input integer parameters
     std::cout << "Reading input parameters <INT>."<<std::endl;
-    read_input_metaint(SURF, PML_Z, PML_X, ACCU_SAVE, SEISMO_SAVE, h_FWINV, RTF_MEAS_TRUE, NT, NZ, NX, 
+    read_input_metaint(GPU_CODE, SURF, PML_Z, PML_X, ACCU_SAVE, SEISMO_SAVE, h_FWINV, RTF_MEAS_TRUE, NT, NZ, NX, 
     SNAP_T1, SNAP_T2, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
     NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, FPAD, MAT_SAVE_INTERVAL, MAT_GRID); 
 
@@ -155,20 +155,22 @@ void simulate_PSV(){
         h_FREQ_PML, h_NPML[2], h_NPML[3], FPAD, NX, DT, DX);
         
     }
-
+    
     // Value of Holberg coefficient
     const int MAXRELERROR = 1;
     holbergcoeff(FDORDER, MAXRELERROR, HC);
-
+    
+    std::cout << "nz = " << NZ<< ", nx = " << NX << ", dz = " << DZ << ", dt = " <<DT
+    << ", freq = " << h_FREQ_PML<< "npml = " << h_NPML[1]  << std::endl;
     // STABILITY AND DISPERSION CHECK
     checkfd_ssg_elastic(NZ, NX, DZ, DT, h_FREQ_PML, h_NPML[1], RHO, LAM, MU, HC);
-
+    
     for (int is=0;is<NSRC;is++){
         wavelet(STF_Z[is], NT, DT, 0.0, h_FREQ_PML, 0.0, 1); // Creating one Ricker wavelet 
         wavelet(STF_X[is], NT, DT, 1.0, h_FREQ_PML, 0.0, 1); // zero amplitude wavelet
     }
     
-    
+    //std::cout << "Error here 4"<<std::endl;
     // --------------------------------------------------------------------------
     // B. MEMORY COPY TO THE DEVICE 
     // -------------------------------------------------------------------------
@@ -179,7 +181,7 @@ void simulate_PSV(){
     // C. MEMORY COPY TO THE DEVICE 
     // -------------------------------------------------------------------------
 
-    if (gpu_code){
+    if (GPU_CODE){
         // Calling now the device codes
         std::cout << "THE COMPUTATION STARTS IN GPU" << std::endl;
 

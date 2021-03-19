@@ -18,13 +18,13 @@ def read_metaint(filename, dtype):
     intdata = np.fromfile(filename, dtype=dtype)
     # nt, nz, nx
     print(intdata)
-    fwinv = intdata[5]
-    ndim = np.array(intdata[7:10], dtype = dtype) # [nt, nz, nx]
-    nsrc = intdata[19]
-    nrec = intdata[20]
+    fwinv = intdata[6]
+    ndim = np.array(intdata[8:11], dtype = dtype) # [nt, nz, nx]
+    nsrc = intdata[20]
+    nrec = intdata[21]
     print("ndim: ", ndim)
     # snap_t1, snap_t2, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx
-    snap = np.array(intdata[10:19], dtype=dtype) # the snap data
+    snap = np.array(intdata[11:20], dtype=dtype) # the snap data
     print("snap: ", snap)
     
 

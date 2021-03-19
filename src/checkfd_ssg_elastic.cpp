@@ -38,7 +38,7 @@ void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW,
 	      frequency within the whole model */
 		for (i=1+nfw;i<=(nx-nfw);i++){
 			for (j=ny1;j<=(ny-nfw);j++){
-			        
+			    //std::cout << "error: " << ny<< ", " << (ny-nfw)<< std::endl;
 				//if(INVMAT1==3){
 				if (fabs(pu[j][i])<1.0e-9){
 					neglect_zero_cs = 1;
