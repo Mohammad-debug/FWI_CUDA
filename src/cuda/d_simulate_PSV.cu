@@ -46,8 +46,7 @@ void g_simulate_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
     // Memory copy (host to device)
 
-    // Calling global device functions
-
+    // Calling global device functions (forward and fwi kernels)
     if (fwinv){
         //simulate_fwi_PSV() // call the global device code with device variables 
     }
