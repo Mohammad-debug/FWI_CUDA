@@ -4,9 +4,13 @@ LDFLAGS  := -L/usr/lib -lstdc++ -lm
 OBJ_DIR  := obj
 APP_DIR  := bin
 TARGET   := seis_fwi
-INCLUDE  := -Iinclude -I/usr/include/hdf5
+INCLUDE  := -Iinclude -Iinclude/cpu 
+INCLUDE_CUDA := -Iinclude/cuda
+
+#-I/usr/include/hdf5
 SRC      :=                      \
    $(wildcard src/*.cpp)         \
+   $(wildcard src/cpu/*.cpp)         \
    $(wildcard ext/*/*.cpp)         \
 
 LIB = #ext/inih/*.o
