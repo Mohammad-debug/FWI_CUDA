@@ -11,7 +11,7 @@
 #include <iostream>
 #include "h_checkfd_ssg_elastic.hpp"
 
-void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW, 
+void checkfd_ssg_elastic(int NZ, int NX, real DH, real DT, real TS, int FW, 
 	real ** prho, real ** ppi, real ** pu, real *hc){
 
 
@@ -21,17 +21,19 @@ void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW,
 
 	real  c, cmax_p=0.0, cmin_p=1e9, cmax_s=0.0, cmin_s=1e9, fmax, gamma;
 	real  cmax=0.0, cmin=1e9, dtstab, dhstab;
-	int nfw=round(FW/DH);
+	// int nfw=round(FW/DH);
+	int nfw = FW;
 	int i, j, ny1=1, nx, ny, nx_min, ny_min;
 
 	int neglect_zero_cs = 0;
+	int neglect_zero_cp = 0;
 
 
-	nx=NX; ny=NY; 
+	nx=NX; ny=NZ; 
 
 	/* low Q frame not yet applied as a absorbing boundary */
 	/* if (!FREE_SURF) ny1=1+nfw;*/
-	nfw=0;
+	// nfw=0;
 	
 
 	/* find maximum model phase velocity of shear waves at infinite
@@ -39,18 +41,27 @@ void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW,
 		for (i=1+nfw;i<=(nx-nfw);i++){
 			for (j=ny1;j<=(ny-nfw);j++){
 			    //std::cout << "error: " << ny<< ", " << (ny-nfw)<< std::endl;
-				//if(INVMAT1==3){
+				
 				if (fabs(pu[j][i])<1.0e-9){
 					neglect_zero_cs = 1;
+					//std::cout << "got in:";
 				}
-				else c=sqrt(pu[j][i]/prho[j][i]);
-				//}
-				//if(INVMAT1==1){
-				//c=pu[j][i];}
+				else {
+
+					//if(INVMAT1==3){
+						c=sqrt(pu[j][i]/prho[j][i]);
+
+					//}
+					//if(INVMAT1==1){
+						//c=pu[j][i];}
 				
-				if (cmax_s<c) cmax_s=c;
-				if (cmin_s>c) cmin_s=c;
+					if (cmax_s<c) cmax_s=c;
+					if (cmin_s>c) cmin_s=c;
+		
+				}
+				
 			}
+
 		}
 
 
@@ -59,15 +70,24 @@ void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW,
 		 frequency within the whole model */
 		for (i=1+nfw;i<=(nx-nfw);i++){
 			for (j=ny1;j<=(ny-nfw);j++){
+
+				if (fabs(pu[j][i])<1.0e-9){
+					neglect_zero_cp = 1;
+					//std::cout << "got in:";
+				}
+				else{
+
+					//if(INVMAT1==3){
+					c=sqrt((ppi[j][i]+2.0*pu[j][i])/prho[j][i]);//}
+				
+					//if(INVMAT1==1){
+					//c=ppi[j][i];}
+				
+					if (cmax_p<c) cmax_p=c;
+					if (cmin_p>c) cmin_p=c;
+				}
 			        
-				//if(INVMAT1==3){
-				c=sqrt((ppi[j][i]+2.0*pu[j][i])/prho[j][i]);//}
 				
-				//if(INVMAT1==1){
-				//c=ppi[j][i];}
-				
-				if (cmax_p<c) cmax_p=c;
-				if (cmin_p>c) cmin_p=c;
 			}
 		}
 
@@ -76,6 +96,7 @@ void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW,
 	else cmax=cmax_p;
 	if (cmin_s<cmin_p) cmin=cmin_s; 
 	else cmin=cmin_p;
+
 
 
 	fmax=2.0*TS; // expression modifiec
@@ -90,6 +111,7 @@ void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW,
 	if (MYID == 0) {
 
 		if (neglect_zero_cs == 1) std::cout << "WARNING: zero shear waves neglected" << std::endl;
+		if (neglect_zero_cp == 1) std::cout << "WARNING: zero shear waves neglected" << std::endl;
 
 	if (DH>dhstab){
 		std::cout<<"WARNING:: Grid dispersion will influence wave propagation, choose smaller grid spacing (DH)." << std::endl;

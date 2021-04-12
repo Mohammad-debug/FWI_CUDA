@@ -13,7 +13,7 @@
 #include <iostream>
 #include "h_globvar.hpp"
 
-void checkfd_ssg_elastic(int NX, int NY, real DH, real DT, real TS, int FW, 
+void checkfd_ssg_elastic(int NZ, int NX, real DH, real DT, real TS, int FW, 
 	real ** prho, real ** ppi, real ** pu, real *hc);
 
 #endif

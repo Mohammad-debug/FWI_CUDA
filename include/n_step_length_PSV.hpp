@@ -51,8 +51,8 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                 bool accu, real ***&accu_vz, real ***&accu_vx, //accumulated velocity memory over time
                 real ***&accu_szz, real ***&accu_szx, real ***&accu_sxx, //accumulated velocity memory over time
                 int snap_z1, int snap_z2, int snap_x1, int snap_x2, // grid boundaries for fwi
-                int snap_dt, int snap_dz, int snap_dx // time n space grid intervals to save storage
-                );
+                int snap_dt, int snap_dz, int snap_dx, // time n space grid intervals to save storage
+                int update_param);
 
 // Calculation of optimum step length from three points parabolic solution
 real calc_opt_step(real L2[4], real sl[4]);

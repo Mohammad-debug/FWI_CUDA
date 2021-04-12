@@ -18,7 +18,9 @@ using real = double;
 
 void read_input_metaint(bool &gpu_code, bool &surf, bool &pml_z, bool &pml_x, bool &accu_save, bool &seismo_save, bool &fwinv, bool &rtf_meas_true, 
     int &nt, int &nz, int &nx, int &snap_t1, int &snap_t2, int &snap_z1, int &snap_z2, int &snap_x1, int &snap_x2, 
-	int &snap_dt, int &snap_dz, int &snap_dx,int &nsrc, int &nrec, int &nshot, int &stf_type, int &rtf_type, 
+	int &snap_dt, int &snap_dz, int &snap_dx, int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
+    int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2,
+    int &nsrc, int &nrec, int &nshot, int &stf_type, int &rtf_type, 
 	int &fdorder, int &fpad, int &mat_save_interval, int &mat_grid);
 
 void read_input_int_array(int *&npml, int *&isurf, int *&z_src, int *&x_src, int *&src_shot_to_fire, 

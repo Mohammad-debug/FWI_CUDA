@@ -27,6 +27,10 @@ int SNAP_T1, SNAP_T2, SNAP_DT;
 int SNAP_Z1, SNAP_Z2, SNAP_DZ;
 int SNAP_X1, SNAP_X2, SNAP_DX;
 
+// Taper locations
+int TAPER_T1, TAPER_T2, TAPER_B1, TAPER_B2;
+int TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2;
+
 // Surface conditions
 bool SURF; // if surface exists in any side
 int *ISURF; // surface indices on 0.top, 1.bottom, 2.left, 3.right
@@ -96,6 +100,7 @@ void simulate_PSV(){
     std::cout << "Reading input parameters <INT>."<<std::endl;
     read_input_metaint(GPU_CODE, SURF, PML_Z, PML_X, ACCU_SAVE, SEISMO_SAVE, h_FWINV, RTF_MEAS_TRUE, NT, NZ, NX, 
     SNAP_T1, SNAP_T2, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
+    TAPER_T1, TAPER_T2, TAPER_B1, TAPER_B2, TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2,
     NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, FPAD, MAT_SAVE_INTERVAL, MAT_GRID); 
 
     // Allocate the arrays for preprocessing in host
@@ -161,9 +166,13 @@ void simulate_PSV(){
     holbergcoeff(FDORDER, MAXRELERROR, HC);
     
     std::cout << "nz = " << NZ<< ", nx = " << NX << ", dz = " << DZ << ", dt = " <<DT
-    << ", freq = " << h_FREQ_PML<< "npml = " << h_NPML[1]  << std::endl;
+    << ", freq = " << h_FREQ_PML<< ", npml = " << h_NPML[1]  << std::endl;
+
+    
     // STABILITY AND DISPERSION CHECK
     checkfd_ssg_elastic(NZ, NX, DZ, DT, h_FREQ_PML, h_NPML[1], RHO, LAM, MU, HC);
+
+   
     
     for (int is=0;is<NSRC;is++){
         wavelet(STF_Z[is], NT, DT, 0.0, h_FREQ_PML, 0.0, 1); // Creating one Ricker wavelet 
@@ -185,6 +194,39 @@ void simulate_PSV(){
         // Calling now the device codes
         std::cout << "THE COMPUTATION STARTS IN GPU" << std::endl;
 
+        if (h_FWINV){
+
+            // Full Waveform Inversion
+            std::cout << "Full Waveform Inversion (GPU) ...."<<std::endl;
+            //
+            /*
+            simulate_fwi_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
+            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
+            HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
+            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, 
+            RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL, TAPER_T1, TAPER_T2, TAPER_B1, TAPER_B2, 
+            TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2);
+            */
+
+        }
+
+        else{
+
+            // Forward Modelling
+            std::cout << "Forward Modelling only (GPU)...."<<std::endl;
+            //
+            /*
+            simulate_fwd_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
+            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
+            HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
+            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X,  
+            ACCU_SAVE, SEISMO_SAVE);
+            */
+           
+        }
+
+
+
 
     }
     else{
@@ -198,8 +240,11 @@ void simulate_PSV(){
             simulate_fwi_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
             SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
             HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
-            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL);
+            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, 
+            RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL, TAPER_T1, TAPER_T2, TAPER_B1, TAPER_B2, 
+            TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2);
         }
+
         else{
             // Forward Modelling
             std::cout << "Forward Modelling only...."<<std::endl;
@@ -207,7 +252,8 @@ void simulate_PSV(){
             simulate_fwd_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
             SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
             HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
-            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X,  ACCU_SAVE, SEISMO_SAVE);
+            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X,  
+            ACCU_SAVE, SEISMO_SAVE);
         }
 
     }

@@ -148,7 +148,8 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real *&a_x, real *&b_x, real *&K_x, real *&a_half_x, real *&b_half_x, real *&K_half_x,
     int *&z_src, int *&x_src, int *&z_rec, int *&x_rec,
     int *&src_shot_to_fire, real **&stf_z, real **&stf_x, real ***&rtf_z_true, real ***&rtf_x_true,
-    int mat_save_interval){
+    int mat_save_interval, int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
+    int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2){
     // full waveform inversion modelling
     // fwinv = true for this case
     // Internal variables
@@ -228,6 +229,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real L2_norm[1000]; // size is maxIter
     for (int ll=0;ll<1000;ll++){ L2_norm[ll] = 0.0;}
     real step_length = 0.01; // step length set to initial
+    real step_length_rho = 0.01; // step length set to initial
     
     while (iter){ // currently 10 just for test (check the conditions later)
         std::cout << std::endl << std::endl;
@@ -365,57 +367,20 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
         
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1));
+
+
+        // Applying taper function 
+        // Currently only Tukey Taper function available
+        taper2(grad_lam, nz, nx, snap_z1, snap_z2, snap_x1, snap_x2,
+                taper_t1, taper_t2, taper_b1, taper_b2, taper_l1, taper_l2, taper_r1, taper_r2);
+
+        taper2(grad_mu, nz, nx, snap_z1, snap_z2, snap_x1, snap_x2,
+                taper_t1, taper_t2, taper_b1, taper_b2, taper_l1, taper_l2, taper_r1, taper_r2);
+
+        taper2(grad_rho, nz, nx, snap_z1, snap_z2, snap_x1, snap_x2,
+                taper_t1, taper_t2, taper_b1, taper_b2, taper_l1, taper_l2, taper_r1, taper_r2);
         
-        // Applying Tukey Taper
-        int taper_x = snap_x1*2, taper_z = snap_z1*2;
-        for (int iz=0;iz<nz;iz++){
-            for (int ix=0;ix<nx;ix++){
-                We_adj[iz][ix]= 0.0;
-            }
-        }
-        for (int iz=snap_z1;iz<snap_z2;iz++){
-            for (int ix=snap_x1;ix<snap_x2;ix++){
 
-                // Tukey taper function
-                // Horizontal taper
-                if (ix<(taper_x)){
-                    We_adj[iz][ix] = 0.5*(1.0-cos(PI*(ix-snap_x1)/taper_x));
-                }
-                else if(ix>(nx-taper_x)){
-                    We_adj[iz][ix] = 0.5*(1.0-cos(PI*(snap_x2-ix)/taper_x));
-                }
-                else{
-
-                    We_adj[iz][ix] = 1.0;
-                }      
-            }
-        }
-
-        for (int iz=snap_z1;iz<snap_z2;iz++){
-            for (int ix=snap_x1;ix<snap_x2;ix++){
-
-                // Tukey taper function
-                // Vertical taper over already existing horizontal taper
-                if (iz<(taper_z)){
-                    We_adj[iz][ix] *= 0.5*(1.0-cos(PI*(iz-snap_z1)/taper_z));
-                }
-                else if(iz>(nz-taper_z)){
-                    We_adj[iz][ix] *= 0.5*(1.0-cos(PI*(snap_z2-iz)/taper_z));
-                }
-                else{
-                    We_adj[iz][ix] *= 1.0;
-                }
-            }
-        }
-
-        // Applying taper function to the gradients
-        for (int iz=0;iz<nz;iz++){
-            for (int ix=0;ix<nx;ix++){
-                grad_lam[iz][ix] *= We_adj[iz][ix];
-                grad_mu[iz][ix] *= We_adj[iz][ix];
-                grad_rho[iz][ix] *= We_adj[iz][ix];
-            }
-        }
         /*
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
         // Applying PSG method
@@ -464,8 +429,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         // 6.0. MATERIAL UPDATE
         // ---------------------
 		
-		// Step length estimation
-        
+		// Step length estimation for wave parameters
         step_length = step_length_PSV(step_length, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
             vz, vx,  uz, ux, szz, szx, sxx,  We, dz_z, dx_z, dz_x, dx_x, 
             lam, mu, rho, lam_copy, mu_copy, rho_copy, 
@@ -477,12 +441,31 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
             nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
             rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx,  accu_szz, accu_szx, accu_sxx, 
-            snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx);
+            snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 0);
+
+
+        // Separate Step length for density update
+        /*
+        step_length_rho = step_length_PSV(step_length_rho, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
+            vz, vx,  uz, ux, szz, szx, sxx,  We, dz_z, dx_z, dz_x, dx_x, 
+            lam, mu, rho, lam_copy, mu_copy, rho_copy, 
+            mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
+            pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
+            pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
+            mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, 
+            mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
+            nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
+            nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
+            rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx,  accu_szz, accu_szx, accu_sxx, 
+            snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 2);
+        */
      
         // Update material parameters to the gradients !!
 		update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, step_length, nz, nx);
         update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, step_length, nz, nx);
-        update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.5, 0.5*step_length, nz, nx);
+
+        step_length_rho = 0.5 * step_length;
+        update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.25, step_length_rho, nz, nx);
 
         //
         // Saving the Accumulative storage file to a binary file for every shots

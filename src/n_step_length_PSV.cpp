@@ -47,8 +47,8 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
                 bool accu, real ***&accu_vz, real ***&accu_vx, //accumulated velocity memory over time
                 real ***&accu_szz, real ***&accu_szx, real ***&accu_sxx, //accumulated velocity memory over time
                 int snap_z1, int snap_z2, int snap_x1, int snap_x2, // grid boundaries for fwi
-                int snap_dt, int snap_dz, int snap_dx // time n space grid intervals to save storage
-                ){
+                int snap_dt, int snap_dz, int snap_dx, // time n space grid intervals to save storage
+                int update_param){
 
 	real step_factor_rho = 0.5; // Scale factor for updating density
     real scalefac = 2.0; // Step factor in next approximation
@@ -75,20 +75,30 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 
 	// multiple material test checks to calculate L2 norms for these changes
 	// three tests performed currently
+    int nshot_rep = 2;
+    // number of representative shots (use maximum 2 shots)
+    //if (nshot < nshot_rep) 
+    nshot_rep = nshot;
 
     while ((step2!=1) || (step1!=1)){
 	   for (unsigned int itest = itests; itest <= iteste; itest++){
 		    //
 		    // Material update test
-            update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, est_step_length, nz, nx);
-            update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, est_step_length, nz, nx);
-            update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.5, step_factor_rho*est_step_length, nz, nx);
+            if(update_param == 0 || update_param == 1){
+                update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, est_step_length, nz, nx);
+                update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, est_step_length, nz, nx);
+            }
+
+            if(update_param == 0 || update_param == 2){
+                update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.5, step_factor_rho*est_step_length, nz, nx);
+            }
+            
 
             // calculate material average
             mat_av2(lam, mu, rho, mu_zx, rho_zp, rho_xp, 
                 scalar_lam_local, scalar_mu_local, scalar_rho_local, nz, nx);
             L2_tmp = 0;
-            for (int ishot=0;ishot<nshot;ishot++){
+            for (int ishot=0;ishot<nshot_rep;ishot++){
                 // Now calling forward kernel with updated material
                 accu = true; // Accumulated storage for output
                 grad = false; // no gradient computation in forward kernel
@@ -179,9 +189,17 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
     }
         
     if(step1==1){ /* only find an optimal step length if step1==1 */
-		std::cout << "=================================================" <<std::endl;
-		std::cout << "calculate optimal step length epsilon for Vp and Vs" <<std::endl;
-		std::cout << "================================================="  <<std::endl;
+
+        if(update_param == 0 || update_param == 1){
+		    std::cout << "=================================================" <<std::endl;
+		    std::cout << "calculate optimal step length epsilon for Vp and Vs" <<std::endl;
+		    std::cout << "================================================="  <<std::endl;
+        }
+        if(update_param == 2){
+            std::cout << "=================================================" <<std::endl;
+		    std::cout << "calculate optimal step length epsilon for rho" <<std::endl;
+		    std::cout << "================================================="  <<std::endl;
+        }
 	
 	    est_step_length=calc_opt_step(L2_test,step_length);
     }

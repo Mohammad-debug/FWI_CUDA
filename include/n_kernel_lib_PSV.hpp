@@ -178,5 +178,11 @@ void mat_grid2(real **&lam, real **&mu, real **&rho,
     real lam_sc, real mu_sc, real rho_sc, int nz, int nx);
 
 
+void taper2(real **&A, int nz, int nx,  
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2,
+    int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
+    int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2);
+
+
 
 #endif

@@ -5,38 +5,86 @@ import matplotlib.pyplot as plt
 
 ftype = np.float64
 
+##---------------------------------------------------------------------
+# COMPUTATION IN GPU OR CPU
+#---------------------------------------------------------------------
+
 cuda_computation = False # True: computation in GPU, False: in CPU
 
-# Getting the input directly in this preprocessor file
+#---------------------------------------------------------------------
+
+
+
+
+#---------------------------------------------------------------------
+# GRID PARAMETERS
+#--------------------------------------------------------------------
+
+
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
-nt = 3000; nz = 401; nx = 201 # grid numbers
+nt = 3000; nz = 401; nx = 201 # grid numbers (adding for PMLs as well)
+
 
 # Number of PMLs in each direction
 pml_z = True; pml_x = True # PML exist in both direction
 npml_top = 10; npml_bottom = 10; npml_left = 10; npml_right = 10
 
+
 # Surface grid index in each direction (0 = no surface)
 surf = False # surface exists
 isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
+
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
-snap_z1 = 50; snap_z2 = nz-51; snap_x1 = 25; snap_x2 = 175 # snap boundaries
-snap_dt = 1; snap_dz = 1; snap_dx = 1; # the snap intervals
+snap_z1 = 20; snap_z2 = 380  # snap boundaries z
+snap_x1 = 20; snap_x2 = 180 # snap boundaries x
+snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap intervals
 
-#nshot = 1 #; nsrc = 3; nrec = 10; 
-stf_type = 1; rtf_type = 0
-fdorder = 2; fpad = 1
 
-#Boolen values
-fwinv = False
+# Taper position
+nz_snap = snap_z2 - snap_z1
+nx_snap = snap_x2 - snap_x1
+
+# taper relative to the total grid
+# t: top, b: bottom, l: left, r: right
+taper_t1 = snap_z1 + np.int32(nz_snap*0.05); taper_t2 = taper_t1 + np.int32(nz_snap*0.1)
+taper_b1 = snap_z2 - np.int32(nz_snap*0.05); taper_b2 = taper_b1 - np.int32(nz_snap*0.1)
+
+taper_l1 = snap_x1 + np.int32(nx_snap*0.05); taper_l2 = taper_l1 + np.int32(nx_snap*0.1)
+taper_r1 = snap_x2 - np.int32(nx_snap*0.05); taper_r2 = taper_r1 - np.int32(nx_snap*0.1)
+
+#------------------------------------------------------------------------------
+
+
+
+
+
+# -------------------------------------------------------------------------
+# FINITE DIFFERENCE PARAMETERS
+# --------------------------------------------------------------------------
+
+fdorder = 2 # finite difference order 
+fpad = 1 # number of additional grids for finite difference computation
+
+#forward only or fWI?
+fwinv = True # True: FWI, False: Forward only
+
+# Internal parameters for different cases 
 if (fwinv):
     accu_save = False; seismo_save=True
     mat_save_interval = 1; rtf_meas_true = True # RTF field measurement exists
 else:
     accu_save = True; seismo_save=True
     mat_save_interval = -1; rtf_meas_true = False # RTF field measurement exists
+
+# ---------------------------------------------------------------------------------
     
+
+#------------------------------------------------------------------
+# MEDIUM (MATERIAL) PARAMETERS
+#-----------------------------------------------------------------
+
 # scalar material variables
 Cp = 2000.0
 Cs = 700.0
@@ -53,7 +101,7 @@ mu = np.full((nz, nx), scalar_mu)
 rho = np.full((nz, nx), scalar_rho)
 
 
-# scalar material variables
+# scalar material variables (For original layers)
 Cp1 = 1800.0
 Cs1 = 500.0
 scalar_rho = 1500.0
@@ -61,7 +109,7 @@ mu1 = Cs1*Cs1*scalar_rho
 lam1 = Cp1*Cp1*scalar_rho - 2.0*scalar_mu
 mat_grid = 1 # 0 for scalar and 1 for grid
 
-# modifying density parameter
+# modifying density parameter (in original layers)
 if (fwinv==False):
     for iz in range(0, nz):
         for ix in range(0, nx):
@@ -70,18 +118,13 @@ if (fwinv==False):
                 mu[iz][ix] = mu1
                 lam[iz][ix] = lam1
 
-# Plotting modified material
-print('Plotting initial materials')
-plt.figure(1)
-plt.subplot(221)
-plt.imshow(lam)
-plt.subplot(222)
-plt.imshow(mu)
-plt.subplot(223)
-plt.imshow(rho)
-plt.show()
-# modifying starting material
-# --------------------------------------------------
+#------------------------------------------------------------
+
+
+
+# -----------------------------------------------------
+# PML VALUES TO BE USED FOR COMPUTATION
+# -----------------------------------------------------
 
 # PML factors
 pml_npower_pml = 2.0
@@ -90,12 +133,24 @@ rcoef = 0.001
 k_max_pml = 1.0
 freq_pml = 50.0 # PML frequency in Hz
 
+# -----------------------------------------------------
+
+
+
+
+#-----------------------------------------------------
+# SOURCES AND RECIEVERS
+#--------------------------------------------------------
+
+# source and reciever time functions type
+stf_type = 1; rtf_type = 0 # 1:velocity, 2:displacement
 
 # Creating source locations
 zsrc = np.array([nz/4, nz/2, 3*nz/4], dtype=np.int32)
 xsrc = np.full((zsrc.size,), 20, dtype=np.int32)
+nsrc = zsrc.size # counting number of sources from the source location data
 
-nsrc = zsrc.size
+
 # Creating source to fire arrays
 src_shot_to_fire = np.arange(0,nsrc,1, dtype=np.int32)
 #src_shot_to_fire = np.zeros((nsrc,), dtype=np.int32)
@@ -108,13 +163,51 @@ xrec = np.full((zrec.size,), 180, dtype=np.int32)
 nrec = zrec.size
 
 
+
+# -----------------------------------------------------
+# PLOTTING INPUTS
+#---------------------------------------------------
+
+print('Plotting initial materials')
+plt.figure(1)
+plt.subplot(221)
+plt.imshow(lam) # lamda parameter
+plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=4) # source positions
+plt.plot(xrec,zrec, ls = '', marker= '+', markersize=3) # reciever positions
+plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
+plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
+plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
+plt.subplot(222)
+plt.imshow(mu)
+plt.subplot(223)
+plt.imshow(rho)
+plt.show()
+
+#--------------------------------------------------------
+
+
+
+
+# -------------------------------------------------------------------------------
+# --------------------------------------------------------------------------------
+# PROCESSING TO PREPARE THE ARRAYS (DO NOT MODIFY)
+# -------------------------------------------------------------------------------
 # ---------------------------------------------------------------------------------
+
+# -----------------------------------------------------
+# CREATING BINARY INPUT METADATA
+# ---------------------------------------------------
+
 # Creating boolen arrays
 metabool = np.array([cuda_computation, surf, pml_z, pml_x, accu_save, seismo_save, fwinv, rtf_meas_true], dtype=np.bool_)
-# Creating integer arrays and subsequent concatenation of the related fields
-metaint = np.array([nt, nz, nx, snap_t1, snap_t2, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nsrc, nrec, nshot, stf_type, rtf_type, fdorder, fpad, mat_save_interval, mat_grid], dtype=np.int32)
-metaint = np.concatenate((metabool, metaint), axis=None)
 
+# Creating integer arrays and subsequent concatenation of the related fields
+metaint = np.array([nt, nz, nx, snap_t1, snap_t2, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, \
+                    taper_t1, taper_t2, taper_b1, taper_b2, taper_l1, taper_l2, taper_r1, taper_r2,\
+                    nsrc, nrec, nshot, stf_type, rtf_type, fdorder, fpad, mat_save_interval, mat_grid], dtype=np.int32)
+metaint = np.concatenate((metabool, metaint), axis=None) # concatination of boolen and integer as integers
+
+# additional concatenation of int arrays
 intarray = np.array([npml_top, npml_bottom, npml_left, npml_right, isurf_top, isurf_bottom, isurf_left, isurf_right], dtype=np.int32)
 intarray  = np.concatenate((intarray, zsrc), axis=None)
 intarray  = np.concatenate((intarray, xsrc), axis=None)
@@ -123,16 +216,18 @@ intarray  = np.concatenate((intarray, zrec), axis=None)
 intarray  = np.concatenate((intarray, xrec), axis=None)
 
 print("Metaint: ", metaint)
+
 # Creating float arrays and subsequent concatenation
-metafloat = np.array([dt, dz, dx, pml_npower_pml, damp_v_pml, rcoef, k_max_pml, freq_pml, scalar_lam, scalar_mu, scalar_rho], dtype=np.float64)
+metafloat = np.array([dt, dz, dx, pml_npower_pml, damp_v_pml, rcoef, k_max_pml, freq_pml, \
+                     scalar_lam, scalar_mu, scalar_rho], dtype=np.float64)
 print("Metafloat: ", metafloat)
 
+# Creating material arrays
 material_inp = np.concatenate((lam, mu), axis = None)
 material_inp = np.concatenate((material_inp, rho), axis = None)
 
-
-
 # ---------------------------------------------------------------------------------------------------
+
 
 # ---------------------------------------------------------------------------------
 # WRITING ARRAYS TO BINARY FILE, READABLE IN C++ KERNELS
@@ -141,26 +236,9 @@ metaint.tofile('./bin/metaint.bin')
 intarray.tofile('./bin/intarray.bin')
 metafloat.tofile('./bin/metafloat.bin')
 material_inp.tofile('./bin/mat.bin')
+#--------------------------------------------------------
 
-# TO WRITE IN INPUT FILE
-# Integers:
-# nt, nz, nx, snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 
-# nsrc, nrec, nshot, stf_type, rtf_type, rtf_true, fdorder, fpad, 
-# npml[4], isurf[4], 
+#--------------------------------------------------------
+#-------------------------------------------------------
 
-# Doubles:
-# dt, dz, dx, scalar_lam, scalar_mu, scalar_rho, 
-# 
 
-# Booleans
-# surf, pml_z, pml_x, accu_save, fwinv
-
-# integer and reciever arrays
-# *zsrc, *xsrc, *src_shot_to_fire, 
-# *rec_z, *rec_x
-
-# Double arrays
-# *hc: holberg coefficient (may be parameters for holberg coefficients is better for it)
-# **lam, **mu, **rho // materials
-# **stf_z, **stf_x
-# **rft_z_true, **rtf_x_true
