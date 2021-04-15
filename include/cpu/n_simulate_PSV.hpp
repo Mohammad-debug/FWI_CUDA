@@ -10,7 +10,7 @@
 #ifndef SEISMIC_SIMULATE2_H			
 #define SEISMIC_SIMULATE2_H
 
-/*
+
 #include "n_globvar.hpp"
 #include "n_kernel_PSV.hpp"
 #include "n_alloc_PSV.hpp"
@@ -18,7 +18,7 @@
 #include "n_step_length_PSV.hpp"
 #include "h_io_PSV.hpp"
 //#include "d_PCG_PSV.hpp"
-*/
+
 
 void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx, 
     int snap_z1, int snap_z2, int snap_x1, int snap_x2, int snap_dt, int snap_dz, int snap_dx, 

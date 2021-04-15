@@ -1,4 +1,37 @@
-make.exe -f c:\Users\AG-Admin\Documents\GitHub\Finite_Difference_FWI_PSV\Makefile --dry-run --keep-going --print-directory
-'"make.exe"' is not recognized as an internal or external command,
-operable program or batch file.
+make -f /home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile --dry-run --keep-going --print-directory
+make: Entering directory '/home/min/Documents/git/Finite_Difference_FWI_PSV'
+mkdir -p bin
+mkdir -p obj
+mkdir -p obj/src
+g++  -Iinclude -Iinclude/cpu  -c src/h_simulate_PSV.cpp -o obj/src/h_simulate_PSV.o -L/usr/lib -lstdc++ -lm 
+ 
+mkdir -p obj/src
+g++  -Iinclude -Iinclude/cpu  -c src/h_io_PSV.cpp -o obj/src/h_io_PSV.o -L/usr/lib -lstdc++ -lm 
+mkdir -p obj/src
+g++  -Iinclude -Iinclude/cpu  -c src/h_preproc_PSV.cpp -o obj/src/h_preproc_PSV.o -L/usr/lib -lstdc++ -lm 
+mkdir -p obj/src
+g++  -Iinclude -Iinclude/cpu  -c src/h_checkfd_ssg_elastic.cpp -o obj/src/h_checkfd_ssg_elastic.o -L/usr/lib -lstdc++ -lm 
+mkdir -p obj/src
+g++  -Iinclude -Iinclude/cpu  -c src/h_holbergcoeff.cpp -o obj/src/h_holbergcoeff.o -L/usr/lib -lstdc++ -lm 
+mkdir -p obj/src
+g++  -Iinclude -Iinclude/cpu  -c src/h_main.cpp -o obj/src/h_main.o -L/usr/lib -lstdc++ -lm 
+mkdir -p obj/src/cpu
+g++  -Iinclude -Iinclude/cpu  -c src/cpu/n_simulate_PSV.cpp -o obj/src/cpu/n_simulate_PSV.o -L/usr/lib -lstdc++ -lm 
+ 
+mkdir -p obj/src/cpu
+g++  -Iinclude -Iinclude/cpu  -c src/cpu/n_step_length_PSV.cpp -o obj/src/cpu/n_step_length_PSV.o -L/usr/lib -lstdc++ -lm 
+mkdir -p obj/src/cpu
+g++  -Iinclude -Iinclude/cpu  -c src/cpu/n_PCG_PSV.cpp -o obj/src/cpu/n_PCG_PSV.o -L/usr/lib -lstdc++ -lm 
+ 
+mkdir -p obj/src/cpu
+g++  -Iinclude -Iinclude/cpu  -c src/cpu/n_kernel_lib_PSV.cpp -o obj/src/cpu/n_kernel_lib_PSV.o -L/usr/lib -lstdc++ -lm 
+mkdir -p obj/src/cpu
+g++  -Iinclude -Iinclude/cpu  -c src/cpu/n_alloc_PSV.cpp -o obj/src/cpu/n_alloc_PSV.o -L/usr/lib -lstdc++ -lm 
+ 
+mkdir -p obj/src/cpu
+g++  -Iinclude -Iinclude/cpu  -c src/cpu/n_kernel_PSV.cpp -o obj/src/cpu/n_kernel_PSV.o -L/usr/lib -lstdc++ -lm 
+mkdir -p bin
+ 
+g++  -o bin/seis_fwi obj/src/h_simulate_PSV.o obj/src/h_io_PSV.o obj/src/h_preproc_PSV.o obj/src/h_checkfd_ssg_elastic.o obj/src/h_holbergcoeff.o obj/src/h_main.o obj/src/cpu/n_simulate_PSV.o obj/src/cpu/n_step_length_PSV.o obj/src/cpu/n_PCG_PSV.o obj/src/cpu/n_kernel_lib_PSV.o obj/src/cpu/n_alloc_PSV.o obj/src/cpu/n_kernel_PSV.o -L/usr/lib -lstdc++ -lm 
+make: Leaving directory '/home/min/Documents/git/Finite_Difference_FWI_PSV'
  
