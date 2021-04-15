@@ -16,6 +16,7 @@
 #include "h_holbergcoeff.hpp"
 
 #include "n_simulate_PSV.hpp"
+#include "d_simulate_PSV.cuh"
 
 
 // The function call for PSV simulation
