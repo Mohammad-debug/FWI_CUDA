@@ -23,9 +23,6 @@
 #include <iostream>
 #include <math.h>
 
-__global__ void cuda_hello(){
-    printf("Hello World from GPU!\n");
-}
 
 void g_simulate_PSV(int *&npml,int nt, int nz, int nx, real dt, real dz, real dx, 
     int snap_z1, int snap_z2, int snap_x1, int snap_x2, int snap_dt, int snap_dz, int snap_dx, 
@@ -159,11 +156,7 @@ void g_simulate_PSV(int *&npml,int nt, int nz, int nx, real dt, real dz, real dx
        
     }
 
-    //cuda_hello<<<1,1>>>(); 
 
-    // Memory copy (device to host)
-
-    // Outputs
 
 }
 
@@ -240,40 +233,40 @@ void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
        scalar_lam, scalar_mu, scalar_rho, nz, nx);
   
     //Seismic forward kernel
-    // for (int ishot = 0; ishot < nshot; ishot++){
-    //     accu = true; // Accumulated storage for output
-    //     grad = false; // no gradient computation in forward kernel
-    //     kernel_PSV_GPU(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
-    //         vz, vx,  uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x, 
-    //         lam, mu, mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
-    //         pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
-    //         pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
-    //         mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z,
-    //         mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
-    //         nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
-    //         nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
-    //         accu, accu_vz,accu_vx, accu_szz, accu_szx, accu_sxx, 
-    //         snap_z1, snap_z2, snap_x1, snap_x2, 
-    //         snap_dt, snap_dz, snap_dx);
+    for (int ishot = 0; ishot < nshot; ishot++){
+        accu = true; // Accumulated storage for output
+        grad = false; // no gradient computation in forward kernel
+        kernel_PSV_GPU(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
+            vz, vx,  uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x, 
+            lam, mu, mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
+            pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
+            pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
+            mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z,
+            mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
+            nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
+            nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
+            accu, accu_vz,accu_vx, accu_szz, accu_szx, accu_sxx, 
+            snap_z1, snap_z2, snap_x1, snap_x2, 
+            snap_dt, snap_dz, snap_dx);
 
-    //     //Saving the Accumulative storage file to a binary file for every shots
-    //     // if (accu_save){
-    //     //     // Writing the accumulation array
-    //     //     std::cout << "Writing accu to binary file for SHOT " << ishot ;
-    //     //     write_accu_GPU(accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, nt, snap_z1, snap_z2, snap_x1, 
-    //     //     snap_x2, snap_dt, snap_dz, snap_dx, ishot);
-    //     //     std::cout <<" <DONE>"<< std::endl;
-    //     // }
+        //Saving the Accumulative storage file to a binary file for every shots
+        // if (accu_save){
+        //     // Writing the accumulation array
+        //     std::cout << "Writing accu to binary file for SHOT " << ishot ;
+        //     write_accu_GPU(accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, nt, snap_z1, snap_z2, snap_x1, 
+        //     snap_x2, snap_dt, snap_dz, snap_dx, ishot);
+        //     std::cout <<" <DONE>"<< std::endl;
+        // }
 
-    //     // // Saving the Accumulative storage file to a binary file for every shots
-    //     // if (seismo_save){
-    //     //     // Writing the accumulation array
-    //     //     std::cout << "Writing accu to binary file for SHOT " << ishot  ;
-    //     //     write_seismo_GPU(rtf_uz, rtf_ux, nrec, nt, ishot);
-    //     //     std::cout <<" <DONE>"<< std::endl;
-    //     // }
+        // // Saving the Accumulative storage file to a binary file for every shots
+        // if (seismo_save){
+        //     // Writing the accumulation array
+        //     std::cout << "Writing accu to binary file for SHOT " << ishot  ;
+        //     write_seismo_GPU(rtf_uz, rtf_ux, nrec, nt, ishot);
+        //     std::cout <<" <DONE>"<< std::endl;
+        // }
 
-    // }
+    }
     
 }
 
