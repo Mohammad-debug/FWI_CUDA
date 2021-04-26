@@ -1,6 +1,7 @@
 CXX      := g++
 CUXX 	:= nvcc 
-CXXFLAGS := #-std=c++17 -pedantic-errors -Wall -Wextra -Werror
+CXXFLAGS := -fopenmp #-std=c++17 -pedantic-errors -Wall -Wextra -Werror 
+CUXXFLAGS :=  #-std=c++17 -pedantic-errors -Wall -Wextra -Werror
 LDFLAGS  := -L/usr/lib -L/usr/lib/cuda -lstdc++ -lm -lcudart 
 OBJ_DIR  := obj
 APP_DIR  := bin
@@ -25,7 +26,7 @@ $(OBJ_DIR)/%.o: %.cpp
 
 $(OBJ_DIR)/%.o: %.cu
 	@mkdir -p $(@D)
-	$(CUXX) $(CXXFLAGS) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
+	$(CUXX) $(CUXXFLAGS) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
 
 $(APP_DIR)/$(TARGET): $(OBJECTS)
 	@mkdir -p $(@D)
