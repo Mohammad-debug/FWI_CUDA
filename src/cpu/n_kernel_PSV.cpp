@@ -12,6 +12,8 @@
 
 #include "n_kernel_PSV.hpp"
 #include <iostream>
+#include<time.h>
+
 
 
 // same kernel for forward and adjoint modelling
@@ -92,11 +94,14 @@ void kernel_PSV(int ishot, // shot index
         if (!(it%1000) || (it==nt-1)){
             std::cout << "Time step: " <<it<< " of " << nt-1 << std::endl;
         }
-        
+
         // -----------------------------------------------------------------------
         // STEP 1: UPDATING STRESS TENSOR
         // -----------------------------------------------------------------------
-
+        //timing start
+        clock_t time1,time2;
+        double net=0.0;
+        time1=clock();
         // 1.1: Spatial velicity derivatives
         vdiff2(dz_z, dx_z, dz_x, dx_x, vz, vx, hc, nz1, nz2, nx1, nx2, dz, dx);
 
@@ -142,7 +147,11 @@ void kernel_PSV(int ishot, // shot index
 
         // 2.3: Update velocity tensor
         update_v2(vz, vx, uz, ux, We, dz_z, dx_z, dz_x, dx_x, rho_zp, rho_xp, nz1, nz2, nx1, nx2, dt);
-
+        // time end
+        time2=clock();
+        net =(time2-time1)/ (double)CLOCKS_PER_SEC;
+        printf("\n timing CPU  = %f seconds end\n", net);
+         exit(0);
         // -----------------------------------------------------------------------
 
         // -----------------------------------------------------------------------

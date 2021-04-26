@@ -9,6 +9,7 @@
 #include "h_simulate_PSV.hpp"
 #include <iostream>
 #include <math.h>
+#include<omp.h>
 
 // ----------------------------------
 // HOST GLOBAL SIMULATION VARIABLES
@@ -207,7 +208,12 @@ void simulate_PSV(){
     else{
         // Calling the codes in the host only
         std::cout << "THE COMPUTATION STARTS IN CPU" << std::endl;
-        
+        //warm up;
+        #pragma omp parallel
+        ;
+        // int k=omp_get_max_threads();
+        // printf("**OpenMP running with %d threads**\n", k);
+
         if (FWINV){
             // Full Waveform Inversion
             std::cout << "Full Waveform Inversion...."<<std::endl;
