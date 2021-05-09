@@ -211,8 +211,8 @@ void simulate_PSV(){
         //warm up;
         #pragma omp parallel
         ;
-        // int k=omp_get_max_threads();
-        // printf("**OpenMP running with %d threads**\n", k);
+        
+         printf("**OpenMP running with %d threads**\n", omp_get_max_threads());
 
         if (FWINV){
             // Full Waveform Inversion

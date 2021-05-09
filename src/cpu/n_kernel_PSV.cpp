@@ -12,7 +12,7 @@
 
 #include "n_kernel_PSV.hpp"
 #include <iostream>
-#include<time.h>
+#include<omp.h>
 
 
 
@@ -99,9 +99,9 @@ void kernel_PSV(int ishot, // shot index
         // STEP 1: UPDATING STRESS TENSOR
         // -----------------------------------------------------------------------
         //timing start
-        clock_t time1,time2;
+        double time1,time2;
         double net=0.0;
-        time1=clock();
+        time1= omp_get_wtime();
         // 1.1: Spatial velicity derivatives
         vdiff2(dz_z, dx_z, dz_x, dx_x, vz, vx, hc, nz1, nz2, nx1, nx2, dz, dx);
 
@@ -148,8 +148,8 @@ void kernel_PSV(int ishot, // shot index
         // 2.3: Update velocity tensor
         update_v2(vz, vx, uz, ux, We, dz_z, dx_z, dz_x, dx_x, rho_zp, rho_xp, nz1, nz2, nx1, nx2, dt);
         // time end
-        time2=clock();
-        net =(time2-time1)/ (double)CLOCKS_PER_SEC;
+        time2= omp_get_wtime();
+        net =(time2-time1);
         printf("\n timing CPU  = %f seconds end\n", net);
          exit(0);
         // -----------------------------------------------------------------------
