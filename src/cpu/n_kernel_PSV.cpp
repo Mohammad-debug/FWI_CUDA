@@ -148,10 +148,11 @@ void kernel_PSV(int ishot, // shot index
         // 2.3: Update velocity tensor
         update_v2(vz, vx, uz, ux, We, dz_z, dx_z, dz_x, dx_x, rho_zp, rho_xp, nz1, nz2, nx1, nx2, dt);
         // time end
-        time2= omp_get_wtime();
-        net =(time2-time1);
-        printf("\n timing CPU  = %f seconds end\n", net);
-         exit(0);
+
+        //time2= omp_get_wtime();
+        //net =(time2-time1);
+        //printf("\n timing CPU  = %f seconds end\n", net);
+        //exit(0);
         // -----------------------------------------------------------------------
 
         // -----------------------------------------------------------------------

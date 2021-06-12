@@ -23,7 +23,7 @@ cuda_computation = False # True: computation in GPU, False: in CPU
 
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
-nt = 3000; nz = 401; nx = 401 # grid numbers (adding for PMLs as well)
+nt = 3000; nz = 401; nx = 201 # grid numbers (adding for PMLs as well)
 
 
 # Number of PMLs in each direction
@@ -68,7 +68,7 @@ fdorder = 2 # finite difference order
 fpad = 1 # number of additional grids for finite difference computation
 
 #forward only or fWI?
-fwinv = False # True: FWI, False: Forward only
+fwinv = True # True: FWI, False: Forward only
 
 # Internal parameters for different cases 
 if (fwinv):
