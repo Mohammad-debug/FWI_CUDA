@@ -594,7 +594,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     // a_stf: adjoint sources
     // rtf: reciever time function (mod: forward model, true: field measured)
 
-    real L2,temp_L2;
+    real L2;
     L2 = 0;
     
     if (rtf_type == 0){
