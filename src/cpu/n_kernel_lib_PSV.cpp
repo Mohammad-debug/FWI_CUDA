@@ -594,33 +594,41 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     // a_stf: adjoint sources
     // rtf: reciever time function (mod: forward model, true: field measured)
 
-    real L2;
+    real L2,temp_L2;
     L2 = 0;
     
     if (rtf_type == 0){
         // RTF type is displacement
-        for(int is=0; is<nseis; is++){ // for all seismograms
-            for(int it=0;it<nt;it++){ // for all time steps
+        //parallel region starts
+        
+            #pragma omp parallel for collapse(2) reduction(+: L2)
+            for( int is=0; is<nseis; is++){ // for all seismograms
+                for(int it=0;it<nt;it++){ // for all time steps
 
-                
-                // calculating adjoint sources
-                a_stf_uz[is][it] = rtf_uz_mod[is][it] - rtf_uz_true[ishot][is][it];
-                a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[ishot][is][it];
+                    
+                    // calculating adjoint sources
+                    a_stf_uz[is][it] = rtf_uz_mod[is][it] - rtf_uz_true[ishot][is][it];
+                  
+                    a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[ishot][is][it];
 
-                //if (!(abs(a_stf_uz[is][it])<1000.0 || abs(a_stf_uz[is][it])<1000.0)){
-                //    std::cout << rtf_uz_mod[is][it] <<"," << rtf_uz_true[ishot][is][it] << "::";
-                //}
-                
+                    //if (!(abs(a_stf_uz[is][it])<1000.0 || abs(a_stf_uz[is][it])<1000.0)){
+                    //    std::cout << rtf_uz_mod[is][it] <<"," << rtf_uz_true[ishot][is][it] << "::";
+                    //}
+                    
 
-                // Calculating L2 norm
-                L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2); 
-                L2 += 0.5 * dt * pow(a_stf_ux[is][it], 2);
-                //std::cout<< rtf_uz_mod[is][it] <<", "<<rtf_ux_mod[is][it];
+                    // Calculating L2 norm
+                   
+                    L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2); 
+                   
+                    L2 += 0.5 * dt * pow(a_stf_ux[is][it], 2);
+                   
+                    
+                }
+
                 
             }
-            
-        }
-
+          
+        //paralell region ends
         a_stf_type = &rtf_type; // Calculating displacement adjoint sources
     
     }
