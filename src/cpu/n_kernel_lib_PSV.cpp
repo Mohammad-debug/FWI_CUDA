@@ -21,7 +21,8 @@ void reset_sv2(
     real **&vz, real **&vx, real **&uz, real **&ux, 
     real **&szz, real **&szx, real **&sxx, real **&We, 
     // time & space grids (size of the arrays)
-    real nz, real nx){
+    real nz, real nx)
+    {
     // reset the velocity and stresses to zero
     // generally applicable in the beginning of the time loop
 
@@ -389,6 +390,7 @@ void surf_mirror(
 }
 
 
+
 void gard_fwd_storage2(
     // forward storage for full waveform inversion 
     real ***&accu_vz, real ***&accu_vx, 
@@ -397,8 +399,7 @@ void gard_fwd_storage2(
     real **&vz, real **&vx, real **&szz, real **&szx, real **&sxx,
     // time and space parameters
     real dt, int itf, int snap_z1, int snap_z2, 
-    int snap_x1, int snap_x2, int snap_dz, int snap_dx){
-    
+    int snap_x1, int snap_x2, int snap_dz, int snap_dx) {
     
     // Stores forward velocity and stress for gradiant calculation in fwi
     // dt: the time step size
@@ -407,12 +408,16 @@ void gard_fwd_storage2(
     // snap_dz, snap_dx: the grid interval for reduced (skipped) storage of tensors
     
     
-    
-    int jz, jx; // mapping for storage with intervals
-    jz = 0; 
-    for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
-        jx = 0;
+    #pragma omp parallel //parallel region starts
+    {
+    int jz=0, jx=0; // mapping for storage with intervals
+    #pragma omp for
+    for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
+    {
+        jz = (iz-snap_z1)/snap_dz;
+        jx=0;
         for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
+            //printf("the thread id is %d and jx is %d and iz is %d \n",omp_get_thread_num(),jz,iz);
             accu_sxx[itf][jz][jx]  = sxx[iz][ix];
             accu_szx[itf][jz][jx]  = szx[iz][ix];
             accu_szz[itf][jz][jx]  = szz[iz][ix];
@@ -421,10 +426,9 @@ void gard_fwd_storage2(
             accu_vz[itf][jz][jx] = vz[iz][ix]/dt;
             
             jx++;
+            }
         }
-        jz++;
-    }
-    
+    }//parallel region ends
 }
 
 void fwi_grad2(
