@@ -250,7 +250,7 @@ void update_v2(
     int nz1, int nz2, int nx1, int nx2, real dt){
     // update stress from velocity derivatives
 
-    #pragma omp parallel for collapse(2)
+    
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
            // printf("Hello World from thread %d\n", omp_get_thread_num());
@@ -291,7 +291,7 @@ void surf_mirror(
     if (surf[0]>0){
         isurf = surf[0];
         //std::cout << std::endl << "SURF INDEX: "<< isurf<<std::endl;
-        #pragma omp parallel for
+        
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -299,7 +299,7 @@ void surf_mirror(
             sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
-            #pragma omp parallel for
+           
             for (int sz=1; sz<isurf-nz1+1; sz++){ // mirroring 
                 szx[isurf-sz][ix] = -szx[isurf+sz][ix];
                 szz[isurf-sz][ix] = -szz[isurf+sz][ix];
@@ -315,7 +315,7 @@ void surf_mirror(
     // -----------------------------
     if (surf[1]>0){
         isurf = surf[1];
-        #pragma omp parallel for
+       
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -324,7 +324,6 @@ void surf_mirror(
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
 
-            #pragma omp parallel for
             for (int sz=1; sz<=nz2-isurf; sz++){ // mirroring 
                 szx[isurf+sz][ix] = -szx[isurf-sz][ix];
                 szz[isurf+sz][ix] = -szz[isurf-sz][ix];
@@ -341,7 +340,7 @@ void surf_mirror(
     // -----------------------------
     if (surf[2]>0){
         isurf = surf[2];
-        #pragma omp parallel for
+        
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -350,7 +349,7 @@ void surf_mirror(
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
 
-            #pragma omp parallel for
+            
             for (int sx=1; sx<isurf-nx1+1; sx++){ // mirroring 
                 szx[iz][isurf-sx] = -szx[iz][isurf+sx];
                 sxx[iz][isurf-sx] = -sxx[iz][isurf+sx];
@@ -368,7 +367,7 @@ void surf_mirror(
     if (surf[3]>0){
         isurf = surf[3];
 
-        #pragma omp parallel for
+       
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -377,7 +376,7 @@ void surf_mirror(
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
 
-            #pragma omp parallel for
+        
             for (int sx=1; sx<=nx2-isurf; sx++){ // mirroring 
                 szx[iz][isurf+sx] = -szx[iz][isurf-sx];
                 sxx[iz][isurf+sx] = -sxx[iz][isurf-sx];
@@ -408,10 +407,10 @@ void gard_fwd_storage2(
     // snap_dz, snap_dx: the grid interval for reduced (skipped) storage of tensors
     
     
-    #pragma omp parallel //parallel region starts
-    {
+   
+    
     int jz=0, jx=0; // mapping for storage with intervals
-    #pragma omp for
+   
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
     {
         jz = (iz-snap_z1)/snap_dz;
@@ -428,7 +427,7 @@ void gard_fwd_storage2(
             jx++;
             }
         }
-    }//parallel region ends
+    //parallel region ends
 }
 
 void fwi_grad2(
