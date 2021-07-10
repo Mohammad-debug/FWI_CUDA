@@ -570,7 +570,8 @@ void urec2(int rtf_type,
 
     if (rtf_type == 0){
         // This module is only for rtf type as displacement
-        for(int ir=0; ir<nrec; ir++){
+        #pragma omp parallel for
+        for(int ir=0; ir<nrec; ir++){//when function is called only one of the case would get executed
             if (it ==0){
                 rtf_uz[ir][it] = dt * vz[rz[ir]][rx[ir]] / (dz*dx);
                 rtf_ux[ir][it] = dt * vx[rz[ir]][rx[ir]] / (dz*dx);
