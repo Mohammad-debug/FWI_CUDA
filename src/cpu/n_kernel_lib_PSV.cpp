@@ -789,7 +789,7 @@ void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat,
 
     // Scale factors for gradients
     real grad_max = 0.0, mat_array_max = 0.0, step_factor;
-    #pragma omp parallel for collapse(2) reduction(max: grad_max,mat_array_max)
+    //#pragma omp parallel for collapse(2) reduction(max: grad_max,mat_array_max)
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
             
@@ -823,6 +823,7 @@ void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
         real **&lam, real **&mu,  real **&rho, int nz, int nx){
 
     // Copy material values for storage
+    #pragma omp parallel for collapse(2)
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
             
@@ -887,9 +888,10 @@ void mat_av2(
 void mat_grid2(real **&lam, real **&mu, real **&rho, 
     real lam_sc, real mu_sc, real rho_sc, int nz, int nx){
     // Scalar material value is distributed over the grid
-
+    #pragma omp parallel for collapse(2) 
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
+
             lam[iz][ix] = lam_sc;
             mu[iz][ix] = mu_sc;
             rho[iz][ix] = rho_sc;
