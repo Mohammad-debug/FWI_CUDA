@@ -208,5 +208,9 @@ void kernel_PSV(int ishot, // shot index
          
     }
 time2=omp_get_wtime();
+<<<<<<< HEAD
 std::cout<<"time taken parallely "<<time2-time1<<"\n";
+=======
+std::cout<<"time taken sequentially "<<time2-time1<<"\n";
+>>>>>>> cpu_standalone
 }

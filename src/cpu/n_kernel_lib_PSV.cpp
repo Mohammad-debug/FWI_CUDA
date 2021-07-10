@@ -250,7 +250,11 @@ void update_v2(
     int nz1, int nz2, int nx1, int nx2, real dt){
     // update stress from velocity derivatives
 
+<<<<<<< HEAD
     //#pragma omp parallel for collapse(2)
+=======
+    
+>>>>>>> cpu_standalone
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
            // printf("Hello World from thread %d\n", omp_get_thread_num());
@@ -291,7 +295,11 @@ void surf_mirror(
     if (surf[0]>0){
         isurf = surf[0];
         //std::cout << std::endl << "SURF INDEX: "<< isurf<<std::endl;
+<<<<<<< HEAD
         //#pragma omp parallel for
+=======
+        
+>>>>>>> cpu_standalone
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -299,7 +307,11 @@ void surf_mirror(
             sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
+<<<<<<< HEAD
            // #pragma omp parallel for
+=======
+           
+>>>>>>> cpu_standalone
             for (int sz=1; sz<isurf-nz1+1; sz++){ // mirroring 
                 szx[isurf-sz][ix] = -szx[isurf+sz][ix];
                 szz[isurf-sz][ix] = -szz[isurf+sz][ix];
@@ -315,7 +327,11 @@ void surf_mirror(
     // -----------------------------
     if (surf[1]>0){
         isurf = surf[1];
+<<<<<<< HEAD
        // #pragma omp parallel for
+=======
+       
+>>>>>>> cpu_standalone
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -324,7 +340,10 @@ void surf_mirror(
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
 
+<<<<<<< HEAD
            // #pragma omp parallel for
+=======
+>>>>>>> cpu_standalone
             for (int sz=1; sz<=nz2-isurf; sz++){ // mirroring 
                 szx[isurf+sz][ix] = -szx[isurf-sz][ix];
                 szz[isurf+sz][ix] = -szz[isurf-sz][ix];
@@ -341,7 +360,11 @@ void surf_mirror(
     // -----------------------------
     if (surf[2]>0){
         isurf = surf[2];
+<<<<<<< HEAD
       //  #pragma omp parallel for
+=======
+        
+>>>>>>> cpu_standalone
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -350,7 +373,11 @@ void surf_mirror(
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
 
+<<<<<<< HEAD
           //  #pragma omp parallel for
+=======
+            
+>>>>>>> cpu_standalone
             for (int sx=1; sx<isurf-nx1+1; sx++){ // mirroring 
                 szx[iz][isurf-sx] = -szx[iz][isurf+sx];
                 sxx[iz][isurf-sx] = -sxx[iz][isurf+sx];
@@ -368,7 +395,11 @@ void surf_mirror(
     if (surf[3]>0){
         isurf = surf[3];
 
+<<<<<<< HEAD
       //  #pragma omp parallel for
+=======
+       
+>>>>>>> cpu_standalone
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -377,7 +408,11 @@ void surf_mirror(
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
 
+<<<<<<< HEAD
           //  #pragma omp parallel for
+=======
+        
+>>>>>>> cpu_standalone
             for (int sx=1; sx<=nx2-isurf; sx++){ // mirroring 
                 szx[iz][isurf+sx] = -szx[iz][isurf-sx];
                 sxx[iz][isurf+sx] = -sxx[iz][isurf-sx];
@@ -408,10 +443,17 @@ void gard_fwd_storage2(
     // snap_dz, snap_dx: the grid interval for reduced (skipped) storage of tensors
     
     
+<<<<<<< HEAD
     //#pragma omp parallel //parallel region starts
     //{
     int jz=0, jx=0; // mapping for storage with intervals
     //#pragma omp for
+=======
+   
+ 
+    int jz=0, jx=0; // mapping for storage with intervals
+   
+>>>>>>> cpu_standalone
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
     {
         jz = (iz-snap_z1)/snap_dz;
@@ -428,7 +470,12 @@ void gard_fwd_storage2(
             jx++;
             }
         }
+<<<<<<< HEAD
    // }//parallel region ends
+=======
+    //parallel region 
+  
+>>>>>>> cpu_standalone
 }
 
 void fwi_grad2(
@@ -593,7 +640,6 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     // Calculates adjoint sources and L2 norm
     // a_stf: adjoint sources
     // rtf: reciever time function (mod: forward model, true: field measured)
-
     real L2;
     L2 = 0;
     
@@ -635,6 +681,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     std::cout<< "Calculated norm: " << L2 << std::endl;
     //std::cout << a_stf_type << std::endl;
     return L2;
+    
 
 }
 
@@ -889,7 +936,7 @@ void taper2(real **&A, int nz, int nx,
     int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
     int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2){
     // Applying taper function to the matrix A
-
+    
     int taper_l = taper_l2 - taper_l1;
     int taper_r = taper_r1 - taper_r2;
     int taper_t = taper_t2 - taper_t1;
@@ -955,7 +1002,11 @@ void taper2(real **&A, int nz, int nx,
         }
     }
 
+<<<<<<< HEAD
 
+=======
+}
+>>>>>>> cpu_standalone
 
 }
 //parallel function definition ends
