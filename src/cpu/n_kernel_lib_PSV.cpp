@@ -251,7 +251,7 @@ void update_v2(
     int nz1, int nz2, int nx1, int nx2, real dt){
     // update stress from velocity derivatives
 
-    
+    #pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
            // printf("Hello World from thread %d\n", omp_get_thread_num());
