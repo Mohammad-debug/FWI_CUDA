@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jul 10 17:36:55 2021
+# Make data base, printed on Sun Jul 11 00:38:44 2021
 
 # Variables
 
@@ -53,7 +53,7 @@ VTE_VERSION = 6003
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:24509
+JOURNAL_STREAM = 8:33044
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -75,11 +75,11 @@ CXXFLAGS := -fopenmp
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=9be93e3bf9896b4b09c3cd5660e98cf9
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=dc56bd6411725be61e41426e60e9efca
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 1004
+MANAGERPID = 1031
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -93,7 +93,7 @@ PATH = /home/zain/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/zain:@/tmp/.ICE-unix/1343,unix/zain:/tmp/.ICE-unix/1343
+SESSION_MANAGER = local/zain:@/tmp/.ICE-unix/1372,unix/zain:/tmp/.ICE-unix/1372
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -113,7 +113,7 @@ DISABLE_WAYLAND = 1
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=e3afa984-dc9a-402e-9e73-2afdabd4dae5&iid=e3afa984-dc9a-402e-9e73-2afdabd4dae5&sid=e3afa984-dc9a-402e-9e73-2afdabd4dae5","uploadToServer":true}
 # environment
-INVOCATION_ID = 89198788b6cb4481b2c877bcff5c3acf
+INVOCATION_ID = 1861f5a923084089bed123ea2cd9cdd3
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/68/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # makefile (from 'Makefile', line 17)
@@ -141,7 +141,7 @@ CUXX := nvcc
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1274
+SSH_AGENT_PID = 1309
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -193,7 +193,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-88f1296a-b5d1-4a8c-8407-96f3bca53469.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-4a4d9eef-d333-4631-9181-fbf38fc44c16.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -257,11 +257,11 @@ LC_ALL = C
 # environment
 DBUS_STARTER_BUS_TYPE = session
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/15d3facd_3221_4e4e_9257_e49d2697a11d
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/e4ca126f_be94_49ea_9643_6c4a740b70c2
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.80
+GNOME_TERMINAL_SERVICE = :1.82
 # default
 SUFFIXES := 
 # environment
@@ -282,9 +282,9 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 1875
+VSCODE_PID = 1944
 # environment
-DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=9be93e3bf9896b4b09c3cd5660e98cf9
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=dc56bd6411725be61e41426e60e9efca
 # makefile (from 'Makefile', line 8)
 APP_DIR := bin
 # variable set hash-table stats:
@@ -509,6 +509,6 @@ obj/src/h_simulate_PSV.o:
 # strcache performance: lookups = 86 / hit rate = 34%
 # hash-table stats:
 # Load=56/8192=1%, Rehash=0, Collisions=4/86=5%
-# Finished Make data base on Sat Jul 10 17:36:55 2021
+# Finished Make data base on Sun Jul 11 00:38:44 2021
 
  

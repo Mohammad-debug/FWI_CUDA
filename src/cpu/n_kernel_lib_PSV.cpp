@@ -408,10 +408,10 @@ void gard_fwd_storage2(
     // snap_dz, snap_dx: the grid interval for reduced (skipped) storage of tensors
     
     
-    #pragma omp parallel //parallel region starts
+   #pragma omp parallel //parallel region starts
     {
     int jz=0, jx=0; // mapping for storage with intervals
-    //#pragma omp for
+    #pragma omp for 
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
     {
         jz = (iz-snap_z1)/snap_dz;
