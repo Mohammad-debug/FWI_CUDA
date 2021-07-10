@@ -408,7 +408,7 @@ void gard_fwd_storage2(
     
     
    
-    
+ 
     int jz=0, jx=0; // mapping for storage with intervals
    
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
@@ -427,7 +427,8 @@ void gard_fwd_storage2(
             jx++;
             }
         }
-    //parallel region ends
+    //parallel region 
+  
 }
 
 void fwi_grad2(
@@ -592,7 +593,6 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     // Calculates adjoint sources and L2 norm
     // a_stf: adjoint sources
     // rtf: reciever time function (mod: forward model, true: field measured)
-
     real L2;
     L2 = 0;
     
@@ -626,6 +626,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     std::cout<< "Calculated norm: " << L2 << std::endl;
     //std::cout << a_stf_type << std::endl;
     return L2;
+    
 
 }
 
@@ -879,7 +880,8 @@ void taper2(real **&A, int nz, int nx,
     int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
     int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2){
     // Applying taper function to the matrix A
-
+    double time1,time2;
+    time1=omp_get_wtime();
     int taper_l = taper_l2 - taper_l1;
     int taper_r = taper_r1 - taper_r2;
     int taper_t = taper_t2 - taper_t1;
@@ -933,7 +935,8 @@ void taper2(real **&A, int nz, int nx,
         }
     }
 
-
+time2=omp_get_wtime();
+std::cout<<"taper_2 takes "<<time2-time1<<"sequentially \n";
 }
 
 

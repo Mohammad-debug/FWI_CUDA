@@ -53,6 +53,10 @@ void kernel_PSV(int ishot, // shot index
                 int snap_z1, int snap_z2, int snap_x1, int snap_x2, // grid boundaries for fwi
                 int snap_dt, int snap_dz, int snap_dx // time n space grid intervals to save storage
                 ){
+                     //timing start
+        double time1,time2;
+        double net=0.0;
+        time1= omp_get_wtime();
 
     // Computes the forward wave propagation problem in time domain
 
@@ -98,10 +102,7 @@ void kernel_PSV(int ishot, // shot index
         // -----------------------------------------------------------------------
         // STEP 1: UPDATING STRESS TENSOR
         // -----------------------------------------------------------------------
-        //timing start
-        double time1,time2;
-        double net=0.0;
-        time1= omp_get_wtime();
+       
         // 1.1: Spatial velicity derivatives
         vdiff2(dz_z, dx_z, dz_x, dx_x, vz, vx, hc, nz1, nz2, nx1, nx2, dz, dx);
 
@@ -206,5 +207,6 @@ void kernel_PSV(int ishot, // shot index
         }
          
     }
-
+time2=omp_get_wtime();
+std::cout<<"time taken sequentially "<<time2-time1<<"\n";
 }

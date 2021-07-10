@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul  9 20:33:59 2021
+# Make data base, printed on Sat Jul 10 11:12:20 2021
 
 # Variables
 
@@ -53,7 +53,7 @@ VTE_VERSION = 6003
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:27187
+JOURNAL_STREAM = 8:29984
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -75,11 +75,11 @@ CXXFLAGS := -fopenmp
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=1f6743b7daa6337f36f9c48b60e864e5
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=78d6d466d9c5a2c8f7565d1d60e92db2
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 1003
+MANAGERPID = 1006
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -89,11 +89,11 @@ GSETTINGS_SCHEMA_DIR = /snap/code/68/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+PATH = /home/zain/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/zain:@/tmp/.ICE-unix/1348,unix/zain:/tmp/.ICE-unix/1348
+SESSION_MANAGER = local/zain:@/tmp/.ICE-unix/1350,unix/zain:/tmp/.ICE-unix/1350
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -113,7 +113,7 @@ DISABLE_WAYLAND = 1
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=e3afa984-dc9a-402e-9e73-2afdabd4dae5&iid=e3afa984-dc9a-402e-9e73-2afdabd4dae5&sid=e3afa984-dc9a-402e-9e73-2afdabd4dae5","uploadToServer":true}
 # environment
-INVOCATION_ID = ad5decad80a84b00bfe55b204af7b1f1
+INVOCATION_ID = e262bf60ee0e4b70b365e566b915c33d
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/68/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # makefile (from 'Makefile', line 17)
@@ -141,7 +141,7 @@ CUXX := nvcc
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1286
+SSH_AGENT_PID = 1275
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -193,7 +193,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-acc4024c-bb92-4a8e-9730-776f83e066b3.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-bfc453b4-4f6c-4935-812e-78bc0771c2e0.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -235,6 +235,8 @@ CUXXFLAGS :=
 # automatic
 +F = $(notdir $+)
 # environment
+NO_AT_BRIDGE = 1
+# environment
 QT_ACCESSIBILITY = 1
 # makefile (from 'Makefile', line 11)
 INCLUDE_CUDA := 
@@ -257,11 +259,11 @@ LC_ALL = C
 # environment
 DBUS_STARTER_BUS_TYPE = session
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/894d9536_0c9e_4e14_9563_22ac9e5682c0
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/0ee2c00e_611c_4b0e_bc26_ab25bb426c0e
 # automatic
 ^F = $(notdir $^)
 # environment
-GNOME_TERMINAL_SERVICE = :1.79
+GNOME_TERMINAL_SERVICE = :1.80
 # default
 SUFFIXES := 
 # environment
@@ -275,20 +277,20 @@ WINDOWPATH = 2
 # default
 .RECIPEPREFIX := 
 # makefile (from 'Makefile', line 19)
- 
 OBJECTS := obj/src/h_simulate_PSV.o obj/src/h_io_PSV.o obj/src/h_preproc_PSV.o obj/src/h_checkfd_ssg_elastic.o obj/src/h_holbergcoeff.o obj/src/h_main.o obj/src/cpu/n_simulate_PSV.o obj/src/cpu/n_step_length_PSV.o obj/src/cpu/n_PCG_PSV.o obj/src/cpu/n_kernel_lib_PSV.o obj/src/cpu/n_alloc_PSV.o obj/src/cpu/n_kernel_PSV.o  
 # environment
 LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 1939
+VSCODE_PID = 3316
 # environment
-DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=1f6743b7daa6337f36f9c48b60e864e5
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=78d6d466d9c5a2c8f7565d1d60e92db2
 # makefile (from 'Makefile', line 8)
 APP_DIR := bin
 # variable set hash-table stats:
-# Load=138/1024=13%, Rehash=0, Collisions=17/181=9%
+ 
+# Load=139/1024=14%, Rehash=0, Collisions=17/182=9%
 
 # Pattern-specific Variable Values
 
@@ -509,6 +511,6 @@ obj/src/h_simulate_PSV.o:
 # strcache performance: lookups = 86 / hit rate = 34%
 # hash-table stats:
 # Load=56/8192=1%, Rehash=0, Collisions=4/86=5%
-# Finished Make data base on Fri Jul  9 20:33:59 2021
+# Finished Make data base on Sat Jul 10 11:12:20 2021
 
  
