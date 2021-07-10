@@ -25,7 +25,7 @@ void reset_sv2(
     {
     // reset the velocity and stresses to zero
     // generally applicable in the beginning of the time loop
-
+    //#pragma omp parallel for collapse(2)
     for (int iz = 0; iz<nz; iz++){
         for (int ix = 0; ix<nx; ix++){
             // Wave velocity and stress tensor arrays
@@ -50,7 +50,7 @@ void reset_PML_memory2(
     real nz, real nx){
     // reset the velocity and stresses to zero
     // generally applicable in the beginning of the time loop
-
+//#pragma omp parallel for collapse(2)
     for (int iz = 0; iz<nz; iz++){
         for (int ix = 0; ix<nx; ix++){
             // Wave velocity and stress tensor arrays
@@ -69,6 +69,7 @@ void reset_grad_shot2(real **&grad_lam, real **&grad_mu, real **&grad_rho,
 	
 	int jz , jx ;
     jz = 0;
+    //#pragma omp parallel for private(jx,jz)
 	for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
         jx = 0;
         for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
@@ -390,7 +391,7 @@ void surf_mirror(
 }
 
 
-
+//parallelised
 void gard_fwd_storage2(
     // forward storage for full waveform inversion 
     real ***&accu_vz, real ***&accu_vx, 
@@ -524,6 +525,7 @@ void vsrc2(
     switch(stf_type){
     
         case(0): // Displacement stf
+        #pragma omp parallel for 
             for(int is=0; is<nsrc; is++){
                 if (src_shot_to_fire[is] == ishot){
 
@@ -536,6 +538,7 @@ void vsrc2(
             break;
         
         case(1): // velocity stf
+         #pragma omp parallel for 
             for(int is=0; is<nsrc; is++){
                 if (src_shot_to_fire[is] == ishot){
                    // std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it];
