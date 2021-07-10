@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jul 10 12:32:13 2021
+# Make data base, printed on Sat Jul 10 17:36:55 2021
 
 # Variables
 
@@ -53,7 +53,7 @@ VTE_VERSION = 6003
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:29984
+JOURNAL_STREAM = 8:24509
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -75,11 +75,11 @@ CXXFLAGS := -fopenmp
 # environment
 XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=78d6d466d9c5a2c8f7565d1d60e92db2
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus,guid=9be93e3bf9896b4b09c3cd5660e98cf9
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-MANAGERPID = 1006
+MANAGERPID = 1004
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -93,7 +93,7 @@ PATH = /home/zain/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/zain:@/tmp/.ICE-unix/1350,unix/zain:/tmp/.ICE-unix/1350
+SESSION_MANAGER = local/zain:@/tmp/.ICE-unix/1343,unix/zain:/tmp/.ICE-unix/1343
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -113,7 +113,7 @@ DISABLE_WAYLAND = 1
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=e3afa984-dc9a-402e-9e73-2afdabd4dae5&iid=e3afa984-dc9a-402e-9e73-2afdabd4dae5&sid=e3afa984-dc9a-402e-9e73-2afdabd4dae5","uploadToServer":true}
 # environment
-INVOCATION_ID = e262bf60ee0e4b70b365e566b915c33d
+INVOCATION_ID = 89198788b6cb4481b2c877bcff5c3acf
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/68/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # makefile (from 'Makefile', line 17)
@@ -141,7 +141,7 @@ CUXX := nvcc
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1275
+SSH_AGENT_PID = 1274
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -193,7 +193,7 @@ SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-1346c7e4-ede2-42f4-a950-6c47dee981b3.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-88f1296a-b5d1-4a8c-8407-96f3bca53469.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -235,8 +235,6 @@ CUXXFLAGS :=
 # automatic
 +F = $(notdir $+)
 # environment
-NO_AT_BRIDGE = 1
-# environment
 QT_ACCESSIBILITY = 1
 # makefile (from 'Makefile', line 11)
 INCLUDE_CUDA := 
@@ -259,7 +257,7 @@ LC_ALL = C
 # environment
 DBUS_STARTER_BUS_TYPE = session
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/dc956c02_51c3_4609_97b2_0cf3b3dc4a48
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/15d3facd_3221_4e4e_9257_e49d2697a11d
 # automatic
 ^F = $(notdir $^)
 # environment
@@ -276,21 +274,21 @@ WINDOWPATH = 2
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
 # default
 .RECIPEPREFIX := 
+ 
 # makefile (from 'Makefile', line 19)
 OBJECTS := obj/src/h_simulate_PSV.o obj/src/h_io_PSV.o obj/src/h_preproc_PSV.o obj/src/h_checkfd_ssg_elastic.o obj/src/h_holbergcoeff.o obj/src/h_main.o obj/src/cpu/n_simulate_PSV.o obj/src/cpu/n_step_length_PSV.o obj/src/cpu/n_PCG_PSV.o obj/src/cpu/n_kernel_lib_PSV.o obj/src/cpu/n_alloc_PSV.o obj/src/cpu/n_kernel_PSV.o  
- 
 # environment
 LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 3316
+VSCODE_PID = 1875
 # environment
-DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=78d6d466d9c5a2c8f7565d1d60e92db2
+DBUS_STARTER_ADDRESS = unix:path=/run/user/1000/bus,guid=9be93e3bf9896b4b09c3cd5660e98cf9
 # makefile (from 'Makefile', line 8)
 APP_DIR := bin
 # variable set hash-table stats:
-# Load=139/1024=14%, Rehash=0, Collisions=17/182=9%
+# Load=138/1024=13%, Rehash=0, Collisions=17/181=9%
 
 # Pattern-specific Variable Values
 
@@ -511,6 +509,6 @@ obj/src/h_simulate_PSV.o:
 # strcache performance: lookups = 86 / hit rate = 34%
 # hash-table stats:
 # Load=56/8192=1%, Rehash=0, Collisions=4/86=5%
-# Finished Make data base on Sat Jul 10 12:32:13 2021
+# Finished Make data base on Sat Jul 10 17:36:55 2021
 
  

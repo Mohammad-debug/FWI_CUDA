@@ -704,46 +704,57 @@ void energy_weights2(
     int snap_z1, int snap_z2, int snap_x1, int snap_x2){
     // Scale gradients to the Energy Weight
     // We: input as forward energy weight, and output as combined energy weight
-
+    //changes I made 
+   //real temp_max_We=0;
     real max_We = 0;
     real max_w1 = 0, max_w2=0;
     real epsilon_We = 0.005; 
-    for (int iz=snap_z1;iz<snap_z2;iz++){
-        for (int ix=snap_x1;ix<snap_x2;ix++){
-            if (We[iz][ix] > max_w1){
-                max_w1 = We[iz][ix];
+   //#pragma omp parallel 
+       //parallel region begins
+      // #pragma omp parallel 
+       //{
+        #pragma omp parallel for collapse(2)
+            for (int iz=snap_z1;iz<snap_z2;iz++){
+                for (int ix=snap_x1;ix<snap_x2;ix++){
+                    if (We[iz][ix] > max_w1){
+                        max_w1 = We[iz][ix];
+                    }
+                    if (We_adj[iz][ix] > max_w2){
+                        max_w2 = We_adj[iz][ix];
+                    }
+                    We[iz][ix] = sqrt(We[iz][ix]*We_adj[iz][ix]);
+                    
+                }
             }
-            if (We_adj[iz][ix] > max_w2){
-                max_w2 = We_adj[iz][ix];
+   
+            // Finding maximum of the energy weight
+            #pragma omp parallel for collapse(2) reduction(max: max_We)
+            for (int iz=snap_z1;iz<snap_z2;iz++){
+                for (int ix=snap_x1;ix<snap_x2;ix++){
+                    
+                    // Estimate maximum energy weight in CPU
+                    if (We[iz][ix] > max_We){
+                        max_We = We[iz][ix];
+                    }
+
+                }
+            
             }
-            We[iz][ix] = sqrt(We[iz][ix]*We_adj[iz][ix]);
+            //parallel region ends
+
+           // Regularize energy weight to avoid division by zero
+           #pragma parallel omp for collapse(2)
+            for (int iz=snap_z1;iz<snap_z2;iz++){
+            for (int ix=snap_x1;ix<snap_x2;ix++){
+                
+                We[iz][ix] += epsilon_We *  max_We;
+            }
             
         }
-    }
-
-    // Finding maximum of the energy weight
-    for (int iz=snap_z1;iz<snap_z2;iz++){
-        for (int ix=snap_x1;ix<snap_x2;ix++){
-            
-            // Estimate maximum energy weight in CPU
-            if (We[iz][ix] > max_We){
-                max_We = We[iz][ix];
-            }
-
-        }
-       
-    }
-
-    // Regularize energy weight to avoid division by zero
-    for (int iz=snap_z1;iz<snap_z2;iz++){
-        for (int ix=snap_x1;ix<snap_x2;ix++){
-            
-            We[iz][ix] += epsilon_We *  max_We;
-        }
-        
-    }
-    std::cout << "Max. Energy Weight = " << max_We << std::endl;
-    std::cout << "Max. Energy part = " << max_w1<<", "<< max_w2 << std::endl;
+       //}
+        std::cout << "Max. Energy Weight = " << max_We << std::endl;
+        std::cout << "Max. Energy part = " << max_w1<<", "<< max_w2 << std::endl;
+    
 }
 
 
@@ -759,6 +770,7 @@ void scale_grad_E2(
     // Scale gradients to the energy weight
 
     if(mat_av>0){
+        #pragma omp parallel for collapse(2)
         for (int iz=snap_z1;iz<snap_z2;iz++){
             for (int ix=snap_x1;ix<snap_x2;ix++){      
                 grad[iz][ix] += grad_shot[iz][ix] / (We[iz][ix] * mat_av * mat_av);
