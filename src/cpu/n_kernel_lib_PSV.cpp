@@ -880,8 +880,7 @@ void taper2(real **&A, int nz, int nx,
     int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
     int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2){
     // Applying taper function to the matrix A
-    double time1,time2;
-    time1=omp_get_wtime();
+    
     int taper_l = taper_l2 - taper_l1;
     int taper_r = taper_r1 - taper_r2;
     int taper_t = taper_t2 - taper_t1;
@@ -935,8 +934,6 @@ void taper2(real **&A, int nz, int nx,
         }
     }
 
-time2=omp_get_wtime();
-std::cout<<"taper_2 takes "<<time2-time1<<"sequentially \n";
 }
 
 
