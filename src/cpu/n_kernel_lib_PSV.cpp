@@ -100,7 +100,7 @@ void vdiff2(
 
     // 2D space grid
    
-    #pragma omp parallel for collapse(2)
+   // #pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
@@ -135,7 +135,7 @@ void pml_diff2(bool pml_z, bool pml_x,
     // updates PML memory variables for velicity derivatives
     // absorption coefficients are for the whole grids
     // 2D space grid
-    #pragma omp parallel for collapse(2)
+   // #pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
             if (pml_z){
@@ -183,7 +183,7 @@ void update_s2(
     // update stress from velocity derivatives
 
    
-    #pragma omp parallel for collapse(2)
+    //#pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
             
@@ -215,7 +215,7 @@ void sdiff2(
     real dxi = 1.0/dx; real dzi = 1.0/dz; // inverse of dx and dz
 
     // 2D space grid
-    #pragma omp parallel for collapse(2)
+   // #pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
@@ -250,7 +250,7 @@ void update_v2(
     int nz1, int nz2, int nx1, int nx2, real dt){
     // update stress from velocity derivatives
 
-    #pragma omp parallel for collapse(2)
+    //#pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
            // printf("Hello World from thread %d\n", omp_get_thread_num());
@@ -291,7 +291,7 @@ void surf_mirror(
     if (surf[0]>0){
         isurf = surf[0];
         //std::cout << std::endl << "SURF INDEX: "<< isurf<<std::endl;
-        #pragma omp parallel for
+        //#pragma omp parallel for
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -299,7 +299,7 @@ void surf_mirror(
             sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
-            #pragma omp parallel for
+           // #pragma omp parallel for
             for (int sz=1; sz<isurf-nz1+1; sz++){ // mirroring 
                 szx[isurf-sz][ix] = -szx[isurf+sz][ix];
                 szz[isurf-sz][ix] = -szz[isurf+sz][ix];
@@ -315,7 +315,7 @@ void surf_mirror(
     // -----------------------------
     if (surf[1]>0){
         isurf = surf[1];
-        #pragma omp parallel for
+       // #pragma omp parallel for
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -324,7 +324,7 @@ void surf_mirror(
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
 
-            #pragma omp parallel for
+           // #pragma omp parallel for
             for (int sz=1; sz<=nz2-isurf; sz++){ // mirroring 
                 szx[isurf+sz][ix] = -szx[isurf-sz][ix];
                 szz[isurf+sz][ix] = -szz[isurf-sz][ix];
@@ -341,7 +341,7 @@ void surf_mirror(
     // -----------------------------
     if (surf[2]>0){
         isurf = surf[2];
-        #pragma omp parallel for
+      //  #pragma omp parallel for
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -350,7 +350,7 @@ void surf_mirror(
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
 
-            #pragma omp parallel for
+          //  #pragma omp parallel for
             for (int sx=1; sx<isurf-nx1+1; sx++){ // mirroring 
                 szx[iz][isurf-sx] = -szx[iz][isurf+sx];
                 sxx[iz][isurf-sx] = -sxx[iz][isurf+sx];
@@ -368,7 +368,7 @@ void surf_mirror(
     if (surf[3]>0){
         isurf = surf[3];
 
-        #pragma omp parallel for
+      //  #pragma omp parallel for
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -377,7 +377,7 @@ void surf_mirror(
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
 
-            #pragma omp parallel for
+          //  #pragma omp parallel for
             for (int sx=1; sx<=nx2-isurf; sx++){ // mirroring 
                 szx[iz][isurf+sx] = -szx[iz][isurf-sx];
                 sxx[iz][isurf+sx] = -sxx[iz][isurf-sx];
@@ -408,10 +408,10 @@ void gard_fwd_storage2(
     // snap_dz, snap_dx: the grid interval for reduced (skipped) storage of tensors
     
     
-    #pragma omp parallel //parallel region starts
-    {
+    //#pragma omp parallel //parallel region starts
+    //{
     int jz=0, jx=0; // mapping for storage with intervals
-    #pragma omp for
+    //#pragma omp for
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
     {
         jz = (iz-snap_z1)/snap_dz;
@@ -428,7 +428,7 @@ void gard_fwd_storage2(
             jx++;
             }
         }
-    }//parallel region ends
+   // }//parallel region ends
 }
 
 void fwi_grad2(
@@ -601,7 +601,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         // RTF type is displacement
         //parallel region starts
         
-            #pragma omp parallel for collapse(2) reduction(+: L2)
+            //#pragma omp parallel for collapse(2) reduction(+: L2)
             for( int is=0; is<nseis; is++){ // for all seismograms
                 for(int it=0;it<nt;it++){ // for all time steps
 
@@ -883,6 +883,7 @@ void mat_grid2(real **&lam, real **&mu, real **&rho,
 }
 
 
+//parallel function definition
 void taper2(real **&A, int nz, int nx,  
     int snap_z1, int snap_z2, int snap_x1, int snap_x2,
     int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
@@ -896,53 +897,66 @@ void taper2(real **&A, int nz, int nx,
 
 
     // Horizontal taper
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            
-            if (ix>=snap_x1 && ix<taper_l1){
-                A[iz][ix] *= 0.0;
-            }
+   //#pragma omp parallel for collapse(2) //shared(snap_x1,taper_l1,taper_l2,taper_l,taper_r2,taper_r1)
+        for (int iz=0;iz<nz;iz++){
+            for (int ix=0;ix<nx;ix++){
+                
+                if (ix>=snap_x1 && ix<taper_l1){
+                    A[iz][ix] *= 0.0;
+                    //printf("loop1 cond1 x1=%d l1=%d A[%d][%d]=%f \n",snap_x1,taper_l1,iz,ix,A[iz][ix]);
+                }
 
-            else if (ix>=taper_l1 && ix<taper_l2){
-                A[iz][ix] *= 0.5*(1.0-cos(PI*(ix-taper_l1)/taper_l));
-            }
+                else if (ix>=taper_l1 && ix<taper_l2){
+                    A[iz][ix] *= 0.5*(1.0-cos(PI*(ix-taper_l1)/taper_l));
+                    //printf("loop1 cond2 l1=%d l2=%d taper_l=%d A[%d][%d]=%f \n",taper_l1,taper_l2,taper_l,iz,ix,A[iz][ix]);
+                }
 
-            else if (ix>taper_r2 && ix<taper_r1){
-                A[iz][ix] *= 0.5*(1.0-cos(PI*(taper_r1-ix)/taper_r));
-            }
+                else if (ix>taper_r2 && ix<taper_r1){
+                    A[iz][ix] *= 0.5*(1.0-cos(PI*(taper_r1-ix)/taper_r));
+                    //printf(" loop1 cond3 r2=%d r1=%d A[%d][%d]=%f \n",taper_r2,taper_r1,iz,ix,A[iz][ix]);
+                }
 
-            else if(ix>=taper_r1 && ix<=snap_x2){
-                A[iz][ix] *= 0.0;
+                else if(ix>=taper_r1 && ix<=snap_x2){
+                    A[iz][ix] *= 0.0;
+                    //printf(" loop 1 cond4 r1=%d x2=%d A[%d][%d]=%f \n",taper_r1,snap_x2,iz,ix,A[iz][ix]);
+                }
+        
             }
-
         }
-    }
-
-
-    // Vertical taper
+    
+//#pragma omp parallel for collapse(2)
     for (int ix=0;ix<nx;ix++){
         for (int iz=0;iz<nz;iz++){
 
             if (iz>=snap_z1 && iz<taper_t1){
                 A[iz][ix] *= 0.0;
+                  //printf("loop2 cond1 z1=%d t1=%d A[%d][%d]=%f \n",snap_z1,taper_t1,iz,ix,A[iz][ix]);
+                
+
             }
 
             else if (iz>=taper_t1 && iz<taper_t2){
                 A[iz][ix] *= 0.5*(1.0-cos(PI*(iz-taper_t1)/taper_t));
+                //printf("loop2 cond2 t1=%d t2=%d A[%d][%d]=%f \n",taper_t1,taper_t2,iz,ix,A[iz][ix]);
+
             }
 
             else if (iz>taper_b2 && iz<taper_b1){
                 A[iz][ix] *= 0.5*(1.0-cos(PI*(taper_b1-iz)/taper_b));
+               // printf("loop 2 cond3 b2=%d b1=%d A[%d][%d]=%f \n",taper_b1,taper_b1,iz,ix,A[iz][ix]);
+
             }
 
             else if(iz>=taper_b1 && iz<=snap_z2){
                 A[iz][ix] *= 0.0;
+                 //printf("loop 2 cond4 b1=%d z2=%d A[%d][%d]=%f \n",taper_b1,snap_z2,iz,ix,A[iz][ix]);
             }
 
         }
     }
 
 
-}
 
+}
+//parallel function definition ends
 
