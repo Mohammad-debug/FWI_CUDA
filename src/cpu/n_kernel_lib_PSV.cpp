@@ -881,7 +881,7 @@ void taper2(real **&A, int nz, int nx,
     int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
     int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2){
     // Applying taper function to the matrix A
-    
+
     int taper_l = taper_l2 - taper_l1;
     int taper_r = taper_r1 - taper_r2;
     int taper_t = taper_t2 - taper_t1;
@@ -889,52 +889,65 @@ void taper2(real **&A, int nz, int nx,
 
 
     // Horizontal taper
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            
-            if (ix>=snap_x1 && ix<taper_l1){
-                A[iz][ix] *= 0.0;
-            }
+   #pragma omp parallel for collapse(2) //shared(snap_x1,taper_l1,taper_l2,taper_l,taper_r2,taper_r1)
+        for (int iz=0;iz<nz;iz++){
+            for (int ix=0;ix<nx;ix++){
+                
+                if (ix>=snap_x1 && ix<taper_l1){
+                    A[iz][ix] *= 0.0;
+                    //printf("loop1 cond1 x1=%d l1=%d A[%d][%d]=%f \n",snap_x1,taper_l1,iz,ix,A[iz][ix]);
+                }
 
-            else if (ix>=taper_l1 && ix<taper_l2){
-                A[iz][ix] *= 0.5*(1.0-cos(PI*(ix-taper_l1)/taper_l));
-            }
+                else if (ix>=taper_l1 && ix<taper_l2){
+                    A[iz][ix] *= 0.5*(1.0-cos(PI*(ix-taper_l1)/taper_l));
+                    //printf("loop1 cond2 l1=%d l2=%d taper_l=%d A[%d][%d]=%f \n",taper_l1,taper_l2,taper_l,iz,ix,A[iz][ix]);
+                }
 
-            else if (ix>taper_r2 && ix<taper_r1){
-                A[iz][ix] *= 0.5*(1.0-cos(PI*(taper_r1-ix)/taper_r));
-            }
+                else if (ix>taper_r2 && ix<taper_r1){
+                    A[iz][ix] *= 0.5*(1.0-cos(PI*(taper_r1-ix)/taper_r));
+                    //printf(" loop1 cond3 r2=%d r1=%d A[%d][%d]=%f \n",taper_r2,taper_r1,iz,ix,A[iz][ix]);
+                }
 
-            else if(ix>=taper_r1 && ix<=snap_x2){
-                A[iz][ix] *= 0.0;
+                else if(ix>=taper_r1 && ix<=snap_x2){
+                    A[iz][ix] *= 0.0;
+                    //printf(" loop 1 cond4 r1=%d x2=%d A[%d][%d]=%f \n",taper_r1,snap_x2,iz,ix,A[iz][ix]);
+                }
+        
             }
-
         }
-    }
-
-
-    // Vertical taper
+    
+#pragma omp parallel for collapse(2)
     for (int ix=0;ix<nx;ix++){
         for (int iz=0;iz<nz;iz++){
 
             if (iz>=snap_z1 && iz<taper_t1){
                 A[iz][ix] *= 0.0;
+                  //printf("loop2 cond1 z1=%d t1=%d A[%d][%d]=%f \n",snap_z1,taper_t1,iz,ix,A[iz][ix]);
+                
+
             }
 
             else if (iz>=taper_t1 && iz<taper_t2){
                 A[iz][ix] *= 0.5*(1.0-cos(PI*(iz-taper_t1)/taper_t));
+                //printf("loop2 cond2 t1=%d t2=%d A[%d][%d]=%f \n",taper_t1,taper_t2,iz,ix,A[iz][ix]);
+
             }
 
             else if (iz>taper_b2 && iz<taper_b1){
                 A[iz][ix] *= 0.5*(1.0-cos(PI*(taper_b1-iz)/taper_b));
+               // printf("loop 2 cond3 b2=%d b1=%d A[%d][%d]=%f \n",taper_b1,taper_b1,iz,ix,A[iz][ix]);
+
             }
 
             else if(iz>=taper_b1 && iz<=snap_z2){
                 A[iz][ix] *= 0.0;
+                 //printf("loop 2 cond4 b1=%d z2=%d A[%d][%d]=%f \n",taper_b1,snap_z2,iz,ix,A[iz][ix]);
             }
 
         }
     }
 
+
+
 }
-
-
+//parallel function definition ends
