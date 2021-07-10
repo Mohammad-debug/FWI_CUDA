@@ -826,6 +826,8 @@ void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat,
     }
     //std::cout << "Mat update: SL = " <<step_length <<", new = " << mat_av <<", old = " << mat_av_old <<", grad = " << mat_av_grad << std::endl;;
 }
+
+//parallelised
 void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
         real **&lam, real **&mu,  real **&rho, int nz, int nx){
 
@@ -891,7 +893,7 @@ void mat_av2(
     C_rho = C_rho/((nz-1)*(nx-1));
 
 }
-
+//parallelised
 void mat_grid2(real **&lam, real **&mu, real **&rho, 
     real lam_sc, real mu_sc, real rho_sc, int nz, int nx){
     // Scalar material value is distributed over the grid
@@ -906,7 +908,7 @@ void mat_grid2(real **&lam, real **&mu, real **&rho,
     }
 }
 
-
+//parallelised
 void taper2(real **&A, int nz, int nx,  
     int snap_z1, int snap_z2, int snap_x1, int snap_x2,
     int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
