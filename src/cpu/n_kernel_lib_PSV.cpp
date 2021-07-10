@@ -216,7 +216,7 @@ void sdiff2(
     real dxi = 1.0/dx; real dzi = 1.0/dz; // inverse of dx and dz
 
     // 2D space grid
-   // #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
