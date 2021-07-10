@@ -522,6 +522,7 @@ void vsrc2(
     // it: time step index
     
     //std::cout << "src: " << stf_type <<std::endl;
+   
     switch(stf_type){
     
         case(0): // Displacement stf
@@ -656,6 +657,7 @@ void interpol_grad2(
     // FOR LOOP SET 1
     // -----------------------------------
     jz = 0; 
+    //#pragma omp parallel for private(jx,jz)
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
         //std::cout<< "[iz: " << iz << ", jz: " << jz << "] ::";
         // Fist filling only the snap grids and along the x-axis
@@ -676,6 +678,7 @@ void interpol_grad2(
         for(int iz=snap_z1; iz<snap_z2; iz+=snap_dz){
             for(int ix=snap_x1; ix<snap_x2; ix+=snap_dx){
                 temp_grad = (grad[iz][ix+snap_dx] - grad[iz][ix])/snap_dx;
+              // #pragma omp parallel for //2nd loop being parallelised
                 for(int kx=1;kx<snap_dx;kx++){
                     grad[iz][ix+kx] = grad[iz][ix] + temp_grad*kx;
                 }
@@ -689,6 +692,7 @@ void interpol_grad2(
         for(int iz=snap_z1; iz<snap_z2; iz+=snap_dz){
             for(int ix=snap_x1; ix<snap_x2; ix++){
                 temp_grad = (grad[iz+snap_dz][ix] - grad[iz][ix])/snap_dz;
+                //#pragma omp parallel for//3rd loop being parallelused
                 for(int kz=1;kz<snap_dz;kz++){
                 
                     grad[iz+kz][ix] = grad[iz][ix] + temp_grad*kz;
@@ -699,7 +703,7 @@ void interpol_grad2(
     }   
 }
 
-
+//parallelised
 void energy_weights2(
     // Energy Weights (forward and reverse)
     real **&We, real **&We_adj, 
@@ -760,7 +764,7 @@ void energy_weights2(
     
 }
 
-
+//parallelised
 void scale_grad_E2(
     // Gradients, material average and energy weights
     real **&grad, real **&grad_shot, 
@@ -805,7 +809,7 @@ void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat,
     //std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << std::endl;
 
     // Material update to whole array
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for collapse(2) reduction(+: mat_av,mat_av_old,mat_av_grad)
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
             
