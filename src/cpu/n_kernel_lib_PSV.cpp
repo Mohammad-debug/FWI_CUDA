@@ -100,7 +100,8 @@ void vdiff2(
 
     // 2D space grid
    
-    #pragma omp parallel for collapse(2)
+    //
+    //#pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
@@ -135,7 +136,7 @@ void pml_diff2(bool pml_z, bool pml_x,
     // updates PML memory variables for velicity derivatives
     // absorption coefficients are for the whole grids
     // 2D space grid
-    #pragma omp parallel for collapse(2)
+   // #pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
             if (pml_z){
@@ -183,7 +184,7 @@ void update_s2(
     // update stress from velocity derivatives
 
    
-    #pragma omp parallel for collapse(2)
+   // #pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
             
@@ -215,7 +216,7 @@ void sdiff2(
     real dxi = 1.0/dx; real dzi = 1.0/dz; // inverse of dx and dz
 
     // 2D space grid
-    #pragma omp parallel for collapse(2)
+   // #pragma omp parallel for collapse(2)
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
