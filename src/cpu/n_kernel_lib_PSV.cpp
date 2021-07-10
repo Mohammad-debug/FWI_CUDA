@@ -789,6 +789,7 @@ void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat,
 
     // Scale factors for gradients
     real grad_max = 0.0, mat_array_max = 0.0, step_factor;
+    #pragma omp parallel for collapse(2) reduction(max: grad_max,mat_array_max)
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
             
@@ -801,6 +802,7 @@ void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat,
     //std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << std::endl;
 
     // Material update to whole array
+    #pragma omp parallel for collapse(2)
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
             
