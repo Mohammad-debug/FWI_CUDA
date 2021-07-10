@@ -407,10 +407,10 @@ void gard_fwd_storage2(
     // snap_dz, snap_dx: the grid interval for reduced (skipped) storage of tensors
     
     
-   
- 
+    #pragma omp parallel //parallel region starts
+    {
     int jz=0, jx=0; // mapping for storage with intervals
-   
+    //#pragma omp for
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
     {
         jz = (iz-snap_z1)/snap_dz;
@@ -427,8 +427,7 @@ void gard_fwd_storage2(
             jx++;
             }
         }
-    //parallel region 
-  
+   }//parallel region ends
 }
 
 void fwi_grad2(
@@ -601,7 +600,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         // RTF type is displacement
         //parallel region starts
 
-           #pragma omp parallel for reduction(+: L2)
+           #pragma omp parallel for collapse(2) reduction(+: L2)
             for( int is=0; is<nseis; is++){ // for all seismograms
                 for(int it=0;it<nt;it++){ // for all time steps
 
