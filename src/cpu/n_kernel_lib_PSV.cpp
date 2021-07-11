@@ -63,28 +63,34 @@ void reset_PML_memory2(
 
 }
 
+
 void reset_grad_shot2(real **&grad_lam, real **&grad_mu, real **&grad_rho,
 					int snap_z1, int snap_z2, int snap_x1, int snap_x2,
-					int snap_dz, int snap_dx){
+					int snap_dz, int snap_dx)
+{
 	
 	int jz , jx ;
     jz = 0;
-    //#pragma omp parallel for private(jx,jz)
-	for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
+    #pragma omp parallel for private(jx,jz) 
+	for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
+    {
+        jz=(iz-snap_z1)/snap_dz;
         jx = 0;
-        for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
+       #pragma omp task
+        {
+            for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx)
+            {
 
-            grad_lam[jz][jx] = 0.0; 
-            grad_mu[jz][jx]  = 0.0; 
-            grad_rho[jz][jx] = 0.0; 
-			
-			jx++;
+                grad_lam[jz][jx] = 0.0; 
+                grad_mu[jz][jx]  = 0.0; 
+                grad_rho[jz][jx] = 0.0; 
+                
+                jx++;
+            }
         }
-		
 		jz++;
     }
 }
-
 
 void vdiff2(
     // spatial velocity derivatives
@@ -409,10 +415,10 @@ void gard_fwd_storage2(
     // snap_dz, snap_dx: the grid interval for reduced (skipped) storage of tensors
     
     
-   #pragma omp parallel //parallel region starts
+  // #pragma omp parallel //parallel region starts
     {
     int jz=0, jx=0; // mapping for storage with intervals
-    #pragma omp for 
+    #pragma omp parallel for private (jz,jx)
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz)
     {
         jz = (iz-snap_z1)/snap_dz;
