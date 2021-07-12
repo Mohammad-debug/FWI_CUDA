@@ -1,0 +1,50 @@
+python3 ./scripts/pre_proc.py
+Plotting initial materials
+Metaint:  [   0    0    1    1    0    1    1    1 3000  401  201    0 2999   20
+  380   20  180    3    1    1   38   74  362  326   28   44  172  156
+    3  181    3    1    0    2    1    1    1]
+Metafloat:  [1.00e-04 4.00e-01 4.00e-01 2.00e+00 2.00e+03 1.00e-03 1.00e+00 5.00e+01
+ 4.53e+09 7.35e+08 1.50e+03]
+bin/seis_fwi 
+Reading input parameters <INT>.
+Allocating memory for the variables.
+Receivers allocated
+Reading input parameters <INTEGER ARAYS>.
+The read data is: 
+The data are: 200, 20, 0, 180
+Reading input parameters <FLOAT>.
+The read data is: 
+The data are: 4.53e+09, 7.35e+08, 1500
+Reading field measurements <FLOAT>.
+Cannot open output files.Cannot open output files.Cannot open output files.Reading material grids <FLOAT>.
+LAM <FLOAT>.
+MU <FLOAT>.
+RHO <FLOAT>.
+Input parameters loaded.
+nz = 401, nx = 201, dz = 0.4, dt = 0.0001, freq = 50, npml = 10
+DHSTAB = 0.583333, DH = 0.4
+ The simulation will be stable. DTSTAB = 0.00014128 DT = 0.0001
+
+----------------------- ABSORBING BOUNDARY ------------------------
+ Width (FW) of absorbing frame should be at least 10 gridpoints.
+ You have specified a width of 10 gridpoints.
+
+THE COMPUTATION STARTS IN CPU
+**OpenMP running with 6 threads**
+Full Waveform Inversion....
+
+
+==================================
+FWI: Iteration 0
+==================================
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 33.6465
+Calculated norm : 3.22231e-07
+L2 NORM: 1, 3.22231e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999

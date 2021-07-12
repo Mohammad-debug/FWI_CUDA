@@ -244,7 +244,7 @@ void sdiff2(
     // updates PML memory variables for stress derivatives
 //}
 
-
+//parallelised
 void update_v2(
     // wave arguments (velocity) & Energy weights
     real **&vz, real **&vx, 
