@@ -300,20 +300,26 @@ void surf_mirror(
         isurf = surf[0];
         //std::cout << std::endl << "SURF INDEX: "<< isurf<<std::endl;
         
-        for(int ix=nx1; ix<nx2; ix++){
-            // Denise manual  page 13
-            szz[isurf][ix] = 0.0;
-            szx[isurf][ix] = 0.0;
-            sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
-                                + mu[isurf][ix] * mu[isurf][ix])
-                                / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
-           
-            for (int sz=1; sz<isurf-nz1+1; sz++){ // mirroring 
-                szx[isurf-sz][ix] = -szx[isurf+sz][ix];
-                szz[isurf-sz][ix] = -szz[isurf+sz][ix];
-                //std::cout<<"surf: "<< isurf-sz <<", " << isurf+sz <<", ::" ;
+        
+            #pragma omp parallel for
+            for(int ix=nx1; ix<nx2; ix++){
+                // Denise manual  page 13
+                szz[isurf][ix] = 0.0;
+                szx[isurf][ix] = 0.0;
+                #pragma omp task
+                {sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
+                                    + mu[isurf][ix] * mu[isurf][ix])
+                                    / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
+                }
+            #pragma omp task
+                 {   for (int sz=1; sz<isurf-nz1+1; sz++){ // mirroring 
+                        szx[isurf-sz][ix] = -szx[isurf+sz][ix];
+                        szz[isurf-sz][ix] = -szz[isurf+sz][ix];
+                    //std::cout<<"surf: "<< isurf-sz <<", " << isurf+sz <<", ::" ;
+                 }
+                }
             }
-        }
+         
         
 
     }
@@ -323,18 +329,20 @@ void surf_mirror(
     // -----------------------------
     if (surf[1]>0){
         isurf = surf[1];
-       
+       #pragma omp for
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
             szx[isurf][ix] = 0.0;
-            sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
+            #pragma omp task
+            {sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
                                 + mu[isurf][ix] * mu[isurf][ix])
-                                / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
-
-            for (int sz=1; sz<=nz2-isurf; sz++){ // mirroring 
+                                / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);}
+            #pragma omp task
+            {for (int sz=1; sz<=nz2-isurf; sz++){ // mirroring 
                 szx[isurf+sz][ix] = -szx[isurf-sz][ix];
                 szz[isurf+sz][ix] = -szz[isurf-sz][ix];
+             }  
                 
                 
             }
@@ -348,19 +356,22 @@ void surf_mirror(
     // -----------------------------
     if (surf[2]>0){
         isurf = surf[2];
-        
+        #pragma omp for
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
             szx[iz][isurf] = 0.0;
-            szz[iz][isurf] = 4.0 * dt * vz_z[iz][isurf] *(lam[iz][isurf] * mu[iz][isurf] 
+            #pragma omp task
+            {  szz[iz][isurf] = 4.0 * dt * vz_z[iz][isurf] *(lam[iz][isurf] * mu[iz][isurf] 
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
-
-            
-            for (int sx=1; sx<isurf-nx1+1; sx++){ // mirroring 
-                szx[iz][isurf-sx] = -szx[iz][isurf+sx];
-                sxx[iz][isurf-sx] = -sxx[iz][isurf+sx];
+            }
+            #pragma omp task
+            {
+                for (int sx=1; sx<isurf-nx1+1; sx++){ // mirroring 
+                    szx[iz][isurf-sx] = -szx[iz][isurf+sx];
+                    sxx[iz][isurf-sx] = -sxx[iz][isurf+sx];
+                }
             }
         }
         
@@ -375,19 +386,23 @@ void surf_mirror(
     if (surf[3]>0){
         isurf = surf[3];
 
-       
+       #pragma omp for
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
             szx[iz][isurf] = 0.0;
+            #pragma omp task
+            {
             szz[iz][isurf] = 4.0 * dt * vz_z[iz][isurf] *(lam[iz][isurf] * mu[iz][isurf] 
-                                + mu[iz][isurf] * mu[iz][isurf])
-                                / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
-
-        
-            for (int sx=1; sx<=nx2-isurf; sx++){ // mirroring 
-                szx[iz][isurf+sx] = -szx[iz][isurf-sx];
-                sxx[iz][isurf+sx] = -sxx[iz][isurf-sx];
+                                    + mu[iz][isurf] * mu[iz][isurf])
+                                    / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
+            }
+            #pragma omp task
+            {
+                for (int sx=1; sx<=nx2-isurf; sx++){ // mirroring 
+                    szx[iz][isurf+sx] = -szx[iz][isurf-sx];
+                    sxx[iz][isurf+sx] = -sxx[iz][isurf-sx];
+                }
             }
         }
         
@@ -415,7 +430,7 @@ void gard_fwd_storage2(
     // snap_dz, snap_dx: the grid interval for reduced (skipped) storage of tensors
     
     
-  // #pragma omp parallel //parallel region starts
+  //parallel region starts
     {
     int jz=0, jx=0; // mapping for storage with intervals
     #pragma omp parallel for private (jz,jx)
@@ -437,6 +452,8 @@ void gard_fwd_storage2(
         }
    }//parallel region ends
 }
+
+//parallelised
 void fwi_grad2(
     // Gradient of the materials
     real **&grad_lam, real **&grad_mu, real **&grad_rho,
