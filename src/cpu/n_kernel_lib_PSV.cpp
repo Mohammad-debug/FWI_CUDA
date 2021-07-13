@@ -437,7 +437,6 @@ void gard_fwd_storage2(
         }
    }//parallel region ends
 }
-
 void fwi_grad2(
     // Gradient of the materials
     real **&grad_lam, real **&grad_mu, real **&grad_rho,
@@ -458,7 +457,9 @@ void fwi_grad2(
     int jz, jx; // mapping for storage with intervals
     
     jz = 0; 
+    #pragma omp parallel for private(jz,jx,s1,s2,s3,s4)
     for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
+        jz=(iz-snap_z1)/(snap_dz);
         jx = 0;
         for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
             
@@ -476,7 +477,7 @@ void fwi_grad2(
             grad_lam[jz][jx] += snap_dt * dt * s1 ; 
             grad_mu[jz][jx]  += snap_dt * dt  *(s3 + s1 + s2) ;
             grad_rho[jz][jx] += snap_dt * dt * s4 ;
-            
+                
             /*
             lm = lam[iz][ix] + 2.0 *mu[iz][ix];
             grad_rho[jz][jx] -=
@@ -505,9 +506,10 @@ void fwi_grad2(
 			jx++;
         }
 		
-		jz++;
+		//jz++;
     }
 }
+
 //parallelised
 void vsrc2(
     // Velocity tensor arrays
@@ -867,18 +869,19 @@ void mat_av2(
     for (int iz=0; iz<nz-1; iz++){
         for (int ix=0; ix<nx-1; ix++){
             // Harmonic average for mu
-          
+        // #pragma omp task   
+        {
             mu_zx[iz][ix]= 4.0/((1.0/mu[iz][ix])+(1.0/mu[iz][ix+1])
                 +(1.0/mu[iz+1][ix])+(1.0/mu[iz+1][ix+1])); 
             
             if((mu[iz][ix]==0.0)||(mu[iz][ix+1]==0.0)||(mu[iz+1][ix]==0.0)||(mu[iz+1][ix+1]==0.0)){ 
                 mu_zx[iz][ix]=0.0;
                 }
-        
+        }
             // Arithmatic average of rho
             // the averages are inversed for computational efficiency
-         
-
+         //#pragma omp task
+        {
                rho_zp[iz][ix] = 1.0/(0.5*(rho[iz][ix]+rho[iz+1][ix]));
                 rho_xp[iz][ix] = 1.0/(0.5*(rho[iz][ix]+rho[iz][ix+1]));
             
@@ -889,7 +892,7 @@ void mat_av2(
                 if((rho[iz][ix]<1e-4)&&(rho[iz][ix+1]<1e-4)){
                 rho_zp[iz][ix] = 0.0;
                 } 
-            
+        }
             // Scalar averages
            
             C_lam += lam[iz][ix];
