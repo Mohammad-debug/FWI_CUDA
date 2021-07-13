@@ -63,7 +63,7 @@ void reset_PML_memory2(
 
 }
 
-
+//parallelised
 void reset_grad_shot2(real **&grad_lam, real **&grad_mu, real **&grad_rho,
 					int snap_z1, int snap_z2, int snap_x1, int snap_x2,
 					int snap_dz, int snap_dx)
@@ -508,7 +508,7 @@ void fwi_grad2(
 		jz++;
     }
 }
-
+//parallelised
 void vsrc2(
     // Velocity tensor arrays
     real **&vz, real **&vx, 
@@ -559,7 +559,7 @@ void vsrc2(
     }
     
 }
-
+//paralellised
 void urec2(int rtf_type,
     // reciever time functions
     real **&rtf_uz, real **&rtf_ux, 
@@ -596,7 +596,7 @@ void urec2(int rtf_type,
     rtf_type = 0; // Displacement rtf computed
 }
 
-
+//parallelised
 real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux, 
             int rtf_type, real ***&rtf_uz_true, real ***&rtf_ux_true, 
             real **&rtf_uz_mod, real **&rtf_ux_mod,             
@@ -794,7 +794,7 @@ void scale_grad_E2(
 
 
 }
-
+//parallelised but can be further done
 void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat, 
             real mat_max, real mat_min, real step_length, int nz, int nx){
     // update gradients to the material
@@ -863,29 +863,35 @@ void mat_av2(
     // Arithmatic 1d average of rho
 
     C_lam = 0.0; C_mu = 0.0; C_rho = 0.0;
+    #pragma omp parallel for collapse(2) reduction(+:C_lam,C_mu,C_rho)
     for (int iz=0; iz<nz-1; iz++){
         for (int ix=0; ix<nx-1; ix++){
             // Harmonic average for mu
-            mu_zx[iz][ix]= 4.0/((1.0/mu[iz][ix])+(1.0/mu[iz][ix+1])
-            +(1.0/mu[iz+1][ix])+(1.0/mu[iz+1][ix+1])); 
           
+            mu_zx[iz][ix]= 4.0/((1.0/mu[iz][ix])+(1.0/mu[iz][ix+1])
+                +(1.0/mu[iz+1][ix])+(1.0/mu[iz+1][ix+1])); 
+            
             if((mu[iz][ix]==0.0)||(mu[iz][ix+1]==0.0)||(mu[iz+1][ix]==0.0)||(mu[iz+1][ix+1]==0.0)){ 
                 mu_zx[iz][ix]=0.0;
-            }
-            
+                }
+        
             // Arithmatic average of rho
             // the averages are inversed for computational efficiency
-            rho_zp[iz][ix] = 1.0/(0.5*(rho[iz][ix]+rho[iz+1][ix]));
-            rho_xp[iz][ix] = 1.0/(0.5*(rho[iz][ix]+rho[iz][ix+1]));
-          
-            if((rho[iz][ix]<1e-4)&&(rho[iz+1][ix]<1e-4)){
+         
+
+               rho_zp[iz][ix] = 1.0/(0.5*(rho[iz][ix]+rho[iz+1][ix]));
+                rho_xp[iz][ix] = 1.0/(0.5*(rho[iz][ix]+rho[iz][ix+1]));
+            
+                if((rho[iz][ix]<1e-4)&&(rho[iz+1][ix]<1e-4)){
+                    rho_zp[iz][ix] = 0.0;
+                }
+            
+                if((rho[iz][ix]<1e-4)&&(rho[iz][ix+1]<1e-4)){
                 rho_zp[iz][ix] = 0.0;
-            }
-          
-            if((rho[iz][ix]<1e-4)&&(rho[iz][ix+1]<1e-4)){
-              rho_zp[iz][ix] = 0.0;
-            } 
+                } 
+            
             // Scalar averages
+           
             C_lam += lam[iz][ix];
             C_mu += mu[iz][ix];
             C_rho += rho[iz][ix];
