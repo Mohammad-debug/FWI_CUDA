@@ -668,9 +668,9 @@ __global__ void cuda_fwi_grad2_GPU(
             // The time derivatives of the velocity may have to be computed differently
             s4 = ux[iz * nx + ix] * accu_vx[tf * snap_nz * snap_nx + jz * snap_nx + jx] + uz[iz * nx + ix] * accu_vz[tf * snap_nz * snap_nx + jz * snap_nx + jx];
 
-            grad_lam[jz * snap_nx + jx] += snap_dt * dt * s1;
-            grad_mu[jz * snap_nx + jx] += snap_dt * dt * (s3 + s1 + s2);
-            grad_rho[jz * snap_nx + jx] -= snap_dt * dt * s4;
+            grad_lam[jz * nx + jx] += snap_dt * dt * s1;
+            grad_mu[jz * nx + jx] += snap_dt * dt * (s3 + s1 + s2);
+            grad_rho[jz * nx + jx] -= snap_dt * dt * s4;
         }
     }
 }

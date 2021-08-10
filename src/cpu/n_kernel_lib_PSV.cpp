@@ -792,11 +792,14 @@ void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat,
     }
     //std::cout << "Mat update: SL = " <<step_length <<", new = " << mat_av <<", old = " << mat_av_old <<", grad = " << mat_av_grad << std::endl;;
 }
+
+
 void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
         real **&lam, real **&mu,  real **&rho, int nz, int nx){
 
     // Copy material values for storage
     for (int iz=0;iz<nz;iz++){
+        
         for (int ix=0;ix<nx;ix++){
             
             lam_copy[iz][ix] = lam[iz][ix];
