@@ -443,7 +443,7 @@ __global__ void cuda_surf_mirror_GPU(
     // Medium arguments
     real *lam, real *mu,
     // surface indices for four directions(0.top, 1.bottom, 2.left, 3.right)
-    int *&surf,
+    int *surf,
     // time space grids
     int nz1, int nz2, int nx1, int nx2, real dt, int nx)
 {
