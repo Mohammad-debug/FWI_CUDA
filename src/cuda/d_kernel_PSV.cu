@@ -106,7 +106,7 @@ void kernel_PSV_GPU(int ishot,              // shot index
         //timing start
         clock_t time1,time2;
         double net=0.0;
-        time1=clock();
+       // time1=clock();
         // 1.1: Spatial velicity derivatives
         vdiff2_GPU(dz_z, dx_z, dz_x, dx_x, vz, vx, hc, nz1, nz2, nx1, nx2, dz, dx, nx);
 
@@ -153,10 +153,10 @@ void kernel_PSV_GPU(int ishot,              // shot index
         // 2.3: Update velocity tensor
         update_v2_GPU(vz, vx, uz, ux, We, dz_z, dx_z, dz_x, dx_x, rho_zp, rho_xp, nz1, nz2, nx1, nx2, dt, nx);
         
-        time2=clock();
-        net =(time2-time1)/ (double)CLOCKS_PER_SEC;
-        printf("\n timing GPU  = %f seconds end\n", net);
-        exit(0);
+        // time2=clock();
+        // net =(time2-time1)/ (double)CLOCKS_PER_SEC;
+        // printf("\n timing GPU  = %f seconds end\n", net);
+        // exit(0);
 
         // -----------------------------------------------------------------------
 

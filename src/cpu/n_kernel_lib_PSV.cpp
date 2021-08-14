@@ -756,43 +756,53 @@ void scale_grad_E2(
 
 
 }
-
-void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat, 
-            real mat_max, real mat_min, real step_length, int nz, int nx){
+void update_mat2(real **&mat, real **&mat_old, real **&grad_mat,
+                 real mat_max, real mat_min, real step_length, int nz, int nx)
+{
     // update gradients to the material
-    real mat_av=0, mat_av_old=0, mat_av_grad=0;
+    real mat_av = 0, mat_av_old = 0, mat_av_grad = 0;
 
     // Scale factors for gradients
     real grad_max = 0.0, mat_array_max = 0.0, step_factor;
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            
-            grad_max = std::max(grad_max, abs(grad_mat[iz][ix]));
-            mat_array_max = std::max(mat_max, abs(mat_old[iz][ix]));
+    for (int iz = 0; iz < nz; iz++)
+    {
+        for (int ix = 0; ix < nx; ix++)
+        {
 
-        } 
+            grad_max = std::max(grad_max, abs(grad_mat[iz][ix]));
+
+            mat_array_max = std::max(mat_array_max, abs(mat_old[iz][ix]));
+        }
     }
-    step_factor = mat_array_max/grad_max;
-    //std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << std::endl;
+
+    if (mat_array_max < mat_max)
+        mat_array_max = mat_max;
+
+    step_factor = mat_array_max / grad_max;
+    std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << ", " << mat_array_max << std::endl;
 
     // Material update to whole array
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            
+    for (int iz = 0; iz < nz; iz++)
+    {
+        for (int ix = 0; ix < nx; ix++)
+        {
             mat[iz][ix] = mat_old[iz][ix] + step_length * step_factor * grad_mat[iz][ix];
-            if (mat[iz][ix] > mat_max){ mat[iz][ix] = mat_max;}
-            if (mat[iz][ix] < mat_min){ mat[iz][ix] = mat_min;}
+            if (mat[iz][ix] > mat_max)
+            {
+                mat[iz][ix] = mat_max;
+            }
+            if (mat[iz][ix] < mat_min)
+            {
+                mat[iz][ix] = mat_min;
+            }
 
             mat_av += mat[iz][ix];
             mat_av_old += mat_old[iz][ix];
             mat_av_grad += grad_mat[iz][ix];
-
         }
-        
     }
     //std::cout << "Mat update: SL = " <<step_length <<", new = " << mat_av <<", old = " << mat_av_old <<", grad = " << mat_av_grad << std::endl;;
 }
-
 
 void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
         real **&lam, real **&mu,  real **&rho, int nz, int nx){
