@@ -108,6 +108,10 @@ void kernel_PSV_GPU(int ishot,              // shot index
         double net=0.0;
        // time1=clock();
         // 1.1: Spatial velicity derivatives
+
+         //std::cout << "Time step: " << it  << std::endl;
+
+
         vdiff2_GPU(dz_z, dx_z, dz_x, dx_x, vz, vx, hc, nz1, nz2, nx1, nx2, dz, dx, nx);
 
         // 1.2: PML memory update for velocity gradients (if any)
@@ -169,8 +173,8 @@ void kernel_PSV_GPU(int ishot,              // shot index
         { // source seismograms exist
             // Adding source term corresponding to velocity
             //std::cout <<"The source applied here: "<<std::endl;
-            vsrc2_GPU(vz, vx, rho_zp, rho_xp, nsrc, stf_type, stf_z, stf_x,
-                      z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx, nx);
+             vsrc2_GPU(vz, vx, rho_zp, rho_xp, nsrc, stf_type, stf_z, stf_x,
+                       z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx, nx);
         }
 
         // 3.2: Recording the displacements to the recievers
@@ -179,7 +183,7 @@ void kernel_PSV_GPU(int ishot,              // shot index
             // Recording to the receivers
             urec2_GPU(rtf_type, rtf_uz, rtf_ux, vz, vx, nrec, z_rec, x_rec, it, dt, dz, dx, nt, nx);
         }
-
+    //temporary
         // -----------------------------------------------------------------------
 
         // -----------------------------------------------------------------------

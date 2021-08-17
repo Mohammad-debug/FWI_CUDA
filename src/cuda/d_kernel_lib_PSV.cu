@@ -148,7 +148,7 @@ __global__ void cuda_mat_av2_GPU(real *lam, real *mu, real *rho,
     if (ix < nx - 1 && ix >= 0 && iz >= 0 && iz < nz - 1)
     {
         // Harmonic average for mu
-        mu[iz * nx + ix] = 4.0 / ((1.0 / mu[iz * nx + ix]) + (1.0 / mu[iz * nx + ix + 1]) + (1.0 / mu[(iz + 1) * nx + ix]) + (1.0 / mu[(iz + 1) * nx + ix + 1]));
+        mu_zx[iz * nx + ix] = 4.0 / ((1.0 / mu[iz * nx + ix]) + (1.0 / mu[iz * nx + ix + 1]) + (1.0 / mu[(iz + 1) * nx + ix]) + (1.0 / mu[(iz + 1) * nx + ix + 1]));
 
         if ((mu[iz * nx + ix] == 0.0) || (mu[iz * nx + ix + 1] == 0.0) || (mu[(iz + 1) * nx + ix] == 0.0) || (mu[(iz + 1) * nx + ix + 1] == 0.0))
         {
@@ -160,7 +160,7 @@ __global__ void cuda_mat_av2_GPU(real *lam, real *mu, real *rho,
         rho_zp[iz * nx + ix] = 1.0 / (0.5 * (rho[iz * nx + ix] + rho[(iz + 1) * nx + ix]));
         rho_xp[iz * nx + ix] = 1.0 / (0.5 * (rho[iz * nx + ix] + rho[iz * nx + ix + 1]));
 
-        if ((rho[iz * nx + ix] < 1e-4) && (rho[iz + 1 * nx + ix] < 1e-4))
+        if ((rho[iz * nx + ix] < 1e-4) && (rho[(iz + 1) * nx + ix] < 1e-4))
         {
             rho_zp[iz * nx + ix] = 0.0;
         }
@@ -170,10 +170,7 @@ __global__ void cuda_mat_av2_GPU(real *lam, real *mu, real *rho,
             rho_zp[iz * nx + ix] = 0.0;
         }
     }
-    else
-    {
-        return;
-    }
+  
 }
 
 void mat_av2_GPU(
@@ -200,9 +197,9 @@ void mat_av2_GPU(
                                                          nz, nx);
     cudaCheckError(cudaDeviceSynchronize());
 
-    thrust::device_ptr<real> dev_ptr1 = thrust::device_pointer_cast(lam);
-    thrust::device_ptr<real> dev_ptr2 = thrust::device_pointer_cast(mu);
-    thrust::device_ptr<real> dev_ptr3 = thrust::device_pointer_cast(rho);
+    thrust::device_ptr<real> dev_ptr1 = thrust::device_pointer_cast(mu_zx);
+    thrust::device_ptr<real> dev_ptr2 = thrust::device_pointer_cast(rho_xp);
+    thrust::device_ptr<real> dev_ptr3 = thrust::device_pointer_cast(rho_zp);
 
     for (int iz = 0; iz < nz - 1; iz++)
     {
@@ -211,9 +208,9 @@ void mat_av2_GPU(
         C_rho += thrust::reduce(dev_ptr3 + iz * nx, dev_ptr3 + iz * nx + (nx - 1), 0.0, thrust::plus<real>());
     }
 
-    C_lam = C_lam / ((nz - 1) * (nx - 1));
-    C_mu = C_mu / ((nz - 1) * (nx - 1));
-    C_rho = C_rho / ((nz - 1) * (nx - 1));
+    // C_lam = C_lam / ((nz - 1) * (nx - 1));
+    // C_mu = C_mu / ((nz - 1) * (nx - 1));
+    // C_rho = C_rho / ((nz - 1) * (nx - 1));
 
     //TEST
     std::cout << "This is test GPU \nC_lam=" << C_lam << " \nC_mu=" << C_mu << " \nC_rho=" << C_rho << " \n\n";
@@ -246,6 +243,7 @@ void reset_PML_memory2_GPU(
     // time & space grids (size of the arrays)
     real nz, real nx)
 {
+   
     // reset the velocity and stresses to zero
     // generally applicable in the beginning of the time loop
     const size_t size = nz * nx * sizeof(real);
@@ -262,17 +260,17 @@ void reset_grad_shot2_GPU(real *&grad_lam, real *&grad_mu, real *&grad_rho,
 
     int jz=0;
 
-    int k = ceil((snap_x2 - snap_x1) / snap_dz) + 1;
+    int k = ceil((snap_x2 - snap_x1) / snap_dz)+1;
 
     const size_t size = k * sizeof(real);
-
-    for (int iz = snap_z1; iz <= snap_z2; iz += snap_dz)
-    {
-        cudaCheckError(cudaMemset(grad_lam + jz * nx, 0, size));
-        cudaCheckError(cudaMemset(grad_mu + jz * nx, 0, size));
-        cudaCheckError(cudaMemset(grad_rho + jz * nx, 0, size));
-        jz++;
-    }
+ std::cout<<"reset_grad_shot2_GPU enter\n";
+    // for (int iz = snap_z1; iz <= snap_z2; iz += snap_dz)
+    // {
+    //     cudaCheckError(cudaMemset(grad_lam + iz*nx, 0.0, size));
+    //     cudaCheckError(cudaMemset(grad_mu + iz*nx, 0.0, size));
+    //     cudaCheckError(cudaMemset(grad_rho  + iz*nx, 0.0, size));
+    //     jz++;
+    // }
 }
 
 __global__ void cuda_vdiff2_GPU(
@@ -289,8 +287,8 @@ __global__ void cuda_vdiff2_GPU(
     real dxi = 1.0 / dx;
     real dzi = 1.0 / dz; // inverse of dx and dz
 
-    int iz = blockIdx.x * blockDim.x + threadIdx.x;
-    int ix = blockIdx.y * blockDim.y + threadIdx.y;
+    int ix = blockIdx.x * blockDim.x + threadIdx.x;
+    int iz = blockIdx.y * blockDim.y + threadIdx.y;
 
     if (iz >= nz1 && iz < nz2 && ix < nx2 && ix >= nx1)
     {
@@ -299,10 +297,7 @@ __global__ void cuda_vdiff2_GPU(
         vz_x[iz * nx + ix] = dxi * hc[1] * (vz[iz * nx + ix + 1] - vz[iz * nx + ix]);
         vx_x[iz * nx + ix] = dxi * hc[1] * (vx[iz * nx + ix] - vx[iz * nx + ix - 1]);
     }
-    else
-    {
-        return;
-    }
+  
 }
 
 void vdiff2_GPU(
@@ -331,6 +326,10 @@ void vdiff2_GPU(
         hc,
         // time space grids
         nz1, nz2, nx1, nx2, dz, dx, nx);
+
+  // thrust::device_ptr<real> dev_ptr1 = thrust::device_pointer_cast(vz);
+    //real k=     thrust::reduce(dev_ptr1 , dev_ptr1 + 401*nx, 0.0, thrust::plus<real>());
+     //std::cout<<k<<"  << vz of vdiff2 \n";
 
     cudaCheckError(cudaDeviceSynchronize());
 
@@ -449,6 +448,10 @@ void update_s2_GPU(
     dim3 blocksPerGrid((nx2) / box1 + 1, (nz2) / box2 + 1);
     cuda_update_s2_GPU<<<blocksPerGrid, threadsPerBlock>>>(szz, szx, sxx, vz_z, vx_z, vz_x, vx_x, lam, mu,
                                                            mu_zx, nz1, nz2, nx1, nx2, dt, nx);
+
+    // thrust::device_ptr<real> dev_ptr1 = thrust::device_pointer_cast(vz_z);
+    // real k=     thrust::reduce(dev_ptr1 , dev_ptr1 + 401*nx, 0.0, thrust::plus<real>());
+    //  std::cout<<k<<"  << szx of update_s2 \n";
     cudaCheckError(cudaDeviceSynchronize());
 }
 
@@ -890,7 +893,7 @@ __global__ void cuda_vsrc2_GPU(
                vz[z_src[is] * nx + x_src[is]] += dt * rho_zp[z_src[is] * nx + x_src[is]] * stf_z[is * nx + it] / (dz * dx);
                vx[z_src[is] * nx + x_src[is]] += dt * rho_xp[z_src[is] * nx + x_src[is]] * stf_x[is * nx + it] / (dz * dx);
 
-              // printf("is=%d  vz=%lf \n", is , vz[z_src[is]*nx+x_src[is]]);
+              // printf(">>>>>>>>>>>is=%d  vz=%lf \n", is , vz[z_src[is]*nx+x_src[is]]);
             }
         }
         break;
@@ -900,11 +903,11 @@ __global__ void cuda_vsrc2_GPU(
         {
             if (src_shot_to_fire[is] == ishot)
             {
-                // printf("is=%d vz=%lf z_src=%d x_src=%d \n", is, vz[z_src[is] * nx + x_src[is]],z_src[is], x_src[is] );
+               // printf("it=%d is=%d vz=%lf z_src=%d x_src=%d \n",it,  is, vz[z_src[is] * nx + x_src[is]],z_src[is], x_src[is] );
                 vz[z_src[is] * nx + x_src[is]] += stf_z[is * nx + it];
                 vx[z_src[is] * nx + x_src[is]] += stf_x[is * nx + it];
                 //std::cout << "v:" << vz[z_src[is]*nx+x_src[is]] <<", " << stf_z[is*nx+it]<<std::endl;
-               // printf("is=%d  vz=%lf \n", is , vz[z_src[is]*nx+x_src[is]]);
+               // printf("after it=%d is=%d  vz=%lf stf_z=%lf\n",it,  is , vz[z_src[is]*nx+x_src[is]], stf_z[is * nx + it]);
             }
         }
         break;
@@ -921,7 +924,7 @@ void vsrc2_GPU(
     int*& z_src, int*& x_src, int*& src_shot_to_fire,
     int ishot, int it, real dt, real dz, real dx, int nx)
 {
-
+  // std::cout<<"  vsrc2_GPU  \n";
     int box1 = 32;
     dim3 threadsPerBlock(box1);
     dim3 blocksPerGrid(nsrc / box1 + 1);
@@ -950,7 +953,7 @@ __global__ void cuda_urec2_GPU(int rtf_type,
         {
             if (it == 0)
             {
-                rtf_uz[ir * nt + it] = dt * vz[rz[ir] * nx + rx[ir]] / (dz * dx);
+               rtf_uz[ir * nt + it] = dt * vz[rz[ir] * nx + rx[ir]] / (dz * dx);
                 rtf_ux[ir * nt + it] = dt * vx[rz[ir] * nx + rx[ir]] / (dz * dx);
             }
             else
@@ -960,9 +963,22 @@ __global__ void cuda_urec2_GPU(int rtf_type,
             }
         }
     }
+
+    //  if (rtf_type == 0) {
+    //     // This module is only for rtf type as displacement
+    //     for (int ir = 0; ir < nrec; ir++) {
+    //         if (it == 0) {
+    //             rtf_uz[ir][it] = dt * vz[rz[ir]][rx[ir]] / (dz * dx);
+    //             rtf_ux[ir][it] = dt * vx[rz[ir]][rx[ir]] / (dz * dx);
+    //         }
+    //         else {
+    //             rtf_uz[ir][it] = rtf_uz[ir][it - 1] + dt * vz[rz[ir]][rx[ir]] / (dz * dx);
+    //             rtf_ux[ir][it] = rtf_ux[ir][it - 1] + dt * vx[rz[ir]][rx[ir]] / (dz * dx);
+    //         }
+    //     }
+
+    // }
 }
-
-
 
 void urec2_GPU(int rtf_type,
     // reciever time functions
@@ -982,10 +998,14 @@ void urec2_GPU(int rtf_type,
     // rz: corresponding grid index along z direction
     // rx: corresponding grid index along x direction
     // it: time step index
+    
+
+     
+     
     int box1 = 32;
     dim3 threadsPerBlock(box1);
     dim3 blocksPerGrid(nrec / box1 + 1);
-    //auto start_GPU = high_resolution_clock::now();
+   
     cuda_urec2_GPU << <blocksPerGrid, threadsPerBlock >> > (rtf_type,
         // reciever time functions
         rtf_uz, rtf_ux,
@@ -995,11 +1015,8 @@ void urec2_GPU(int rtf_type,
         nrec, rz, rx,
         // time and space grids
         it, dt, dz, dx, nt, nx);
-   // auto stop_GPU = high_resolution_clock::now();
-    //auto duration_GPU = duration_cast<microseconds>(stop_GPU - start_GPU);
-    // cout << "Time taken by GPU: "
-    //     << duration_GPU.count() << " microseconds" << endl;
-    rtf_type = 0; // Displacement rtf computed
+        
+ 
     cudaCheckError(cudaDeviceSynchronize());
 }
 
@@ -1062,10 +1079,15 @@ if (rtf_type == 0)
     cudaCheckError(cudaDeviceSynchronize());
     
     thrust::device_ptr<real> dev_ptr1 = thrust::device_pointer_cast(a_stf_uz);
+
     thrust::device_ptr<real> dev_ptr2 = thrust::device_pointer_cast(a_stf_ux);
     L2 = thrust::transform_reduce(thrust::device,dev_ptr1,dev_ptr1+nseis*nt,power_functor(2.,dt),0.0,thrust::plus<real>());
+   
+    std::cout<<L2<<"  <<1 a_stf_uz sum \n";
 
     L2 += thrust::transform_reduce(thrust::device,dev_ptr2,dev_ptr2+nseis*nt,power_functor(2.,dt),0.0,thrust::plus<real>());
+    // L2=     thrust::reduce(dev_ptr1 , dev_ptr1 + nx*nz, 0.0, thrust::plus<real>());
+    // std::cout<<L2<<"  <<1 a_stf_ux sum \n";
         
 }
  

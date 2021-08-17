@@ -99,7 +99,7 @@ void vdiff2(
 
     // 2D space grid
    
-    #pragma omp parallel for collapse(2)
+   
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
@@ -249,7 +249,7 @@ void update_v2(
     int nz1, int nz2, int nx1, int nx2, real dt){
     // update stress from velocity derivatives
 
-    #pragma omp parallel for collapse(2)
+  
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
            // printf("Hello World from thread %d\n", omp_get_thread_num());
@@ -534,10 +534,13 @@ void vsrc2(
         case(1): // velocity stf
             for(int is=0; is<nsrc; is++){
                 if (src_shot_to_fire[is] == ishot){
-                   // std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it];
+                    //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it]<<"\n";
+                    //printf("it=%d  is=%d vz=%lf z_src=%d x_src=%d \n",it, is, vz[z_src[is] ][ x_src[is]],z_src[is], x_src[is] );
                     vz[z_src[is]][x_src[is]] += stf_z[is][it];
                     vx[z_src[is]][x_src[is]] += stf_x[is][it];
                     //std::cout << "v:" << vz[z_src[is]][x_src[is]] <<", " << stf_z[is][it]<<std::endl;
+
+                    //printf("after it=%d is=%d vz=%lf stfz=%lf  \n",it,  is, vz[z_src[is] ][ x_src[is]], stf_z[is][it]);
                 }
                 
             }
@@ -610,6 +613,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
 
                 // Calculating L2 norm
                 L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2); 
+                
                 L2 += 0.5 * dt * pow(a_stf_ux[is][it], 2);
                 //std::cout<< rtf_uz_mod[is][it] <<", "<<rtf_ux_mod[is][it];
                 
@@ -730,7 +734,7 @@ void energy_weights2(
         
     }
     std::cout << "Max. Energy Weight = " << max_We << std::endl;
-    std::cout << "Max. Energy part = " << max_w1<<", "<< max_w2 << std::endl;
+   // std::cout << "Max. Energy part = " << max_w1<<", "<< max_w2 << std::endl;
 }
 
 
@@ -856,18 +860,19 @@ void mat_av2(
               rho_zp[iz][ix] = 0.0;
             } 
             // Scalar averages
-            C_lam += lam[iz][ix];
-            C_mu += mu[iz][ix];
-            C_rho += rho[iz][ix];
+            C_lam += mu_zx[iz][ix];
+            C_mu += rho_xp[iz][ix];
+            C_rho += rho_zp[iz][ix];
      
         }
 
     }
 
-    C_lam = C_lam/((nz-1)*(nx-1));
-    C_mu = C_mu/((nz-1)*(nx-1));
-    C_rho = C_rho/((nz-1)*(nx-1));
-
+    // C_lam = C_lam/((nz-1)*(nx-1));
+    // C_mu = C_mu/((nz-1)*(nx-1));
+    // C_rho = C_rho/((nz-1)*(nx-1));
+//TEST
+    std::cout << "This is test CPU \nC_lam=" << C_lam << " \nC_mu=" << C_mu << " \nC_rho=" << C_rho << " \n\n";
 }
 
 void mat_grid2(real **&lam, real **&mu, real **&rho, 
