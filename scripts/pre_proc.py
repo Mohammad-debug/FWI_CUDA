@@ -1,4 +1,5 @@
-# preprocessing of the files
+#%%
+# # preprocessing of the files
 import numpy as np
 from seismic_def import read_tensor
 import matplotlib.pyplot as plt
@@ -10,6 +11,9 @@ ftype = np.float64
 #---------------------------------------------------------------------
 
 cuda_computation = False # True: computation in GPU, False: in CPU
+
+#forward only or fWI?
+fwinv = True # True: FWI, False: Forward only
 
 #---------------------------------------------------------------------
 
@@ -67,8 +71,7 @@ taper_r1 = snap_x2 - np.int32(nx_snap*0.05); taper_r2 = taper_r1 - np.int32(nx_s
 fdorder = 2 # finite difference order 
 fpad = 1 # number of additional grids for finite difference computation
 
-#forward only or fWI?
-fwinv = True # True: FWI, False: Forward only
+
 
 # Internal parameters for different cases 
 if (fwinv):
@@ -242,3 +245,5 @@ material_inp.tofile('./bin/mat.bin')
 #-------------------------------------------------------
 
 
+
+# %%
