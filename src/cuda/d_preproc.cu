@@ -153,9 +153,7 @@ void copy_varpre_PSV_CPU_TO_GPU(
     cudaCheckError(cudaMemcpy(d_mu,mu[0],  nz*nx* sizeof(real), cudaMemcpyHostToDevice));
     cudaCheckError(cudaMemcpy(d_rho,rho[0], nz*nx* sizeof(real), cudaMemcpyHostToDevice));
 
-    cudaCheckError(cudaMemcpy(lam[0],d_lam, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
-    cudaCheckError(cudaMemcpy(mu[0],d_mu,  nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
-    cudaCheckError(cudaMemcpy(rho[0],d_rho, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
+
 
     // Allocating PML coeffieients
     if (pml_z){

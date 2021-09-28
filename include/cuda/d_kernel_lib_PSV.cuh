@@ -76,7 +76,7 @@ void reset_PML_memory2_GPU(
 
 void reset_grad_shot2_GPU(real *&grad_lam, real *&grad_mu, real *&grad_rho,
                           int snap_z1, int snap_z2, int snap_x1, int snap_x2,
-                          int snap_dz, int snap_dx, int nx);
+                          int snap_dz, int snap_dx, int nx, int nz);
 
 void vdiff2_GPU(
     // spatial velocity derivatives
@@ -186,6 +186,6 @@ void vsrc2_GPU(
     // source parameters
     int nsrc, int stf_type, real *&stf_z, real *&stf_x,
     int *&z_src, int *&x_src, int *&src_shot_to_fire,
-    int ishot, int it, real dt, real dz, real dx, int nx);
+    int ishot, int it, real dt, real dz, real dx, int nx, int nt);
 
 #endif

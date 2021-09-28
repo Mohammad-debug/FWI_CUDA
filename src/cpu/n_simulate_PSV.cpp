@@ -193,21 +193,21 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     //PCG_old = new real[nz*nx*3];
     //PCG_dir = new real[nz*nx*3];
     //allocate_array(PCG_new, nz, nx);
-    allocate_array(PCG_lam, nz, nx);
-    allocate_array(PCG_mu, nz, nx);
-    allocate_array(PCG_rho, nz, nx);
+    // allocate_array(PCG_lam, nz, nx);
+    // allocate_array(PCG_mu, nz, nx);
+    // allocate_array(PCG_rho, nz, nx);
 
-    allocate_array(PCG_dir_lam, nz, nx);
-    allocate_array(PCG_dir_mu, nz, nx);
-    allocate_array(PCG_dir_rho, nz, nx);
+    // allocate_array(PCG_dir_lam, nz, nx);
+    // allocate_array(PCG_dir_mu, nz, nx);
+    // allocate_array(PCG_dir_rho, nz, nx);
     
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            PCG_dir_lam[iz][ix] = 0.0;
-            PCG_dir_mu[iz][ix] = 0.0;
-            PCG_dir_rho[iz][ix] = 0.0;
-        }
-    }
+    // for (int iz=0;iz<nz;iz++){
+    //     for (int ix=0;ix<nx;ix++){
+    //         PCG_dir_lam[iz][ix] = 0.0;
+    //         PCG_dir_mu[iz][ix] = 0.0;
+    //         PCG_dir_rho[iz][ix] = 0.0;
+    //     }
+    // }
 
 
     //-----------------------------------------------
@@ -248,6 +248,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         mat_av2(lam, mu, rho, mu_zx, rho_zp, rho_xp, 
             scalar_lam, scalar_mu, scalar_rho, nz, nx);
     
+    
         for (int ishot = 0; ishot < nshot; ishot++){
             std::cout << "FWI KERNEL: SHOT " << ishot << " of " << nshot <<"." << std::endl;
             // -----------------------------------
@@ -269,6 +270,28 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
                 accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
                 snap_z1, snap_z2, snap_x1, snap_x2, 
                 snap_dt, snap_dz, snap_dx);
+
+
+
+//TEST
+double l=0,m=0,r=0;
+
+   int snap_nz = 1 + (snap_z2 - snap_z1) / snap_dz;
+   int snap_nx = 1 + (snap_x2 - snap_x1) / snap_dx;
+
+    for (int iz=0; iz<snap_nz; iz++){
+        for (int ix=0; ix<snap_nx; ix++){
+            l+=grad_lam_shot[iz][ix];
+            m+=grad_mu_shot[iz][ix];
+            r+=grad_rho_shot[iz][ix];
+        }
+    }
+
+        std::cout << "This is test CPU>FORWARD \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+
+
+
+
 
             // -----------------------------------------------
             // 3.0. RESIDUALS AND ADJOINT SOURCE COMPUTATION
@@ -299,32 +322,54 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             // Seismic adjoint kernel
             accu = false; // Accumulated storage for output
             grad = true; // no gradient computation in forward kernel
-            // kernel_PSV(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
-            //     vz, vx,  uz, ux, szz, szx, sxx, We_adj, dz_z, dx_z, dz_x, dx_x, 
-            //     lam, mu, mu_zx, rho_zp, rho_xp, 
-            //     grad, grad_lam_shot, grad_mu_shot, grad_rho_shot,
-            //     pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
-            //     pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
-            //     mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z,
-            //     mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
-            //     nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec, rec_shot_to_fire, //*a_stf_type = rtf_type
-            //     nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
-            //     accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
-            //     snap_z1, snap_z2, snap_x1, snap_x2, 
-            //     snap_dt, snap_dz, snap_dx);
+            
+            kernel_PSV(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
+                vz, vx,  uz, ux, szz, szx, sxx, We_adj, dz_z, dx_z, dz_x, dx_x, 
+                lam, mu, mu_zx, rho_zp, rho_xp, 
+                grad, grad_lam_shot, grad_mu_shot, grad_rho_shot,
+                pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
+                pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
+                mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z,
+                mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
+                nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec, rec_shot_to_fire, //*a_stf_type = rtf_type
+                nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
+                accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, 
+                snap_z1, snap_z2, snap_x1, snap_x2, 
+                snap_dt, snap_dz, snap_dx);
+
+            
+
+            //TEST
+
+
+l=0;m=0;r=0;
+  
+    for (int iz=0; iz<snap_nz; iz++){
+        for (int ix=0; ix<snap_nx; ix++){
+            l+=grad_lam_shot[iz][ix];
+            m+=grad_mu_shot[iz][ix];
+            r+=grad_rho_shot[iz][ix];
+        }
+    }
+
+        std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+
+
 			
             // Smooth gradients
         
             // Calculate Energy Weights
-            energy_weights2(We, We_adj, snap_z1, snap_z2, snap_x1, snap_x2);
+           energy_weights2(We, We_adj, snap_z1, snap_z2, snap_x1, snap_x2);
             
+
+           //  exit(0);
             // [We_adj used as temporary gradient here after]
             
             // GRAD_LAM
             // ----------------------------------------
             // Interpolate gradients to temporary array
             interpol_grad2(We_adj, grad_lam_shot, snap_z1, snap_z2, 
-                        snap_x1, snap_x2, snap_dz, snap_dx);
+                       snap_x1, snap_x2, snap_dz, snap_dx);
             
             // Scale to energy weight and add to global array 
             scale_grad_E2(grad_lam, We_adj, scalar_lam, We,
@@ -334,7 +379,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             // ----------------------------------------
             // Interpolate gradients to temporary array
             interpol_grad2(We_adj, grad_mu_shot, snap_z1, snap_z2, 
-                        snap_x1, snap_x2, snap_dz, snap_dx);
+                       snap_x1, snap_x2, snap_dz, snap_dx);
             // Scale to energy weight and add to global array 
             scale_grad_E2(grad_mu, We_adj, scalar_mu, We,
                     snap_z1, snap_z2, snap_x1, snap_x2);
@@ -342,8 +387,8 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             // GRAD_RHO
             // ----------------------------------------
             // Interpolate gradients to temporary array
-            interpol_grad2(We_adj, grad_rho_shot, snap_z1, snap_z2, 
-                        snap_x1, snap_x2, snap_dz, snap_dx);
+           interpol_grad2(We_adj, grad_rho_shot, snap_z1, snap_z2, 
+                       snap_x1, snap_x2, snap_dz, snap_dx);
             // Scale to energy weight and add to global array 
             scale_grad_E2(grad_rho, We_adj, scalar_rho, We,
                     snap_z1, snap_z2, snap_x1, snap_x2);
@@ -446,7 +491,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
             rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx,  accu_szz, accu_szx, accu_sxx, 
             snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 0);
-
+        std::cout<<"\n\n *****STEP LENGTH CPU ******"<<step_length<<"\n";
 
         // Separate Step length for density update
         /*

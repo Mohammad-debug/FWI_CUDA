@@ -15,12 +15,13 @@
 #include "d_kernel_lib_PSV.cuh"
 #include "d_kernel_PSV.cuh"
 #include "d_step_length_PSV.cuh"
+#include "../h_io_PSV.hpp"
 /*
 #include "d_kernel_PSV.cuh"
 #include "d_alloc_PSV.cuh"
 #include "d_kernel_lib_PSV.cuh"
 #include "d_step_length_PSV.cuh"
-#include "h_io_PSV.hpp"
+include "h_io_PSV.hpp"
 //#include "d_PCG_PSV.cuh"
 */
 void g_simulate_PSV(int *&npml, int nt, int nz, int nx, real dt, real dz, real dx,

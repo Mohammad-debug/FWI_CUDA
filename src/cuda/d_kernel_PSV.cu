@@ -77,11 +77,13 @@ void kernel_PSV_GPU(int ishot,              // shot index
         reset_PML_memory2_GPU(mem_vz_x, mem_vx_x, mem_sxx_x, mem_szx_x, nz, nx);
     }
 
-    if (grad)
+    if (grad) //adjoint execute
     { // Reset gradient for each shots
+         
+        //cudaCheckError(cudaMemset(grad_lam , 0.0, snap_nz* snap_nx * sizeof(real)));
         reset_grad_shot2_GPU(grad_lam, grad_mu, grad_rho,
                              snap_z1, snap_z2, snap_x1, snap_x2,
-                             snap_dz, snap_dx, nx);
+                             snap_dz, snap_dx, nx,nz);
     }
 
     for (int jt = 0; jt < nt; jt++)
@@ -104,8 +106,8 @@ void kernel_PSV_GPU(int ishot,              // shot index
         // STEP 1: UPDATING STRESS TENSOR
         // -----------------------------------------------------------------------
         //timing start
-        clock_t time1,time2;
-        double net=0.0;
+        // clock_t time1,time2;
+        // double net=0.0;
        // time1=clock();
         // 1.1: Spatial velicity derivatives
 
@@ -174,7 +176,7 @@ void kernel_PSV_GPU(int ishot,              // shot index
             // Adding source term corresponding to velocity
             //std::cout <<"The source applied here: "<<std::endl;
              vsrc2_GPU(vz, vx, rho_zp, rho_xp, nsrc, stf_type, stf_z, stf_x,
-                       z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx, nx);
+                       z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx, nx, nt);
         }
 
         // 3.2: Recording the displacements to the recievers
