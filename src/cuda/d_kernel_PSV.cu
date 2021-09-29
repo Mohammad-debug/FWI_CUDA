@@ -77,11 +77,13 @@ void kernel_PSV_GPU(int ishot,              // shot index
         reset_PML_memory2_GPU(mem_vz_x, mem_vx_x, mem_sxx_x, mem_szx_x, nz, nx);
     }
 
-    if (grad)
+    if (grad) //adjoint execute
     { // Reset gradient for each shots
+         
+        //cudaCheckError(cudaMemset(grad_lam , 0.0, snap_nz* snap_nx * sizeof(real)));
         reset_grad_shot2_GPU(grad_lam, grad_mu, grad_rho,
                              snap_z1, snap_z2, snap_x1, snap_x2,
-                             snap_dz, snap_dx, nx);
+                             snap_dz, snap_dx, nx,nz);
     }
 
     for (int jt = 0; jt < nt; jt++)
@@ -104,10 +106,14 @@ void kernel_PSV_GPU(int ishot,              // shot index
         // STEP 1: UPDATING STRESS TENSOR
         // -----------------------------------------------------------------------
         //timing start
-        clock_t time1,time2;
-        double net=0.0;
-        time1=clock();
+        // clock_t time1,time2;
+        // double net=0.0;
+       // time1=clock();
         // 1.1: Spatial velicity derivatives
+
+         //std::cout << "Time step: " << it  << std::endl;
+
+
         vdiff2_GPU(dz_z, dx_z, dz_x, dx_x, vz, vx, hc, nz1, nz2, nx1, nx2, dz, dx, nx);
 
         // 1.2: PML memory update for velocity gradients (if any)
@@ -153,10 +159,10 @@ void kernel_PSV_GPU(int ishot,              // shot index
         // 2.3: Update velocity tensor
         update_v2_GPU(vz, vx, uz, ux, We, dz_z, dx_z, dz_x, dx_x, rho_zp, rho_xp, nz1, nz2, nx1, nx2, dt, nx);
         
-        time2=clock();
-        net =(time2-time1)/ (double)CLOCKS_PER_SEC;
-        printf("\n timing GPU  = %f seconds end\n", net);
-        exit(0);
+        // time2=clock();
+        // net =(time2-time1)/ (double)CLOCKS_PER_SEC;
+        // printf("\n timing GPU  = %f seconds end\n", net);
+        // exit(0);
 
         // -----------------------------------------------------------------------
 
@@ -169,8 +175,8 @@ void kernel_PSV_GPU(int ishot,              // shot index
         { // source seismograms exist
             // Adding source term corresponding to velocity
             //std::cout <<"The source applied here: "<<std::endl;
-            vsrc2_GPU(vz, vx, rho_zp, rho_xp, nsrc, stf_type, stf_z, stf_x,
-                      z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx, nx);
+             vsrc2_GPU(vz, vx, rho_zp, rho_xp, nsrc, stf_type, stf_z, stf_x,
+                       z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx, nx, nt);
         }
 
         // 3.2: Recording the displacements to the recievers
@@ -179,7 +185,7 @@ void kernel_PSV_GPU(int ishot,              // shot index
             // Recording to the receivers
             urec2_GPU(rtf_type, rtf_uz, rtf_ux, vz, vx, nrec, z_rec, x_rec, it, dt, dz, dx, nt, nx);
         }
-
+    //temporary
         // -----------------------------------------------------------------------
 
         // -----------------------------------------------------------------------

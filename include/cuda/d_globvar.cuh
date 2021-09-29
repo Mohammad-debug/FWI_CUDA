@@ -24,7 +24,7 @@
   {                                                                      \
     if ((code) != cudaSuccess) {                                         \
       fprintf(stderr, "Cuda failure %s:%d: '%s' \n", __FILE__, __LINE__, \
-              cudaGetErrorString(code));                                 \
+              cudaGetErrorString(code)); exit(0);                                \
     }                                                                    \
   }
 

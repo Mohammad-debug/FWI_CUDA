@@ -68,9 +68,13 @@ void reset_grad_shot2(real **&grad_lam, real **&grad_mu, real **&grad_rho,
 	
 	int jz , jx ;
     jz = 0;
-	for(int iz=snap_z1;iz<=snap_z2;iz+=snap_dz){
+
+    int snap_nz = 1 + (snap_z2 - snap_z1)/snap_dz;
+    int snap_nx = 1 + (snap_x2 - snap_x1)/snap_dx;
+
+	for(int iz=0;iz<snap_nz;iz++){
         jx = 0;
-        for(int ix=snap_x1;ix<=snap_x2;ix+=snap_dx){
+        for(int ix=0;ix<snap_nx;ix++){
 
             grad_lam[jz][jx] = 0.0; 
             grad_mu[jz][jx]  = 0.0; 
@@ -78,7 +82,7 @@ void reset_grad_shot2(real **&grad_lam, real **&grad_mu, real **&grad_rho,
 			
 			jx++;
         }
-		
+		// std::cout<<" jz= "<<jz*201<<"\n";
 		jz++;
     }
 }
@@ -99,7 +103,7 @@ void vdiff2(
 
     // 2D space grid
    
-    #pragma omp parallel for collapse(2)
+   
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
@@ -134,7 +138,7 @@ void pml_diff2(bool pml_z, bool pml_x,
     // updates PML memory variables for velicity derivatives
     // absorption coefficients are for the whole grids
     // 2D space grid
-    #pragma omp parallel for collapse(2)
+  
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
             if (pml_z){
@@ -182,7 +186,7 @@ void update_s2(
     // update stress from velocity derivatives
 
    
-    #pragma omp parallel for collapse(2)
+   
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
             
@@ -214,7 +218,7 @@ void sdiff2(
     real dxi = 1.0/dx; real dzi = 1.0/dz; // inverse of dx and dz
 
     // 2D space grid
-    #pragma omp parallel for collapse(2)
+    
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
@@ -249,7 +253,7 @@ void update_v2(
     int nz1, int nz2, int nx1, int nx2, real dt){
     // update stress from velocity derivatives
 
-    #pragma omp parallel for collapse(2)
+  
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
            // printf("Hello World from thread %d\n", omp_get_thread_num());
@@ -290,7 +294,7 @@ void surf_mirror(
     if (surf[0]>0){
         isurf = surf[0];
         //std::cout << std::endl << "SURF INDEX: "<< isurf<<std::endl;
-        #pragma omp parallel for
+        
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -298,7 +302,7 @@ void surf_mirror(
             sxx[isurf][ix] = 4.0 * dt * vx_x[isurf][ix] *(lam[isurf][ix] * mu[isurf][ix] 
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
-            #pragma omp parallel for
+         
             for (int sz=1; sz<isurf-nz1+1; sz++){ // mirroring 
                 szx[isurf-sz][ix] = -szx[isurf+sz][ix];
                 szz[isurf-sz][ix] = -szz[isurf+sz][ix];
@@ -314,7 +318,7 @@ void surf_mirror(
     // -----------------------------
     if (surf[1]>0){
         isurf = surf[1];
-        #pragma omp parallel for
+       
         for(int ix=nx1; ix<nx2; ix++){
             // Denise manual  page 13
             szz[isurf][ix] = 0.0;
@@ -323,7 +327,7 @@ void surf_mirror(
                                 + mu[isurf][ix] * mu[isurf][ix])
                                 / (lam[isurf][ix] + 2.0 * mu[isurf][ix]);
 
-            #pragma omp parallel for
+            
             for (int sz=1; sz<=nz2-isurf; sz++){ // mirroring 
                 szx[isurf+sz][ix] = -szx[isurf-sz][ix];
                 szz[isurf+sz][ix] = -szz[isurf-sz][ix];
@@ -340,7 +344,7 @@ void surf_mirror(
     // -----------------------------
     if (surf[2]>0){
         isurf = surf[2];
-        #pragma omp parallel for
+        
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -349,7 +353,7 @@ void surf_mirror(
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
 
-            #pragma omp parallel for
+            
             for (int sx=1; sx<isurf-nx1+1; sx++){ // mirroring 
                 szx[iz][isurf-sx] = -szx[iz][isurf+sx];
                 sxx[iz][isurf-sx] = -sxx[iz][isurf+sx];
@@ -367,7 +371,7 @@ void surf_mirror(
     if (surf[3]>0){
         isurf = surf[3];
 
-        #pragma omp parallel for
+        
         for(int iz=nz1; iz<nz2; iz++){
             // Denise manual  page 13
             sxx[iz][isurf] = 0.0;
@@ -376,7 +380,7 @@ void surf_mirror(
                                 + mu[iz][isurf] * mu[iz][isurf])
                                 / (lam[iz][isurf] + 2.0 * mu[iz][isurf]);
 
-            #pragma omp parallel for
+            
             for (int sx=1; sx<=nx2-isurf; sx++){ // mirroring 
                 szx[iz][isurf+sx] = -szx[iz][isurf-sx];
                 sxx[iz][isurf+sx] = -sxx[iz][isurf-sx];
@@ -534,10 +538,13 @@ void vsrc2(
         case(1): // velocity stf
             for(int is=0; is<nsrc; is++){
                 if (src_shot_to_fire[is] == ishot){
-                   // std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it];
+                    //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it]<<"\n";
+                    //printf("it=%d  is=%d vz=%lf z_src=%d x_src=%d \n",it, is, vz[z_src[is] ][ x_src[is]],z_src[is], x_src[is] );
                     vz[z_src[is]][x_src[is]] += stf_z[is][it];
                     vx[z_src[is]][x_src[is]] += stf_x[is][it];
                     //std::cout << "v:" << vz[z_src[is]][x_src[is]] <<", " << stf_z[is][it]<<std::endl;
+
+                    //printf("after it=%d is=%d vz=%lf stfz=%lf  \n",it,  is, vz[z_src[is] ][ x_src[is]], stf_z[is][it]);
                 }
                 
             }
@@ -610,6 +617,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
 
                 // Calculating L2 norm
                 L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2); 
+                
                 L2 += 0.5 * dt * pow(a_stf_ux[is][it], 2);
                 //std::cout<< rtf_uz_mod[is][it] <<", "<<rtf_ux_mod[is][it];
                 
@@ -730,7 +738,7 @@ void energy_weights2(
         
     }
     std::cout << "Max. Energy Weight = " << max_We << std::endl;
-    std::cout << "Max. Energy part = " << max_w1<<", "<< max_w2 << std::endl;
+   // std::cout << "Max. Energy part = " << max_w1<<", "<< max_w2 << std::endl;
 }
 
 
@@ -756,47 +764,60 @@ void scale_grad_E2(
 
 
 }
-
-void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat, 
-            real mat_max, real mat_min, real step_length, int nz, int nx){
+void update_mat2(real **&mat, real **&mat_old, real **&grad_mat,
+                 real mat_max, real mat_min, real step_length, int nz, int nx)
+{
     // update gradients to the material
-    real mat_av=0, mat_av_old=0, mat_av_grad=0;
+    real mat_av = 0, mat_av_old = 0, mat_av_grad = 0;
 
     // Scale factors for gradients
     real grad_max = 0.0, mat_array_max = 0.0, step_factor;
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            
-            grad_max = std::max(grad_max, abs(grad_mat[iz][ix]));
-            mat_array_max = std::max(mat_max, abs(mat_old[iz][ix]));
+    for (int iz = 0; iz < nz; iz++)
+    {
+        for (int ix = 0; ix < nx; ix++)
+        {
 
-        } 
+            grad_max = std::max(grad_max, abs(grad_mat[iz][ix]));
+
+            mat_array_max = std::max(mat_array_max, abs(mat_old[iz][ix]));
+        }
     }
-    step_factor = mat_array_max/grad_max;
-    //std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << std::endl;
+
+    if (mat_array_max < mat_max)
+        mat_array_max = mat_max;
+
+    step_factor = mat_array_max / grad_max;
+    std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << ", " << mat_array_max << std::endl;
 
     // Material update to whole array
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            
+    for (int iz = 0; iz < nz; iz++)
+    {
+        for (int ix = 0; ix < nx; ix++)
+        {
             mat[iz][ix] = mat_old[iz][ix] + step_length * step_factor * grad_mat[iz][ix];
-            if (mat[iz][ix] > mat_max){ mat[iz][ix] = mat_max;}
-            if (mat[iz][ix] < mat_min){ mat[iz][ix] = mat_min;}
+            if (mat[iz][ix] > mat_max)
+            {
+                mat[iz][ix] = mat_max;
+            }
+            if (mat[iz][ix] < mat_min)
+            {
+                mat[iz][ix] = mat_min;
+            }
 
             mat_av += mat[iz][ix];
             mat_av_old += mat_old[iz][ix];
             mat_av_grad += grad_mat[iz][ix];
-
         }
-        
     }
     //std::cout << "Mat update: SL = " <<step_length <<", new = " << mat_av <<", old = " << mat_av_old <<", grad = " << mat_av_grad << std::endl;;
 }
+
 void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
         real **&lam, real **&mu,  real **&rho, int nz, int nx){
 
     // Copy material values for storage
     for (int iz=0;iz<nz;iz++){
+        
         for (int ix=0;ix<nx;ix++){
             
             lam_copy[iz][ix] = lam[iz][ix];
@@ -843,9 +864,9 @@ void mat_av2(
               rho_zp[iz][ix] = 0.0;
             } 
             // Scalar averages
-            C_lam += lam[iz][ix];
-            C_mu += mu[iz][ix];
-            C_rho += rho[iz][ix];
+            C_lam += mu_zx[iz][ix];
+            C_mu += rho_xp[iz][ix];
+            C_rho += rho_zp[iz][ix];
      
         }
 
@@ -854,7 +875,18 @@ void mat_av2(
     C_lam = C_lam/((nz-1)*(nx-1));
     C_mu = C_mu/((nz-1)*(nx-1));
     C_rho = C_rho/((nz-1)*(nx-1));
+//TEST
 
+double l=0,m=0,r=0;
+ for (int iz=0; iz<nz; iz++){
+        for (int ix=0; ix<nx; ix++){
+            l+=lam[iz][ix];
+            m+=mu[iz][ix];
+            r+=rho[iz][ix];
+        }}
+    std::cout << "This is test CPU \nC_lam=" << C_lam << " \nC_mu=" << C_mu << " \nC_rho=" << C_rho << " \n\n";
+
+    std::cout << "This is test CPU II \nlam sum =" << l << " \nmu sum=" << m << " \nr sum=" << r << " \n\n";
 }
 
 void mat_grid2(real **&lam, real **&mu, real **&rho, 

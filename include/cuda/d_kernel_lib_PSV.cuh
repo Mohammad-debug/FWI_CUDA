@@ -4,7 +4,56 @@
 #define SEISMIC_KERNEL_LIB2_H
 
 #include "d_globvar.cuh"
+void mat_grid2_GPU(
+    // Gradients, material average and energy weights
+    real* lam, real* mu, real * rho,
+    real lam_sc, real mu_sc, real rho_sc,
+    // space snap parameters
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2, int nz, int nx);
 
+void copy_mat_GPU( real *lam_copy, real *mu_copy,  real *rho_copy,
+        real *lam, real *mu,  real *rho, int nz, int nx);
+
+
+void scale_grad_E2_GPU(
+    // Gradients, material average and energy weights
+    real *grad, real *grad_shot,
+    real mat_av, real *We,
+    // space snap parameters
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2, int nz, int nx);
+
+
+
+
+real adjsrc2_GPU(int ishot, int *&a_stf_type, real *&a_stf_uz, real *&a_stf_ux, 
+            int rtf_type, real *&rtf_uz_true, real *&rtf_ux_true, 
+            real *&rtf_uz_mod, real *&rtf_ux_mod,             
+            real dt, int nseis, int nt);
+
+
+void energy_weights2_GPU(
+    // Energy Weights (forward and reverse)
+    real *&We, real *&We_adj, 
+    // space snap parameters
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2, int nx);
+
+void interpol_grad2_GPU( // Global and shot gradient
+    real *grad, real *grad_shot, 
+    // space snap parameters
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2, 
+    int snap_dz, int snap_dx, int nx);
+
+void update_mat2_GPU(real *&mat, real *&mat_old, real *&grad_mat,
+                     real mat_max, real mat_min, real step_length, int nz, int nx);
+
+
+void taper2_GPU(
+    // Gradients, material average and energy weights
+    real* A, int nz, int nx,
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2,
+    int& taper_t1, int& taper_t2, int& taper_b1, int& taper_b2,
+    int& taper_l1, int& taper_l2, int& taper_r1, int& taper_r2);
+    
 void mat_av2_GPU(
     // Medium arguments
     real *&lam, real *&mu, real *&rho,
@@ -27,7 +76,7 @@ void reset_PML_memory2_GPU(
 
 void reset_grad_shot2_GPU(real *&grad_lam, real *&grad_mu, real *&grad_rho,
                           int snap_z1, int snap_z2, int snap_x1, int snap_x2,
-                          int snap_dz, int snap_dx, int nx);
+                          int snap_dz, int snap_dx, int nx, int nz);
 
 void vdiff2_GPU(
     // spatial velocity derivatives
@@ -137,6 +186,6 @@ void vsrc2_GPU(
     // source parameters
     int nsrc, int stf_type, real *&stf_z, real *&stf_x,
     int *&z_src, int *&x_src, int *&src_shot_to_fire,
-    int ishot, int it, real dt, real dz, real dx, int nx);
+    int ishot, int it, real dt, real dz, real dx, int nx, int nt);
 
 #endif
