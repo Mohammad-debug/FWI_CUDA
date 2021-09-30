@@ -183,6 +183,9 @@ void taper2(real **&A, int nz, int nx,
     int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
     int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2);
 
+void gauss_filter_kernel(real**&kernel, int hfs);
+
+void apply_gauss_filter(real**&mat, real**&mat_temp, real**&filter, int nz, int nx, int hfs);
 
 
 #endif

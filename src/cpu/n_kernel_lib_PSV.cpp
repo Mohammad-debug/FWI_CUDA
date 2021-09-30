@@ -904,3 +904,137 @@ void mat_grid2(real **&lam, real **&mu, real **&rho,
 
 
 
+void taper2(real **&A, int nz, int nx,  
+    int snap_z1, int snap_z2, int snap_x1, int snap_x2,
+    int &taper_t1, int &taper_t2, int &taper_b1, int &taper_b2, 
+    int &taper_l1, int &taper_l2, int &taper_r1, int &taper_r2){
+    // Applying taper function to the matrix A
+
+    int taper_l = taper_l2 - taper_l1;
+    int taper_r = taper_r1 - taper_r2;
+    int taper_t = taper_t2 - taper_t1;
+    int taper_b = taper_b1 - taper_b2;
+
+
+    // Horizontal taper
+    for (int iz=0;iz<nz;iz++){
+        for (int ix=0;ix<nx;ix++){
+            
+            if (ix>=snap_x1 && ix<taper_l1){
+                A[iz][ix] *= 0.0;
+            }
+
+            else if (ix>=taper_l1 && ix<taper_l2){
+                A[iz][ix] *= 0.5*(1.0-cos(PI*(ix-taper_l1)/taper_l));
+            }
+
+            else if (ix>taper_r2 && ix<taper_r1){
+                A[iz][ix] *= 0.5*(1.0-cos(PI*(taper_r1-ix)/taper_r));
+            }
+
+            else if(ix>=taper_r1 && ix<=snap_x2){
+                A[iz][ix] *= 0.0;
+            }
+
+        }
+    }
+
+
+    // Vertical taper
+    for (int ix=0;ix<nx;ix++){
+        for (int iz=0;iz<nz;iz++){
+
+            if (iz>=snap_z1 && iz<taper_t1){
+                A[iz][ix] *= 0.0;
+            }
+
+            else if (iz>=taper_t1 && iz<taper_t2){
+                A[iz][ix] *= 0.5*(1.0-cos(PI*(iz-taper_t1)/taper_t));
+            }
+
+            else if (iz>taper_b2 && iz<taper_b1){
+                A[iz][ix] *= 0.5*(1.0-cos(PI*(taper_b1-iz)/taper_b));
+            }
+
+            else if(iz>=taper_b1 && iz<=snap_z2){
+                A[iz][ix] *= 0.0;
+            }
+
+        }
+    }
+
+
+}
+
+void gauss_filter_kernel(real**&kernel, int hfs){
+    // Creates a gaussian filter kernel of given size
+    // hfs = half filter size
+   
+
+    real sigma;
+    real p, q;
+    real sum = 0.0;
+
+    if (hfs==0) return;
+    hfs = abs(hfs);
+    sigma = hfs/2;
+    q = 2.0 * sigma * sigma;
+
+    // Array
+    for (int ii = -hfs; ii <= hfs; ii++) {
+        for (int jj = -hfs; jj <= hfs; jj++) {
+            kernel[jj + hfs][ii + hfs] = exp(-((ii*ii)/q) - ((jj*jj)/q));
+            sum += kernel[jj + hfs][ii + hfs];
+        }
+    }
+    
+    // Normalize
+    for (int i = 0; i < 2*hfs+1; i++)
+        for (int j = 0; j < 2*hfs+1; j++)
+            kernel[i][j] /= sum;
+    
+    // Oputput text
+    for (int x = -hfs; x <= hfs; x++) {
+        for (int y = -hfs; y <= hfs; y++) {
+            std::cout << kernel[x + hfs][y + hfs] << ",";
+        }
+        std::cout << std::endl;
+    }
+
+}
+
+
+void apply_gauss_filter(real**&mat, real**&mat_temp, real**&filter, int nz, int nx, int hfs){
+    // Apply gaussian filter kernel to smooth the gradients and materials
+    int conv;
+
+    // first copying mat values to mat_temp for storage
+    for (int iz=0; iz<nz; iz++){
+        for (int ix=0; ix<nx; ix++){
+            //
+            mat_temp[iz][ix] = mat[iz][ix];
+        }
+    }
+    
+
+    // Now applying Gaussian Filter
+    for (int iz=hfs; iz<nz-hfs-1; iz++){
+        for (int ix=hfs; ix<nx-hfs-1; ix++){
+            //
+            conv = 0.0;
+            for (int jj=0; jj<2*hfs+1; jj++){
+                for (int ii=0; ii<2*hfs+1; ii++){
+                    conv += mat_temp[iz+jj-hfs][ix+ii-hfs] * filter[jj][ii];
+                }
+            }
+
+            // Output matrix
+            mat[iz][ix] = conv;
+        }
+    }
+
+}
+
+
+
+
