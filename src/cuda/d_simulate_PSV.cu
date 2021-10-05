@@ -517,10 +517,14 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
     r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
     std::cout << "This is test GPU> ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
 
-
-
+            
 
             // Smooth gradients
+
+            // ----------------------------------------------------
+            // APPLY GAUSSIAN SMOOTHING (BLURRING) FUNCTIONS TO
+            // to grad_lam_shot, grad_mu_shot, grad_rho_shot,
+            // -----------------------------------------------------
 
             // Calculate Energy Weights
            energy_weights2_GPU(We, We_adj, snap_z1, snap_z2, snap_x1, snap_x2, nx);
