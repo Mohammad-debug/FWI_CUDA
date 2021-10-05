@@ -10,7 +10,7 @@ ftype = np.float64
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = True# True: computation in GPU, False: in CPU
+cuda_computation = True # True: computation in GPU, False: in CPU
 
 #forward only or fWI?
 fwinv = True # True: FWI, False: Forward only
@@ -27,7 +27,7 @@ fwinv = True # True: FWI, False: Forward only
 
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
-nt = 3000; nz = 401; nx = 201 # grid numbers (adding for PMLs as well)
+nt = 3000; nz = 201; nx = 401 # grid numbers (adding for PMLs as well)
 
 
 # Number of PMLs in each direction
@@ -41,8 +41,8 @@ isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
-snap_z1 = 20; snap_z2 = 380  # snap boundaries z
-snap_x1 = 20; snap_x2 = 180 # snap boundaries x
+snap_z1 = 20; snap_z2 = 180  # snap boundaries z
+snap_x1 = 20; snap_x2 = 380 # snap boundaries x
 snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap intervals
 
 
@@ -116,7 +116,7 @@ mat_grid = 1 # 0 for scalar and 1 for grid
 if (fwinv==False):
     for iz in range(0, nz):
         for ix in range(0, nx):
-            if (((nx/2-ix)**2+(nz/2-iz)**2)<(nx*nx/49)):
+            if ((((nx/2-ix)**2)/(nz*nz/64)+((nz/2-iz)**2)/(nx*nx/64))<1.0):
                 #rho[iz][ix] = 1.5 * rho[iz][ix]
                 mu[iz][ix] = mu1
                 lam[iz][ix] = lam1
@@ -150,8 +150,8 @@ freq_pml = 50.0 # PML frequency in Hz
 stf_type = 1; rtf_type = 0 # 1:velocity, 2:displacement
 
 # Creating source locations
-zsrc = np.array([nz/4, nz/2, 3*nz/4], dtype=np.int32)
-xsrc = np.full((zsrc.size,), 20, dtype=np.int32)
+xsrc = np.array([nx/6, 2*nx/6, 3*nx/6, 4*nx/6, 5*nx/6], dtype=np.int32)
+zsrc = np.full((xsrc.size,), 20, dtype=np.int32)
 nsrc = zsrc.size # counting number of sources from the source location data
 
 
@@ -162,8 +162,8 @@ src_shot_to_fire = np.arange(0,nsrc,1, dtype=np.int32)
 nshot = nsrc # fire each shot separately
 
 # Creating reciever locations
-zrec = np.arange(20, 381, 2, dtype=np.int32)
-xrec = np.full((zrec.size,), 180, dtype=np.int32)
+xrec = np.arange(20, 381, 5, dtype=np.int32)
+zrec = np.full((xrec.size,), 180, dtype=np.int32)
 nrec = zrec.size
 
 

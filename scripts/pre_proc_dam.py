@@ -12,9 +12,9 @@ ftype = np.float64
 
 fdorder = 2 # finite difference order 
 fpad = 1 # number of additional grids for finite difference computation
-
 #forward only or fWI?
-fwinv = True # True: FWI, False: Forward only
+fwinv = False # True: FWI, False: Forward only
+
 
 # Internal parameters for different cases 
 if (fwinv):
@@ -68,16 +68,16 @@ nx = fpad + npml_left + np.int(len/dx) + npml_right + fpad + 1 # grid numbers (a
 
 
 # Surface grid index in each direction (0 = no surface)
-surf = True # surface exists
+surf = False # surface exists
 isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
-snap_z1 = fpad+npml_top+np.int32(d_wt/dz) 
-snap_z2 = nz - npml_bottom - fpad #fpad+npml_top+np.int32(d_tot/dz) # snap boundaries z
-snap_x1 = np.int32(nx/2 - 1.0*l_top/dz) 
-snap_x2 = np.int32(nx/2  + 1.0*l_top/dz) # snap boundaries x
+snap_z1 = 20 
+snap_z2 = nz - snap_z1 #fpad+npml_top+np.int32(d_tot/dz) # snap boundaries z
+snap_x1 = 50 
+snap_x2 = nx-snap_x1 # snap boundaries x
 snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap interval
 
 # Taper position
@@ -113,8 +113,8 @@ mat_grid = 1 # 0 for scalar and 1 for grid
 rho_air = 1.25
 lam_air, mu_air = v_lami(0.0, 0.0, rho_air)
 
-rho_water = 1000.0
-lam_water, mu_water = v_lami(1500, 0.0, rho_water)
+rho_water = 1.25 # 1000
+lam_water, mu_water = v_lami(0.0, 0.0, rho_water) # Cp 1500
 
 #rho_sub = 1800.0
 #lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
@@ -174,13 +174,18 @@ for iz in range(0, nz):
             #if ((iz > fpad + npml_top + (d_top+1.50)/dz) and (iz <= fpad + npml_top + (d_sub-0.5)/dz)): # top and bottom boundary
             #    if ((ix > fpad + npml_left + (l_uadd+ l_usl +l_top/2 - 1.0)/dx - 0.25*np.cos(((iz*dz)-fpad-npml_top-d_top-1.5)*np.pi)/dz) and \
             #        (ix < fpad + npml_left + (l_uadd+ l_usl +l_top/2 + 1.0)/dx + 0.25*np.cos(((iz*dz)-fpad-npml_top-d_top-1.5)*np.pi)/dz)): # left and right boundarz
-
-            if ((ix*dx - (nx*dx/2))**2 +(iz*dx - (nz*dz/2+0.4))**2 < 0.5):
-                lam[iz][ix] = lam_sand_grout
-                mu[iz][ix] = mu_sand_grout
-                rho[iz][ix] = rho_sand_grout
-
             '''
+            if (iz>np.int(fpad + npml_top+d_top/dz)): # top boundary 
+                if (iz - np.int(fpad + npml_top+d_top/dz) >= 0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl + l_top)/dx)))):
+                    if (iz - (fpad + npml_top + np.int(d_top/dz)) >= -0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl)/dx)))):
+                        if ((ix > (fpad + npml_left + np.int((l_uadd + l_usl - 2.5)/dx))) and (ix < (fpad + npml_left + np.int((l_uadd + l_usl - 2.0)/dx)))):
+                            if (iz < (fpad + npml_left + np.int((3.5)/dx))):
+                
+                                lam[iz][ix] = lam_sand_grout
+                                mu[iz][ix] = mu_sand_grout
+                                rho[iz][ix] = rho_sand_grout
+
+            
 
             if ((ix*dx - (nx*dx/2-0.2))**2 +(iz*dx - (nz*dz/2+0.4))**2 < 0.5):
                 lam[iz][ix] = lam_sand_grout
