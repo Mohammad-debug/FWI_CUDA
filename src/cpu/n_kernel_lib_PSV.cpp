@@ -24,9 +24,9 @@ void reset_sv2(
     real nz, real nx){
     // reset the velocity and stresses to zero
     // generally applicable in the beginning of the time loop
-//#pragma omp parallel for collapse(2)
-    for (int iz = 0; iz<nz; iz++){
-        for (int ix = 0; ix<nx; ix++){
+#pragma omp parallel for collapse(2)
+    for (int iz = 0; iz<int(nz); iz++){
+        for (int ix = 0; ix<int(nx); ix++){
             // Wave velocity and stress tensor arrays
             vz[iz][ix] = 0.0;
             vx[iz][ix] = 0.0; 
@@ -49,9 +49,10 @@ void reset_PML_memory2(
     real nz, real nx){
     // reset the velocity and stresses to zero
     // generally applicable in the beginning of the time loop
- //#pragma omp parallel for collapse(2)
-    for (int iz = 0; iz<nz; iz++){
-        for (int ix = 0; ix<nx; ix++){
+ #pragma omp parallel for collapse(2)
+    for (int iz = 0; iz<int(nz); iz++){
+      
+        for (int ix = 0; ix<int(nx); ix++){
             // Wave velocity and stress tensor arrays
             mem_vz_z[iz][ix] = 0.0;
             mem_vx_z[iz][ix] = 0.0; 
