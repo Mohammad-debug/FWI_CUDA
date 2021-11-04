@@ -519,8 +519,7 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
 
             
 
-            // Smooth gradients
-
+            // Smooth gradients (Option 2 here)
             // ----------------------------------------------------
             // APPLY GAUSSIAN SMOOTHING (BLURRING) FUNCTIONS TO
             // to grad_lam_shot, grad_mu_shot, grad_rho_shot,
@@ -572,10 +571,14 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         // Congugate Gradient Method
         // -------------------------------
         std::cout << "Applying Preconditioning" << std::endl;
+
+        // ====================================
         // Applying Conjugate Gradient Method
+        // ====================================
         //PCG_PSV(PCG_dir_lam, PCG_lam, grad_lam, nz, nx);
         //PCG_PSV(PCG_dir_mu, PCG_mu, grad_mu, nz, nx);
         //PCG_PSV(PCG_dir_rho, PCG_rho, grad_rho, nz, nx);
+        //-------------------------------------------------
 
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1));
 
@@ -590,48 +593,6 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         taper2_GPU(grad_rho, nz, nx, snap_z1, snap_z2, snap_x1, snap_x2,
                    taper_t1, taper_t2, taper_b1, taper_b2, taper_l1, taper_l2, taper_r1, taper_r2);
 
-        /*
-        //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
-        // Applying PSG method
-        beta_i = 0.0; beta_j = 0.0;
-        for (int iz=0;iz<nz;iz++){
-            for (int ix=0;ix<nx;ix++){
-
-                // Fletcher-Reeves [Fletcher and Reeves, 1964]:
-                beta_i += grad_lam[iz][ix] * (grad_lam[iz][ix] - PCG_lam[iz][ix]);
-                beta_i += grad_mu[iz][ix] * (grad_mu[iz][ix] - PCG_mu[iz][ix]);
-                beta_i += grad_rho[iz][ix] * (grad_rho[iz][ix] - PCG_rho[iz][ix]);
-
-                beta_j += PCG_lam[iz][ix] * PCG_lam[iz][ix];
-                beta_j += PCG_mu[iz][ix] * PCG_mu[iz][ix];
-                beta_j += PCG_rho[iz][ix] * PCG_rho[iz][ix];
-
-                PCG_lam[iz][ix] = -grad_lam[iz][ix]; 
-                PCG_mu[iz][ix] = -grad_mu[iz][ix]; 
-                PCG_rho[iz][ix] = -grad_rho[iz][ix]; 
-           
-            }
-        }
-        beta_PCG = (iterstep) ? (beta_i/beta_j) : 0.0;
-        std::cout << "beta = "<< beta_PCG ;
-        beta_PCG = (beta_PCG >0) ? beta_PCG : 0.0;
-        //beta_PCG = (beta_PCG <1.0e6) ? beta_PCG : 1.0e6;
-        std::cout << " || adopted: " << beta_PCG<< std::endl;
-
-        
-        for (int iz=0;iz<nz;iz++){
-            for (int ix=0;ix<nx;ix++){
-                PCG_dir_lam[iz][ix] = PCG_lam[iz][ix] + beta_PCG * PCG_dir_lam[iz][ix]; // Getting PCG direction
-                PCG_dir_mu[iz][ix] = PCG_mu[iz][ix] + beta_PCG * PCG_dir_mu[iz][ix]; // Getting PCG direction
-                PCG_dir_rho[iz][ix] = PCG_rho[iz][ix] + beta_PCG * PCG_dir_rho[iz][ix]; // Getting PCG direction
-
-                grad_lam[iz][ix] = -PCG_dir_lam[iz][ix]; // Getting PCG_dir to gradient vectors
-                grad_mu[iz][ix] = -PCG_dir_mu[iz][ix]; // Getting PCG_dir to gradient vectors
-                grad_rho[iz][ix] = -PCG_dir_rho[iz][ix]; // Getting PCG_dir to gradient vectors
-           
-            }
-        }
-        */
 
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+2);
         // ----------------------
@@ -654,21 +615,9 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                                           snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 0);
                                           std::cout<<"\n\n *****STEP LENGTH GPU ******"<<step_length<<"\n";
 
-        // Separate Step length for density update
-        /*
-        step_length_rho = step_length_PSV(step_length_rho, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
-            vz, vx,  uz, ux, szz, szx, sxx,  We, dz_z, dx_z, dz_x, dx_x, 
-            lam, mu, rho, lam_copy, mu_copy, rho_copy, 
-            mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
-            pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
-            pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
-            mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, 
-            mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
-            nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
-            nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
-            rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx,  accu_szz, accu_szx, accu_sxx, 
-            snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 2);
-        */
+       //========================================================================
+       // APPLY GAUSSIAN SMOOTHING / BLURRING TO grad_lam, grad_mu and grad_rho
+       //======================================================================
 
         // Update material parameters to the gradients !!
         update_mat2_GPU(lam, lam_copy, grad_lam, 4.8e+10, 0.0, step_length, nz, nx);
