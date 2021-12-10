@@ -223,7 +223,7 @@ void sdiff2(
     real dxi = 1.0/dx; real dzi = 1.0/dz; // inverse of dx and dz
 
     // 2D space grid
-    #pragma omp parallel for collapse(2)
+    
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
 
@@ -258,7 +258,7 @@ void update_v2(
     int nz1, int nz2, int nx1, int nx2, real dt){
     // update stress from velocity derivatives
 
-    #pragma omp parallel for collapse(2)
+  
     for(int iz=nz1; iz<nz2; iz++){
         for(int ix=nx1; ix<nx2; ix++){
            // printf("Hello World from thread %d\n", omp_get_thread_num());
@@ -567,10 +567,13 @@ void vsrc2(
          #pragma omp parallel for 
             for(int is=0; is<nsrc; is++){
                 if (src_shot_to_fire[is] == ishot){
-                   // std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it];
+                    //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it]<<"\n";
+                    //printf("it=%d  is=%d vz=%lf z_src=%d x_src=%d \n",it, is, vz[z_src[is] ][ x_src[is]],z_src[is], x_src[is] );
                     vz[z_src[is]][x_src[is]] += stf_z[is][it];
                     vx[z_src[is]][x_src[is]] += stf_x[is][it];
                     //std::cout << "v:" << vz[z_src[is]][x_src[is]] <<", " << stf_z[is][it]<<std::endl;
+
+                    //printf("after it=%d is=%d vz=%lf stfz=%lf  \n",it,  is, vz[z_src[is] ][ x_src[is]], stf_z[is][it]);
                 }
                 
             }
@@ -817,48 +820,56 @@ void scale_grad_E2(
 void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat, 
             real mat_max, real mat_min, real step_length, int nz, int nx){
     // update gradients to the material
-    real mat_av=0, mat_av_old=0, mat_av_grad=0;
+    real mat_av = 0, mat_av_old = 0, mat_av_grad = 0;
 
     // Scale factors for gradients
     real grad_max = 0.0, mat_array_max = 0.0, step_factor;
-    //#pragma omp parallel for collapse(2) reduction(max: grad_max,mat_array_max)
+    #pragma omp parallel for collapse(2) reduction(max: grad_max,mat_array_max)
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
             
             grad_max = std::max(grad_max, abs(grad_mat[iz][ix]));
-            mat_array_max = std::max(mat_max, abs(mat_old[iz][ix]));
 
-        } 
+            mat_array_max = std::max(mat_array_max, abs(mat_old[iz][ix]));
+        }
     }
-    step_factor = mat_array_max/grad_max;
-    //std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << std::endl;
+
+    if (mat_array_max < mat_max)
+        mat_array_max = mat_max;
+
+    step_factor = mat_array_max / grad_max;
+    std::cout << "Update factor: " << step_factor << ", " << mat_max << ", " << grad_max << ", " << mat_array_max << std::endl;
 
     // Material update to whole array
-    #pragma omp parallel for collapse(2) reduction(+: mat_av,mat_av_old,mat_av_grad)
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            
+    for (int iz = 0; iz < nz; iz++)
+    {
+        for (int ix = 0; ix < nx; ix++)
+        {
             mat[iz][ix] = mat_old[iz][ix] + step_length * step_factor * grad_mat[iz][ix];
-            if (mat[iz][ix] > mat_max){ mat[iz][ix] = mat_max;}
-            if (mat[iz][ix] < mat_min){ mat[iz][ix] = mat_min;}
+            if (mat[iz][ix] > mat_max)
+            {
+                mat[iz][ix] = mat_max;
+            }
+            if (mat[iz][ix] < mat_min)
+            {
+                mat[iz][ix] = mat_min;
+            }
 
             mat_av += mat[iz][ix];
             mat_av_old += mat_old[iz][ix];
             mat_av_grad += grad_mat[iz][ix];
-
         }
-        
     }
     //std::cout << "Mat update: SL = " <<step_length <<", new = " << mat_av <<", old = " << mat_av_old <<", grad = " << mat_av_grad << std::endl;;
 }
 
-//parallelised
 void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
         real **&lam, real **&mu,  real **&rho, int nz, int nx){
 
     // Copy material values for storage
     #pragma omp parallel for collapse(2)
     for (int iz=0;iz<nz;iz++){
+        
         for (int ix=0;ix<nx;ix++){
             
             lam_copy[iz][ix] = lam[iz][ix];
@@ -923,7 +934,18 @@ void mat_av2(
     C_lam = C_lam/((nz-1)*(nx-1));
     C_mu = C_mu/((nz-1)*(nx-1));
     C_rho = C_rho/((nz-1)*(nx-1));
+//TEST
 
+double l=0,m=0,r=0;
+ for (int iz=0; iz<nz; iz++){
+        for (int ix=0; ix<nx; ix++){
+            l+=lam[iz][ix];
+            m+=mu[iz][ix];
+            r+=rho[iz][ix];
+        }}
+    std::cout << "This is test CPU \nC_lam=" << C_lam << " \nC_mu=" << C_mu << " \nC_rho=" << C_rho << " \n\n";
+
+    std::cout << "This is test CPU II \nlam sum =" << l << " \nmu sum=" << m << " \nr sum=" << r << " \n\n";
 }
 //parallelised
 void mat_grid2(real **&lam, real **&mu, real **&rho, 

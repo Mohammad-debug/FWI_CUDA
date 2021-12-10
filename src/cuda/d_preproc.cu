@@ -22,7 +22,7 @@ void alloc_varpre_PSV_GPU( real *&hc, int *&isurf, int *&npml, // holberg coeffi
     // Scalar variables for allocation
     int fdorder, 
     bool pml_z, bool pml_x, int nsrc, int nrec, 
-    int nt, int nz, int nx)
+    int nt,int nshot, int nz, int nx)
     {
     // Allocates the variables that are to be...
     // Transferred from device to the host
@@ -85,8 +85,8 @@ void alloc_varpre_PSV_GPU( real *&hc, int *&isurf, int *&npml, // holberg coeffi
 
        std::cout << "Receivers allocated on GPU" << std::endl;
         // rtf field measurements
-        cudaCheckError(cudaMalloc((void**)&rtf_z_true,  nrec * nt * sizeof(real)));//allocate_array(rtf_z_true, nrec, nt);
-        cudaCheckError(cudaMalloc((void**)&rtf_x_true,  nrec * nt * sizeof(real)));//allocate_array(rtf_x_true, nrec, nt);
+        cudaCheckError(cudaMalloc((void**)&rtf_z_true,  nshot * nrec * nt * sizeof(real)));//allocate_array(rtf_z_true, nrec, nt);
+        cudaCheckError(cudaMalloc((void**)&rtf_x_true,  nshot * nrec * nt * sizeof(real)));//allocate_array(rtf_x_true, nrec, nt);
 
 
     }
@@ -109,7 +109,7 @@ void copy_varpre_PSV_CPU_TO_GPU(
     real **&stf_z, real **&stf_x, // source time functions
     // Reciever seismograms
     int *&z_rec, int *&x_rec,
-  //  real **&rtf_z_true, real **&rtf_x_true, // Field measurements for receivers
+    real ***&rtf_z_true, real ***&rtf_x_true, // Field measurements for receivers
     // Scalar variables for allocation
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     real *&d_hc, int *&d_isurf, int *&d_npml, // holberg coefficients, surface indices and number pml in each side
@@ -130,7 +130,7 @@ void copy_varpre_PSV_CPU_TO_GPU(
     // Scalar variables for allocation
     int fdorder, 
     bool pml_z, bool pml_x, int nsrc, int nrec, 
-    int nt, int nz, int nx)
+    int nt,int nshot, int nz, int nx)
     {
     // Allocates the variables that are to be...
     // Transferred from device to the host
@@ -153,9 +153,7 @@ void copy_varpre_PSV_CPU_TO_GPU(
     cudaCheckError(cudaMemcpy(d_mu,mu[0],  nz*nx* sizeof(real), cudaMemcpyHostToDevice));
     cudaCheckError(cudaMemcpy(d_rho,rho[0], nz*nx* sizeof(real), cudaMemcpyHostToDevice));
 
-    cudaCheckError(cudaMemcpy(lam[0],d_lam, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
-    cudaCheckError(cudaMemcpy(mu[0],d_mu,  nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
-    cudaCheckError(cudaMemcpy(rho[0],d_rho, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
+
 
     // Allocating PML coeffieients
     if (pml_z){
@@ -197,8 +195,8 @@ void copy_varpre_PSV_CPU_TO_GPU(
 
        std::cout << "Receivers Copied on GPU" << std::endl;
         // rtf field measurements
-       // cudaCheckError(cudaMemcpy(d_rtf_z_true,rtf_z_true[0],  nrec * nt * sizeof(real), cudaMemcpyHostToDevice));//allocate_array(rtf_z_true, nrec, nt);
-       // cudaCheckError(cudaMemcpy(d_rtf_x_true,rtf_x_true[0],  nrec * nt * sizeof(real), cudaMemcpyHostToDevice));//allocate_array(rtf_x_true, nrec, nt);
+        cudaCheckError(cudaMemcpy(d_rtf_z_true,rtf_z_true[0][0],  nshot * nrec * nt * sizeof(real), cudaMemcpyHostToDevice));//allocate_array(rtf_z_true, nrec, nt);
+        cudaCheckError(cudaMemcpy(d_rtf_x_true,rtf_x_true[0][0],  nshot * nrec * nt * sizeof(real), cudaMemcpyHostToDevice));//allocate_array(rtf_x_true, nrec, nt);
     }
 
 }

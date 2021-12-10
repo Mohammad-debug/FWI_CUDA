@@ -164,8 +164,8 @@ void kernel_PSV(int ishot, // shot index
         if(nsrc){ // source seismograms exist
             // Adding source term corresponding to velocity
             //std::cout <<"The source applied here: "<<std::endl;
-            vsrc2(vz, vx, rho_zp, rho_xp, nsrc, stf_type, stf_z, stf_x, 
-                z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx);
+             vsrc2(vz, vx, rho_zp, rho_xp, nsrc, stf_type, stf_z, stf_x, 
+                 z_src, x_src, src_shot_to_fire, ishot, it, dt, dz, dx);
         }
 
         // 3.2: Recording the displacements to the recievers
@@ -174,6 +174,7 @@ void kernel_PSV(int ishot, // shot index
             urec2(rtf_type, rtf_uz, rtf_ux, vz, vx, nrec, z_rec, x_rec, it, dt, dz, dx);
         }
 
+          //temporary
         // -----------------------------------------------------------------------
 
         // -----------------------------------------------------------------------
