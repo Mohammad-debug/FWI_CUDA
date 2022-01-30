@@ -131,7 +131,7 @@ else:
     clip_mx = np.amin(vx_dat)
     clipx = 0.3*max([clip_px, np.abs(clip_mx)])
     
-    for ii in range(1,snap_nt, 100):
+    for ii in range(1,snap_nt, 20):
         # reading data from csv file
         vz = vz_dat[ii,:,:]
         vx = vx_dat[ii,:,:]  

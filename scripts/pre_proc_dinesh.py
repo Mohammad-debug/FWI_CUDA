@@ -62,7 +62,7 @@ npml_top = 10; npml_bottom = 10; npml_left = 10; npml_right = 10
 
 # Geometric data
 dt = 0.3e-4; dz = 0.1; dx = 0.1; # grid intervals
-nt = 6000.0; 
+nt = 12000.0; 
 nz = fpad + npml_top + np.int32(dep/dz) + npml_bottom + fpad+ 1
 nx = fpad + npml_left + np.int32(len/dx) + npml_right + fpad + 1 # grid numbers (adding for PMLs as well)
 
