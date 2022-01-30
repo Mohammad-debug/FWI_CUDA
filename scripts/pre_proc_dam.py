@@ -74,9 +74,9 @@ isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
-snap_z1 = 20 
+snap_z1 = 0
 snap_z2 = nz - snap_z1 #fpad+npml_top+np.int32(d_tot/dz) # snap boundaries z
-snap_x1 = 50 
+snap_x1 = 0 
 snap_x2 = nx-snap_x1 # snap boundaries x
 snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap interval
 
@@ -86,11 +86,11 @@ nx_snap = snap_x2 - snap_x1
 
 # taper relative to the total grid
 # t: top, b: bottom, l: left, r: right
-taper_t1 = snap_z1 + np.int32(nz_snap*0.00); taper_t2 = taper_t1 + np.int32(nz_snap*0.05)
-taper_b1 = snap_z2 - np.int32(nz_snap*0.00); taper_b2 = taper_b1 - np.int32(nz_snap*0.05)
+taper_t1 = snap_z1 + np.int32(nz_snap*0.00); taper_t2 = taper_t1 + np.int32(nz_snap*0.00)
+taper_b1 = snap_z2 - np.int32(nz_snap*0.00); taper_b2 = taper_b1 - np.int32(nz_snap*0.00)
 
-taper_l1 = snap_x1 + np.int32(nx_snap*0.0); taper_l2 = taper_l1 + np.int32(nx_snap*0.05)
-taper_r1 = snap_x2 - np.int32(nx_snap*0.0); taper_r2 = taper_r1 - np.int32(nx_snap*0.05)
+taper_l1 = snap_x1 + np.int32(nx_snap*0.0); taper_l2 = taper_l1 + np.int32(nx_snap*0.00)
+taper_r1 = snap_x2 - np.int32(nx_snap*0.0); taper_r2 = taper_r1 - np.int32(nx_snap*0.00)
 #snap_z1 = 1; snap_z2 = nz-1  # snap boundaries z
 #snap_x1 = 1; snap_x2 = nx-1 # snap boundaries x
 
@@ -116,11 +116,11 @@ lam_air, mu_air = v_lami(0.0, 0.0, rho_air)
 rho_water = 1.25 # 1000
 lam_water, mu_water = v_lami(0.0, 0.0, rho_water) # Cp 1500
 
-#rho_sub = 1800.0
-#lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
+rho_sub = 1800.0
+lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
 
-rho_sub = 1700.0
-lam_sub, mu_sub = v_lami(700, 200, rho_sub)
+#rho_sub = 1700.0
+#lam_sub, mu_sub = v_lami(700, 200, rho_sub)
 
 rho_sand = 1700.0
 lam_sand, mu_sand = v_lami(700, 200, rho_sand)
