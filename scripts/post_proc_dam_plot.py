@@ -51,6 +51,7 @@ def ricker_wavelet(nt, dt, amp, fc, ts):
         vel[it] = amp*(1.0 - 2.0 * tau * tau) * math.exp(-2.0 * tau * tau)
 
         '''
+        #
         #transform into displacement
         if it == 0:
             disp[it] = dt*vel[it]/(dz*dx)
