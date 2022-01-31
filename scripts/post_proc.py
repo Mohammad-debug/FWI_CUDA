@@ -9,6 +9,21 @@ from mpl_toolkits.mplot3d import Axes3D
 
 import sys
 
+# Field parameters
+l_uadd = 1.0
+l_usl = 12.0
+l_top = 3.0
+l_dsl = 12.0
+l_dadd = 1.0
+len = l_uadd + l_usl + l_top + l_dsl + l_dadd  # Meters
+
+d_top = 0.5
+d_wt = 1.0
+d_sub = 4.0
+d_tot = 7.0
+dep = d_tot # Depth
+npml_fpad = 21
+
 def read_metaint(filename, dtype):
     
     '''
