@@ -653,6 +653,21 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             iter = (abs((L2_norm[iterstep] - L2_norm[iterstep - 2]) / L2_norm[iterstep - 2]) < 0.001) ? false : true; // Temporary condition
             std::cout << "The change is less than minimal after " << iterstep << " iteration steps." << std::endl;
         }
+
+        // saving material after every 10 iterations
+         if (iterstep%5){
+        // Writing the accumulation array
+        std::cout << "Writing updated material to binary file <FINAL> ITERATION " << iterstep;
+
+        cudaCheckError(cudaMemcpy(h_lam[0],lam, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
+        cudaCheckError(cudaMemcpy(h_mu[0],mu,  nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
+        cudaCheckError(cudaMemcpy(h_rho[0],rho, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
+
+        write_mat(h_lam, h_mu, h_rho, nz, nx, iterstep);
+        //write_mat(lam, mu, rho, nz, nx, iterstep);
+        std::cout << " <DONE>" << std::endl;
+        }
+        
     }
 
     // Saving the Accumulative storage file to a binary file for every shots
