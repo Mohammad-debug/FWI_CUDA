@@ -3,6 +3,7 @@
 
 # reading the output arrays
 import numpy as np
+import math
 from matplotlib import cm
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -31,6 +32,19 @@ npml_dz = 50
 npml_fpad = 20
 
 dt = 0.3e-4; dz = 0.1; dx = 0.1; # grid intervals
+
+def ricker_wavelet(nt, dt, amp, fc, ts):
+    #// Create signal
+    #// **signal: The array in which signal is to be written
+    #// nt: number of time steps, dt: time step size, ts: time shift
+    #// fc: peak frequency, amp: amplitude of the signal
+
+    fci = 1.0/fc;
+
+    for it in range(0, nt):
+        t = it * dt
+        tau = math.pi * (t - 1.5 * fci - ts) / (1.5 * fci)
+        signal[it] = amp*(1.0 - 2.0 * tau * tau) * exp(-2.0 * tau * tau)
 
 def read_metaint(filename, dtype):
     
@@ -65,21 +79,233 @@ def read_tensor(filename, dtype, dshape):
 
 
 # reading the input data for the array size
-read_metaint("../bin/metaint.bin", np.int32)
+read_metaint("../FWI_PLOT_OUT/metaint.bin", np.int32)
 snap_nt = np.int32(1 + (ndim[0]-1)//snap[6])
 snap_nz = 1 + (snap[3] - snap[2])//snap[7]
 snap_nx = 1 + (snap[4] - snap[5])//snap[8]
 
 # plotting the reciever data
 
+
+
 if (fwinv):
-    print("Plotting material for iteration in fwi")
+    #  print("Plotting material for iteration in fwi")
+    # iterations to plot
+    iter = [7, 12, 22, 42, 62, 82, 102]
+    fw, fh = set_size('thesis', subplots=(2,4)) # Getting the appropriate figure size
+    # Set the rc parameter updates
+    plt.rcParams.update(tex_fonts)
+    # initialize the figure plots
+    # ----------------------------------------------------------------
+    # -----------------------------------------------------------------
+    # PLOTS FOR CP
+    # ----------------------------------------------
+    fig, axs = plt.subplots(2,4, figsize=(fw, fh*3.2))
+    fig.tight_layout() 
+    plt.subplots_adjust(top=1, bottom=0.12, hspace=0.14, wspace=0.37)
+    
+    clip_min = 1650
+    clip_max = 2200
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/start_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[0, 0].imshow(Cp, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[0,0].set_title('Start model', loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[1])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[0, 1].imshow(Cp, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[0,1].set_title('Iteration:'+np.str(iter[1]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[2])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[0, 2].imshow(Cp, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[0,2].set_title('Iteration:'+np.str(iter[2]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[3])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[0, 3].imshow(Cp, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[0,3].set_title('Iteration:'+np.str(iter[3]-2), loc=('center'))
+    
+    # ---------------------------------------------------------------------------
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[4])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[1, 0].imshow(Cp, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[1,0].set_title('Iteration:'+np.str(iter[4]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[5])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[1, 1].imshow(Cp, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[1,1].set_title('Iteration:'+np.str(iter[5]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[6])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    get_im = axs[1, 2].imshow(Cp, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[1,2].set_title('Iteration:'+np.str(iter[6]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/true_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[1, 3].imshow(Cp, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[1,3].set_title('True model', loc=('center'))
+    
+    cbar_ax = fig.add_axes([0.09, 0.06, 0.84, 0.02])
+    cb =fig.colorbar(get_im, cax=cbar_ax, orientation="horizontal")
+    cb.set_label(r'$c_1(m/s)$')
+    
+    
+    fig.savefig('./fwi_cp.pdf', format='pdf', bbox_inches='tight')
+    plt.show()
+    
+    # ----------------------------------------------------------------
+    # -----------------------------------------------------------------
+    # PLOTS FOR CS
+    # ----------------------------------------------
+    fig, axs = plt.subplots(2,4, figsize=(fw, fh*3.2))
+    fig.tight_layout() 
+    plt.subplots_adjust(top=1, bottom=0.12, hspace=0.14, wspace=0.37)
+    
+    clip_min = 450
+    clip_max = 800
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/start_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[0, 0].imshow(Cs, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[0,0].set_title('Start model', loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[1])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[0, 1].imshow(Cs, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[0,1].set_title('Iteration:'+np.str(iter[1]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[2])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[0, 2].imshow(Cs, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[0,2].set_title('Iteration:'+np.str(iter[2]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[3])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[0, 3].imshow(Cs, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[0,3].set_title('Iteration:'+np.str(iter[3]-2), loc=('center'))
+    
+    # ---------------------------------------------------------------------------
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[4])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[1, 0].imshow(Cs, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[1,0].set_title('Iteration:'+np.str(iter[4]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[5])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[1, 1].imshow(Cs, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[1,1].set_title('Iteration:'+np.str(iter[5]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/iter"+np.str(iter[6])+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    get_im = axs[1, 2].imshow(Cs, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[1,2].set_title('Iteration:'+np.str(iter[6]-2), loc=('center'))
+    
+    # The first figure plot
+    mat_dat = read_tensor("../FWI_PLOT_OUT/true_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
+    lam = mat_dat[0][:][:]
+    mu = mat_dat[1][:][:]
+    rho = mat_dat[2][:][:]
+    Cs = np.sqrt(mu/rho)
+    Cp = np.sqrt((lam + 2 * mu)/rho)
+    axs[1, 3].imshow(Cs, animated=True, interpolation='nearest', vmin=clip_min, vmax=clip_max)
+    axs[1,3].set_title('True model', loc=('center'))
+    
+    cbar_ax = fig.add_axes([0.09, 0.06, 0.84, 0.02])
+    cb =fig.colorbar(get_im, cax=cbar_ax, orientation="horizontal")
+    cb.set_label(r'$c_1(m/s)$')
+    
+    
+    fig.savefig('./fwi_cs.pdf', format='pdf', bbox_inches='tight')
+    plt.show()
+    
+    
+    exit()
+    
+    
     maxiter = 700
     for ii in range(600,maxiter,1):
         # reading data from csv file
-        mat_dat = read_tensor("../bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
-        #mat_dat = read_tensor("../io/mat_save/iter"+np.str(ii)+"_mat copy.bin", np.float64, (3, ndim[1], ndim[2]))
-        
+        mat_dat = read_tensor("../bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2])) 
         lam = mat_dat[0][:][:]
         mu = mat_dat[1][:][:]
         rho = mat_dat[2][:][:]
@@ -137,10 +363,6 @@ else:
     # Plot figure for the paper
     # create the standard size for the figure
     fw, fh = set_size('thesis', subplots=(1,2))
-    # Using seaborn's style
-    #plt.style.use('seaborn')
-    #width = 345
-
     # Set the rc parameter updates
     plt.rcParams.update(tex_fonts)
     
@@ -148,6 +370,7 @@ else:
     # initialize the figure plots
     fig, axs = plt.subplots(1,2, figsize=(fw, fh))
     fig.tight_layout() 
+    plt.subplots_adjust(top=1, bottom=0.12, hspace=0)
     # Hide the top and right spines of the axis
     # The first figure plot
     axs[0].plot(time, rtf_uz[1], label='rec 1')
@@ -182,19 +405,6 @@ else:
     fig.savefig('./seismograms_dam.pdf', format='pdf', bbox_inches='tight')
     plt.show()
     exit()
-    
-    
-    # Plotting the RTF functions
-    plt.figure(1)
-    plt.subplot(211)
-    for ii in range(0, nrec):   
-        plt.plot(rtf_uz[ii][:])
-    plt.grid()
-    plt.subplot(212)
-    for ii in range(0, nrec):
-        plt.plot(rtf_ux[ii][:])
-    plt.grid()
-    plt.show()
     
     vz_dat = read_tensor("../bin/shot2_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     vx_dat = read_tensor("../bin/shot2_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
@@ -379,62 +589,4 @@ else:
    
     fig.savefig('./forward_dam_vz.pdf', format='pdf', bbox_inches='tight')
     plt.show()
-    exit()
-    
-    for ii in range(1,snap_nt, 5):
-        # reading data from csv file
-        vz = vz_dat[ii,:,:]
-        vx = vx_dat[ii,:,:]  
-        plt.figure(1)
-        plt.subplot(211)
-        
-        # plotting dam parameters
-        #------------------------------------------------------------------------------------------
-        plt.plot(((l_uadd+l_usl)/dx+npml_fpad, (l_uadd+l_usl+l_top)/dx+npml_fpad), \
-            (d_top/dz+npml_fpad-1, d_top/dz+npml_fpad-1), color='k', lw =1.0) # top of the dam
-        
-        plt.plot(((l_uadd)/dx+2*npml_fpad-8, (l_uadd+l_usl)/dx+npml_fpad), \
-            ((d_sub)/dz+npml_fpad, d_top/dz+npml_fpad-1), color='k', lw =1.0)# upslope of the dam
-        
-        plt.plot(((l_uadd+l_usl+l_top+l_dsl)/dx+npml_fpad-10, (l_uadd+l_usl+l_top)/dx+npml_fpad),\
-            ((d_sub)/dz+npml_fpad, d_top/dz+npml_fpad-1), color='k', lw =1.0)# downslope of the dam
-        
-        
-        plt.plot((0 , (l_uadd)/dx+2*npml_fpad-8), ((d_sub)/dz+npml_fpad, (d_sub)/dz+npml_fpad), color='k', lw =1.0) # subsurface up
-        
-        plt.plot(((l_uadd+l_usl+l_top+l_dsl)/dx+npml_fpad-10, (len+l_dadd)/dx+2*npml_fpad+3), \
-            ((d_sub)/dz+npml_fpad, (d_sub)/dz+npml_fpad), color='k', lw =1.0) # subsurface down
-        plt.plot((0, l_usl/dx+npml_fpad-8), (d_wt/dz+npml_fpad, d_wt/dz+npml_fpad), color='b', lw =1.0) # water level
-        #-------------------------------------------------------------------------------------------------------
-        
-        plt.imshow(vz, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clipz, vmax=clipz)
-        plt.colorbar()
-        plt.title('Vz [Time snap '+np.str(ii)+']', y=-0.2)
-        plt.xlabel('X [no. of grids]'+np.str(ii))
-        plt.ylabel('Z [no. of grids]')
-        #pyplot.gca().invert_yaxis()
-        #pyplot.axis('equal')
-        plt.grid()
-        plt.subplot(212)
-        plt.imshow(vx, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clipx, vmax=clipx)
-        plt.colorbar()
-        plt.title('Vx [Time snap '+np.str(ii)+']', y=-0.2)
-        plt.xlabel('X [no. of grids]'+np.str(ii))
-        plt.ylabel('Z [no. of grids]')
-        #pyplot.gca().invert_yaxis()
-        #pyplot.axis('equal')
-        plt.grid()
-        #pyplot.savefig('../io/vz_snap'+numpy.str(ii)+'.pdf', format='pdf',figsize=(10,7), dpi=1000)
-        #plt.show()
-        #plt.draw()
-        plt.pause(0.01)
-        plt.clf()
-        
-        #if (ii<100):
-        #    pyplot.clf()
-        #else:
-        #    pyplot.show()
-        
-        #print('Figure '+np.str(ii)+' plotted.')
-        del vz
-# %%
+  

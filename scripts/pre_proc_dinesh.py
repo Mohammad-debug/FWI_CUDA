@@ -134,6 +134,8 @@ lam_sand_grout, mu_sand_grout = v_lami(300, 100.0, rho_sand_grout)
 Cp, Cs = w_vel(lam_sub, mu_sub, rho_sub)
 
 # Scalar material values to pass to the kernelsdam
+for iz in range(0, nz):
+    for ix in range(0, nx):
         if (iz>np.int32(fpad + npml_top+d_top/dz)): # top boundary 
             if (iz - np.int32(fpad + npml_top+d_top/dz) >= 0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl + l_top)/dx)))):
                 if (iz - (fpad + npml_top + np.int32(d_top/dz)) >= -0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl)/dx)))):

@@ -10,7 +10,7 @@ ftype = np.float64
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = True# True: computation in GPU, False: in CPU
+cuda_computation = False# True: computation in GPU, False: in CPU
 
 #forward only or fWI?
 fwinv = True # True: FWI, False: Forward only
