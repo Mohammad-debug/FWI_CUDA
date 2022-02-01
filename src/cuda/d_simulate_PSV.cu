@@ -383,9 +383,9 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
     // Start of FWI iteration loop
     bool iter = true;
     int iterstep = 0;
-    int maxIter = 1000;
-    real L2_norm[1000]; // size is maxIter
-    for (int ll = 0; ll < 1000; ll++)
+    int maxIter = 200;
+    real L2_norm[maxIter]; // size is maxIter
+    for (int ll = 0; ll < maxIter; ll++)
     {
         L2_norm[ll] = 0.0;
     }
@@ -655,7 +655,7 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         }
 
         // saving material after every 10 iterations
-         if (iterstep%5){
+         if (iterstep%10){
         // Writing the accumulation array
         std::cout << "Writing updated material to binary file <FINAL> ITERATION " << iterstep;
 
@@ -667,6 +667,8 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         //write_mat(lam, mu, rho, nz, nx, iterstep);
         std::cout << " <DONE>" << std::endl;
         }
+
+
         
     }
 
@@ -683,5 +685,9 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         write_mat(h_lam, h_mu, h_rho, nz, nx, iterstep);
         //write_mat(lam, mu, rho, nz, nx, iterstep);
         std::cout << " <DONE>" << std::endl;
+    }
+
+    for (int ll = 0; ll < maxIter; ll++){
+        std::cout << ll << ', ' << L2_norm[ll] << std::endl;
     }
 }
