@@ -52,13 +52,13 @@ len = l_uadd + l_usl + l_top + l_dsl + l_dadd  # Meters
 d_top = 0.5
 d_wt = 1.0
 d_sub = 4.0
-d_tot = 5.0
+d_tot = 7.0
 dep = d_tot # Depth
 
 
 # Number of PMLs in each direction
 pml_z = True; pml_x = True # PML exist in both direction
-npml_top = 10; npml_bottom = 10; npml_left = 10; npml_right = 10
+npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
 
 # Geometric data
 dt = 0.3e-4; dz = 0.1; dx = 0.1; # grid intervals
@@ -78,7 +78,7 @@ snap_z1 = fpad #+npml_top+np.int32(d_wt/dz)
 snap_z2 = nz - fpad #- npml_bottom #fpad+npml_top+np.int32(d_tot/dz) # snap boundaries z
 snap_x1 = fpad #np.int32(nx/2 - 1.0*l_top/dz) 
 snap_x2 = nx - fpad #np.int32(nx/2  + 1.0*l_top/dz) # snap boundaries x
-snap_dt = 1; snap_dz = 1; snap_dx = 1; # the snap interval
+snap_dt = 10; snap_dz = 1; snap_dx = 1; # the snap interval
 
 # Taper position
 nz_snap = snap_z2 - snap_z1
@@ -119,7 +119,7 @@ lam_water, mu_water = v_lami(1500, 0.0, rho_water)
 #rho_sub = 1800.0
 #lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
 
-rho_sub = 1700.0
+rho_sub = 2000.0
 lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
 
 rho_sand = 1700.0
@@ -133,7 +133,13 @@ lam_sand_grout, mu_sand_grout = v_lami(300, 100.0, rho_sand_grout)
 # Getting wave velocities for hardest layers
 Cp, Cs = w_vel(lam_sub, mu_sub, rho_sub)
 
-# Scalar material values to pass to the kernels
+# Scalar material values to pass to the kernelsdam
+        if (iz>np.int32(fpad + npml_top+d_top/dz)): # top boundary 
+            if (iz - np.int32(fpad + npml_top+d_top/dz) >= 0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl + l_top)/dx)))):
+                if (iz - (fpad + npml_top + np.int32(d_top/dz)) >= -0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl)/dx)))):
+                    lam[iz][ix] = lam_sand
+                    mu[iz][ix] = mu_sand
+                    rho[iz][ix] = rho_sand
 scalar_rho = rho_sand
 scalar_mu = mu_sand
 scalar_lam = lam_sand

@@ -2,8 +2,8 @@ CXX      := g++
 CUXX 	:= nvcc 
 CXXFLAGS := -fopenmp #-std=c++17 -pedantic-errors -Wall -Wextra -Werror 
 CUXXFLAGS :=  #-std=c++17 -pedantic-errors -Wall -Wextra -Werror
-#LDFLAGS  := -L/usr/lib -L/opt/cuda/include -lstdc++ -lm -lcudart 
-LDFLAGS  := -L/usr/lib -L/usr/lib/cuda -lstdc++ -lm -lcudart 
+LDFLAGS  := -L/usr/lib -L/opt/cuda/include -lstdc++ -lm -lcudart 
+#LDFLAGS  := -L/usr/lib -L/usr/lib/cuda -lstdc++ -lm #-lcudart 
 OBJ_DIR  := obj
 APP_DIR  := bin
 TARGET   := seis_fwi
@@ -46,7 +46,11 @@ release: CXXFLAGS += -O2
 release: all
 
 run:
+<<<<<<< HEAD
 	python3 ./scripts/pre_proc_dinesh.py
+=======
+	python3 ./scripts/pre_proc.py
+>>>>>>> b429606b988b212c2789c6b40a7a6b4d4c1c6008
 	$(APP_DIR)/$(TARGET) 
 	#python3 ./scripts/post_proc.py
 
