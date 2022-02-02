@@ -103,6 +103,7 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         std::cout << "FORWARD KERNEL: SHOT " << ishot << " of " << nshot <<"." << std::endl;
         accu = true; // Accumulated storage for output
         grad = false; // no gradient computation in forward kernel
+        
         kernel_PSV(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
             vz, vx,  uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x, 
             lam, mu, mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
@@ -232,6 +233,11 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real step_length_rho = 0.01; // step length set to initial
     
     while (iter){ // currently 10 just for test (check the conditions later)
+        //
+
+
+        //
+        //
         std::cout << std::endl << std::endl;
         std::cout << "==================================" << std::endl;
         std::cout << "FWI: Iteration "<< iterstep << std::endl;
@@ -527,7 +533,7 @@ l=0;m=0;r=0;
         }
 
 	   // smooth model
-
+        return;//test purpose
        //
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition

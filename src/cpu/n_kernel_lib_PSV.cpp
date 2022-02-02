@@ -884,9 +884,9 @@ double l=0,m=0,r=0;
             m+=mu[iz][ix];
             r+=rho[iz][ix];
         }}
-    std::cout << "This is test CPU \nC_lam=" << C_lam << " \nC_mu=" << C_mu << " \nC_rho=" << C_rho << " \n\n";
+   // std::cout << "This is test CPU \nC_lam=" << C_lam << " \nC_mu=" << C_mu << " \nC_rho=" << C_rho << " \n\n";
 
-    std::cout << "This is test CPU II \nlam sum =" << l << " \nmu sum=" << m << " \nr sum=" << r << " \n\n";
+   // std::cout << "This is test CPU II \nlam sum =" << l << " \nmu sum=" << m << " \nr sum=" << r << " \n\n";
 }
 
 void mat_grid2(real **&lam, real **&mu, real **&rho, 
