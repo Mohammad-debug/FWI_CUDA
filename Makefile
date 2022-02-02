@@ -46,11 +46,7 @@ release: CXXFLAGS += -O2
 release: all
 
 run:
-<<<<<<< HEAD
-	python3 ./scripts/pre_proc_dinesh.py
-=======
-	python3 ./scripts/pre_proc.py
->>>>>>> b429606b988b212c2789c6b40a7a6b4d4c1c6008
+	python3 ./scripts/pre_proc_dam_crack.py
 	$(APP_DIR)/$(TARGET) 
 	#python3 ./scripts/post_proc.py
 
