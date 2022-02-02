@@ -227,7 +227,7 @@ void simulate_PSV(){
             RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL, TAPER_T1, TAPER_T2, TAPER_B1, TAPER_B2, 
             TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2);
             t2=omp_get_wtime();
-            std::cout<<"time taken to call simulate_fwi_PSV "<<t2-t1;
+            std::cout<<"time taken to call simulate_fwi_PSV \n"<<t2-t1;
         }
 
         else{
