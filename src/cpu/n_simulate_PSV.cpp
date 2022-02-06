@@ -279,21 +279,21 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
 
 
-//TEST
-double l=0,m=0,r=0;
+// //TEST
+// double l=0,m=0,r=0;
 
-   int snap_nz = 1 + (snap_z2 - snap_z1) / snap_dz;
-   int snap_nx = 1 + (snap_x2 - snap_x1) / snap_dx;
+//    int snap_nz = 1 + (snap_z2 - snap_z1) / snap_dz;
+//    int snap_nx = 1 + (snap_x2 - snap_x1) / snap_dx;
 
-    for (int iz=0; iz<snap_nz; iz++){
-        for (int ix=0; ix<snap_nx; ix++){
-            l+=grad_lam_shot[iz][ix];
-            m+=grad_mu_shot[iz][ix];
-            r+=grad_rho_shot[iz][ix];
-        }
-    }
+//     for (int iz=0; iz<snap_nz; iz++){
+//         for (int ix=0; ix<snap_nx; ix++){
+//             l+=grad_lam_shot[iz][ix];
+//             m+=grad_mu_shot[iz][ix];
+//             r+=grad_rho_shot[iz][ix];
+//         }
+//     }
 
-        std::cout << "This is test CPU>FORWARD \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+//         std::cout << "This is test CPU>FORWARD \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
 
 
 
@@ -348,17 +348,17 @@ double l=0,m=0,r=0;
             //TEST
 
 
-l=0;m=0;r=0;
+// l=0;m=0;r=0;
   
-    for (int iz=0; iz<snap_nz; iz++){
-        for (int ix=0; ix<snap_nx; ix++){
-            l+=grad_lam_shot[iz][ix];
-            m+=grad_mu_shot[iz][ix];
-            r+=grad_rho_shot[iz][ix];
-        }
-    }
+    // for (int iz=0; iz<snap_nz; iz++){
+    //     for (int ix=0; ix<snap_nx; ix++){
+    //         l+=grad_lam_shot[iz][ix];
+    //         m+=grad_mu_shot[iz][ix];
+    //         r+=grad_rho_shot[iz][ix];
+    //     }
+    // }
 
-        std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+    //     std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
 
 
 			
@@ -533,7 +533,11 @@ l=0;m=0;r=0;
         }
 
 	   // smooth model
+<<<<<<< HEAD
         return;//test purpose
+=======
+    return;
+>>>>>>> zain_test
        //
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition
