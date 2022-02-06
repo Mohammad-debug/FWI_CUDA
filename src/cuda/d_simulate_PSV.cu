@@ -480,9 +480,9 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
    int snap_nz = 1 + (snap_z2 - snap_z1) / snap_dz;
    int snap_nx = 1 + (snap_x2 - snap_x1) / snap_dx;
 
-    thrust::device_ptr<real> dev_ptr11 = thrust::device_pointer_cast(grad_lam_shot);
-    thrust::device_ptr<real> dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
-    thrust::device_ptr<real> dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
+    // thrust::device_ptr<real> dev_ptr11 = thrust::device_pointer_cast(grad_lam_shot);
+    // thrust::device_ptr<real> dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
+    // thrust::device_ptr<real> dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
 
     // l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
     // m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());

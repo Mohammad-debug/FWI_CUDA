@@ -533,7 +533,7 @@ l=0;m=0;r=0;
         }
 
 	   // smooth model
-
+        return;//test purpose
        //
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition
