@@ -344,15 +344,15 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
 // l=0;m=0;r=0;
   
-//     for (int iz=0; iz<snap_nz; iz++){
-//         for (int ix=0; ix<snap_nx; ix++){
-//             l+=grad_lam_shot[iz][ix];
-//             m+=grad_mu_shot[iz][ix];
-//             r+=grad_rho_shot[iz][ix];
-//         }
-//     }
+    // for (int iz=0; iz<snap_nz; iz++){
+    //     for (int ix=0; ix<snap_nx; ix++){
+    //         l+=grad_lam_shot[iz][ix];
+    //         m+=grad_mu_shot[iz][ix];
+    //         r+=grad_rho_shot[iz][ix];
+    //     }
+    // }
 
-//         std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+    //     std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
 
 
 			
@@ -527,7 +527,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         }
 
 	   // smooth model
-
+    return;
        //
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition
