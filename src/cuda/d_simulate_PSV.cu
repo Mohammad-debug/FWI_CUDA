@@ -253,6 +253,7 @@ void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                 scalar_lam, scalar_mu, scalar_rho, nz, nx);
 
     //Seismic forward kernel
+
     for (int ishot = 0; ishot < nshot; ishot++)
     {
         accu = true;  // Accumulated storage for output
@@ -270,22 +271,22 @@ void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                        snap_z1, snap_z2, snap_x1, snap_x2,
                        snap_dt, snap_dz, snap_dx);
 
-        //Saving the Accumulative storage file to a binary file for every shots
-        // if (accu_save){
-        //     // Writing the accumulation array
-        //     std::cout << "Writing accu to binary file for SHOT " << ishot ;
-        //     write_accu_GPU(accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, nt, snap_z1, snap_z2, snap_x1,
-        //     snap_x2, snap_dt, snap_dz, snap_dx, ishot);
-        //     std::cout <<" <DONE>"<< std::endl;
-        // }
+    //   //  Saving the Accumulative storage file to a binary file for every shots
+    //     if (accu_save){
+    //         // Writing the accumulation array
+    //         std::cout << "Writing accu to binary file for SHOT " << ishot ;
+    //         write_accu_GPU(accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, nt, snap_z1, snap_z2, snap_x1,
+    //         snap_x2, snap_dt, snap_dz, snap_dx, ishot);
+    //         std::cout <<" <DONE>"<< std::endl;
+    //     }
 
-        // // Saving the Accumulative storage file to a binary file for every shots
-        // if (seismo_save){
-        //     // Writing the accumulation array
-        //     std::cout << "Writing accu to binary file for SHOT " << ishot  ;
-        //     write_seismo_GPU(rtf_uz, rtf_ux, nrec, nt, ishot);
-        //     std::cout <<" <DONE>"<< std::endl;
-        // }
+    //     // Saving the Accumulative storage file to a binary file for every shots
+    //     if (seismo_save){
+    //         // Writing the accumulation array
+    //         std::cout << "Writing accu to binary file for SHOT " << ishot  ;
+    //         write_seismo_GPU(rtf_uz, rtf_ux, nrec, nt, ishot);
+    //         std::cout <<" <DONE>"<< std::endl;
+    //     }
     }
 }
 
