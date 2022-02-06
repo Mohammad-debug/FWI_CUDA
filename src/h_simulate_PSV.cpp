@@ -197,7 +197,6 @@ void simulate_PSV()
         // Calling now the device codes
         std::cout << "THE COMPUTATION STARTS IN GPU" << std::endl;
 
-<<<<<<< HEAD
         //
         g_simulate_PSV(h_NPML, NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
                        SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
@@ -206,17 +205,6 @@ void simulate_PSV()
                        ACCU_SAVE, SEISMO_SAVE,
                        RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL, TAPER_T1, TAPER_T2, TAPER_B1, TAPER_B2,
                        TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2, FWINV);
-=======
-            //
-           g_simulate_PSV(h_NPML,NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
-           SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
-           HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
-           K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X,
-           ACCU_SAVE, SEISMO_SAVE,
-           RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL, TAPER_T1, TAPER_T2, TAPER_B1, TAPER_B2, 
-           TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2, FWINV);
-
->>>>>>> zain_test
     }
     else
     {
@@ -231,7 +219,6 @@ void simulate_PSV()
         if (FWINV)
         {
             // Full Waveform Inversion
-<<<<<<< HEAD
             std::cout << "Full Waveform Inversion...." << std::endl;
             //
             double dif;
@@ -248,20 +235,6 @@ void simulate_PSV()
             dif = end - start;            // stores the difference in dif
             dif=dif * 1000000;
              std::cout << "the time of CPU = " << (long long)dif  << " us\n";
-=======
-            std::cout << "Full Waveform Inversion...."<<std::endl;
-            double t1,t2;
-            //
-            t1=omp_get_wtime();
-            simulate_fwi_PSV(NT, NZ, NX, DT, DZ, DX, SNAP_Z1, SNAP_Z2, SNAP_X1, SNAP_X2, SNAP_DT, SNAP_DZ, SNAP_DX,
-            SURF, PML_Z, PML_X, NSRC, NREC, NSHOT, STF_TYPE, RTF_TYPE, FDORDER, SCALAR_LAM, SCALAR_MU, SCALAR_RHO,
-            HC, ISURF, LAM, MU, RHO, A_Z, B_Z, K_Z, A_HALF_Z, B_HALF_Z, K_HALF_Z, A_X, B_X, K_X, A_HALF_X, B_HALF_X,
-            K_HALF_X, Z_SRC, X_SRC, Z_REC, X_REC, SRC_SHOT_TO_FIRE, STF_Z, STF_X, 
-            RTF_Z_TRUE, RTF_X_TRUE, MAT_SAVE_INTERVAL, TAPER_T1, TAPER_T2, TAPER_B1, TAPER_B2, 
-            TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2);
-            t2=omp_get_wtime();
-            std::cout<<"time taken to call simulate_fwi_PSV \n"<<t2-t1;
->>>>>>> zain_test
         }
 
         else
