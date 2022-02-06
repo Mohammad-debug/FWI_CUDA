@@ -209,5 +209,5 @@ void kernel_PSV(int ishot, // shot index
          
     }
 time2=omp_get_wtime();
-std::cout<<"time taken parallel "<<time2-time1<<"\n";
+std::cout<<"time taken CPU Kernel= "<<time2-time1<<"\n";
 }
