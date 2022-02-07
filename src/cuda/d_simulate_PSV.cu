@@ -250,13 +250,17 @@ void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                           accu_szz, accu_szx, accu_sxx, pml_z, pml_x, nrec, accu, grad, snap_z1,
                           snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nt, nz, nx);
 
+    double start = omp_get_wtime();
+
     mat_av2_GPU(lam, mu, rho, mu_zx, rho_zp, rho_xp,
                 scalar_lam, scalar_mu, scalar_rho, nz, nx);
 
     //Seismic forward kernel
-
+            // start the timer
+           
     for (int ishot = 0; ishot < nshot; ishot++)
     {
+         std::cout << "FORWARD KERNEL: SHOT " << ishot << " of " << nshot <<"." << std::endl;
         accu = true;  // Accumulated storage for output
         grad = false; // no gradient computation in forward kernel
         kernel_PSV_GPU(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder,
@@ -289,6 +293,9 @@ void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         //         std::cout <<" <DONE>"<< std::endl;
         //     }
     }
+            double end = omp_get_wtime(); // end the timer
+            double dif = end - start;          // stores the difference in dif
+            std::cout << "\n-----------\nthe time of FWD GPU = " << dif  << " s\n----------\n\n";
 }
 
 __global__ void forLoop(int *rec_shot_to_fire, int ishot, int nrec)

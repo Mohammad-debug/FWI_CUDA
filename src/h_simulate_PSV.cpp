@@ -233,7 +233,7 @@ void simulate_PSV()
 
             double end = omp_get_wtime(); // end the timer
             dif = end - start;          // stores the difference in dif
-            std::cout << "the time of CPU = " << (long long)dif  << " us\n";
+            std::cout << "the time of CPU = " << dif  << " us\n";
         }
 
         else

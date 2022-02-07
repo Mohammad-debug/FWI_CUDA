@@ -9,7 +9,7 @@ ftype = np.float64
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = False # True: computation in GPU, False: in CPU
+cuda_computation = True # True: computation in GPU, False: in CPU
 
 #---------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ fwinv = False # True: FWI, False: Forward only
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
 nt = 1000; nz = 501; nx = 201 # grid numbers (adding for PMLs as well)
-
+#kp Varying NZ....
 
 # Number of PMLs in each direction
 pml_z = True; pml_x = True # PML exist in both direction
