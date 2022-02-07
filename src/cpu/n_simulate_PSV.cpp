@@ -12,6 +12,7 @@
 #include "n_simulate_PSV.hpp"
 #include <iostream>
 #include <math.h>
+#include <omp.h>
 
 
 void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx, 
@@ -93,6 +94,8 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     accu_szz, accu_szx, accu_sxx, pml_z, pml_x, nrec, accu, grad, snap_z1, 
     snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nt, nz, nx);
 
+       double dif=0;
+       double start = omp_get_wtime();
 
     // calculate material average
     mat_av2(lam, mu, rho, mu_zx, rho_zp, rho_xp, 
@@ -103,7 +106,8 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         std::cout << "FORWARD KERNEL: SHOT " << ishot << " of " << nshot <<"." << std::endl;
         accu = true; // Accumulated storage for output
         grad = false; // no gradient computation in forward kernel
-        
+        start = omp_get_wtime();
+
         kernel_PSV(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
             vz, vx,  uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x, 
             lam, mu, mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
@@ -116,6 +120,11 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             accu, accu_vz,accu_vx, accu_szz, accu_szx, accu_sxx, 
             snap_z1, snap_z2, snap_x1, snap_x2, 
             snap_dt, snap_dz, snap_dx);
+
+            double end = omp_get_wtime(); // end the timer
+            dif += end - start;            // stores the difference in dif
+            
+            
 
         // Saving the Accumulative storage file to a binary file for every shots
         if (accu_save){
@@ -134,6 +143,7 @@ void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             std::cout <<" <DONE>"<< std::endl;
         }
 
+      std::cout << "\n--------\nthe time of CPU Kernel without i/0  = " << dif  << " s\n---------\n";
     }
     
 }
@@ -189,6 +199,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     accu_szz, accu_szx, accu_sxx, pml_z, pml_x, nrec, accu, grad, snap_z1, 
     snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nt, nz, nx);
 
+
     // Allocating PCG variables
     //PCG_new = new real[nz*nx*3];
     //PCG_old = new real[nz*nx*3];
@@ -232,12 +243,13 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     real step_length = 0.01; // step length set to initial
     real step_length_rho = 0.01; // step length set to initial
     
+    double dif=0;
+   
+
     while (iter){ // currently 10 just for test (check the conditions later)
         //
+         double start = omp_get_wtime();
 
-
-        //
-        //
         std::cout << std::endl << std::endl;
         std::cout << "==================================" << std::endl;
         std::cout << "FWI: Iteration "<< iterstep << std::endl;
@@ -522,22 +534,25 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         step_length_rho = 0.5 * step_length;
         update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.25, step_length_rho, nz, nx);
 
+        double end = omp_get_wtime(); // end the timer
+        dif = end - start;            // stores the difference in dif
+             std::cout << "==================================" << std::endl;
+        std::cout << "the time of single FWI iteration = " << dif << "s\n";
+        std::cout << "==================================" << std::endl;
+
+        return;
+
         //
         // Saving the Accumulative storage file to a binary file for every shots
         std::cout<<"Iteration step: " <<iterstep<<", "<<mat_save_interval<<", "<< iterstep%mat_save_interval<<std::endl;
         if (mat_save_interval>0 && !(iterstep%mat_save_interval)){
             // Writing the accumulation array
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep ;
-           // write_mat(lam, mu, rho, nz, nx, iterstep);
+           write_mat(lam, mu, rho, nz, nx, iterstep);
             std::cout <<" <DONE>"<< std::endl;
         }
-
-	   // smooth model
-<<<<<<< HEAD
-        return;//test purpose
-=======
-    return;
->>>>>>> zain_test
+        
+ 
        //
        iterstep++ ;
        iter = (iterstep < maxIter) ? true : false; // Temporary condition
@@ -551,7 +566,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     if (mat_save_interval<1){
         // Writing the accumulation array
         std::cout << "Writing updated material to binary file <FINAL> ITERATION " << iterstep ;
-       // write_mat(lam, mu, rho, nz, nx, iterstep);
+        write_mat(lam, mu, rho, nz, nx, iterstep);
         std::cout <<" <DONE>"<< std::endl;
     }
 }

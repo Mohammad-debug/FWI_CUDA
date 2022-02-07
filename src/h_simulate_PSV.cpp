@@ -232,9 +232,8 @@ void simulate_PSV()
                              TAPER_L1, TAPER_L2, TAPER_R1, TAPER_R2);
 
             double end = omp_get_wtime(); // end the timer
-            dif = end - start;            // stores the difference in dif
-            dif=dif * 1000000;
-             std::cout << "the time of CPU = " << (long long)dif  << " us\n";
+            dif = end - start;          // stores the difference in dif
+            std::cout << "the time of CPU = " << (long long)dif  << " us\n";
         }
 
         else

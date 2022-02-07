@@ -9,9 +9,12 @@ ftype = np.float64
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = True # True: computation in GPU, False: in CPU
+cuda_computation = False # True: computation in GPU, False: in CPU
 
 #---------------------------------------------------------------------
+
+#forward only or fWI?
+fwinv = False # True: FWI, False: Forward only
 
 
 
@@ -23,7 +26,7 @@ cuda_computation = True # True: computation in GPU, False: in CPU
 
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
-nt = 3000; nz = 401; nx = 51 # grid numbers (adding for PMLs as well)
+nt = 1000; nz = 501; nx = 201 # grid numbers (adding for PMLs as well)
 
 
 # Number of PMLs in each direction
@@ -67,8 +70,6 @@ taper_r1 = snap_x2 - np.int32(nx_snap*0.05); taper_r2 = taper_r1 - np.int32(nx_s
 fdorder = 2 # finite difference order 
 fpad = 1 # number of additional grids for finite difference computation
 
-#forward only or fWI?
-fwinv = True # True: FWI, False: Forward only
 
 # Internal parameters for different cases 
 if (fwinv):

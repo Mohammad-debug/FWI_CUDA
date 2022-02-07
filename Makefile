@@ -8,11 +8,11 @@ OBJ_DIR  := obj
 APP_DIR  := bin
 TARGET   := seis_fwi
 INCLUDE  := -Iinclude -Iinclude/cpu 
-INCLUDE_CUDA := #-Iinclude/cuda
+INCLUDE_CUDA := -Iinclude/cuda
 
 #-I/usr/include/hdf5
 SRC  :=  $(wildcard src/*.cpp) $(wildcard src/cpu/*.cpp) $(wildcard ext/*/*.cpp) 
-SRC_CUDA := #$(wildcard src/cuda/*.cu)
+SRC_CUDA := $(wildcard src/cuda/*.cu)
 
 LIB = #ext/inih/*.o
 
@@ -25,9 +25,9 @@ $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
 
-#$(OBJ_DIR)/%.o: %.cu
-#	@mkdir -p $(@D)
-#	$(CUXX) $(CUXXFLAGS) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
+$(OBJ_DIR)/%.o: %.cu
+	@mkdir -p $(@D)
+	$(CUXX) $(CUXXFLAGS) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
 
 $(APP_DIR)/$(TARGET): $(OBJECTS)
 	@mkdir -p $(@D)
