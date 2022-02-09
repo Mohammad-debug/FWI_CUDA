@@ -234,7 +234,9 @@ real step_length_PSV_GPU(real est_step_length, real L2_norm_0, int nshot, // sho
         std::cout << "-------------------------------------------------------" << std::endl;
         std::cout << "Step Length: " << est_step_length << ", L2 = " << L2_tmp <<", counter = "<< countstep << std::endl;
         std::cout << "step1 = " << step1 <<", step2 = " << step2 <<" itests = " << itests <<" iteste = " << iteste  <<std::endl;
+        std::cout << "---------------------countStep= "<<countstep<<"----------------------------------" << std::endl;
 
+        
         // break;/////temp
 
     }

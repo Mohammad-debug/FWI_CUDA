@@ -321,7 +321,7 @@ void read_seismo(real ***&rtf_uz, real ***&rtf_ux,
             int nrec, int nt, int ishot){
     // Saves data to bin folder
 
-    std::string fpath = "./io/shot";
+    std::string fpath = "./bin/shot";
     
     // saving accumulated tensors
     std::ifstream infile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_uz.bin", std::ios::in | std::ios::binary);
