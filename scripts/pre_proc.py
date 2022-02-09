@@ -1,4 +1,5 @@
-# preprocessing of the files
+#%%
+# # preprocessing of the files
 import numpy as np
 from seismic_def import read_tensor
 import matplotlib.pyplot as plt
@@ -9,12 +10,12 @@ ftype = np.float64
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = False # True: computation in GPU, False: in CPU
-
-#---------------------------------------------------------------------
+cuda_computation = False# True: computation in GPU, False: in CPU
 
 #forward only or fWI?
-fwinv = False # True: FWI, False: Forward only
+fwinv = True # True: FWI, False: Forward only
+
+#---------------------------------------------------------------------
 
 
 
@@ -26,8 +27,8 @@ fwinv = False # True: FWI, False: Forward only
 
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
-nt = 1000; nz = 1501; nx = 201 # grid numbers (adding for PMLs as well)
-#kp Varying NZ....
+nt = 1000; nz = 1001; nx = 201 # grid numbers (adding for PMLs as well)
+
 
 # Number of PMLs in each direction
 pml_z = True; pml_x = True # PML exist in both direction
@@ -71,6 +72,7 @@ fdorder = 2 # finite difference order
 fpad = 1 # number of additional grids for finite difference computation
 
 
+
 # Internal parameters for different cases 
 if (fwinv):
     accu_save = False; seismo_save=True
@@ -105,9 +107,9 @@ rho = np.full((nz, nx), scalar_rho)
 # scalar material variables (For original layers)
 Cp1 = 1800.0
 Cs1 = 500.0
-scalar_rho = 1500.0
-mu1 = Cs1*Cs1*scalar_rho
-lam1 = Cp1*Cp1*scalar_rho - 2.0*scalar_mu
+rho1 = 1800.0
+mu1 = Cs1*Cs1*rho1
+lam1 = Cp1*Cp1*rho1 - 2.0*mu1
 mat_grid = 1 # 0 for scalar and 1 for grid
 
 # modifying density parameter (in original layers)
@@ -118,6 +120,7 @@ if (fwinv==False):
                 #rho[iz][ix] = 1.5 * rho[iz][ix]
                 mu[iz][ix] = mu1
                 lam[iz][ix] = lam1
+                rho[iz][ix] = rho1
 
 #------------------------------------------------------------
 
@@ -243,3 +246,5 @@ material_inp.tofile('./bin/mat.bin')
 #-------------------------------------------------------
 
 
+
+# %%

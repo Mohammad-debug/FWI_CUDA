@@ -1,50 +1,1012 @@
-python3 ./scripts/pre_proc.py
-Plotting initial materials
-Metaint:  [   0    0    1    1    0    1    1    1 3000  401  201    0 2999   20
-  380   20  180    3    1    1   38   74  362  326   28   44  172  156
-    3  181    3    1    0    2    1    1    1]
-Metafloat:  [1.00e-04 4.00e-01 4.00e-01 2.00e+00 2.00e+03 1.00e-03 1.00e+00 5.00e+01
- 4.53e+09 7.35e+08 1.50e+03]
-bin/seis_fwi 
-Reading input parameters <INT>.
-Allocating memory for the variables.
-Receivers allocated
-Reading input parameters <INTEGER ARAYS>.
-The read data is: 
-The data are: 200, 20, 0, 180
-Reading input parameters <FLOAT>.
-The read data is: 
-The data are: 4.53e+09, 7.35e+08, 1500
-Reading field measurements <FLOAT>.
-Cannot open output files.Cannot open output files.Cannot open output files.Reading material grids <FLOAT>.
-LAM <FLOAT>.
-MU <FLOAT>.
-RHO <FLOAT>.
-Input parameters loaded.
-nz = 401, nx = 201, dz = 0.4, dt = 0.0001, freq = 50, npml = 10
-DHSTAB = 0.583333, DH = 0.4
- The simulation will be stable. DTSTAB = 0.00014128 DT = 0.0001
+Time step: 999 of 999
+Calculated norm: 2.04796e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000395508, L2 = 2.06603e-11, counter = 3
+L2_test = [2.08539e-11, 2.07842e-11, 2.06603e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000593262, L2 = 2.06603e-11, counter = 4
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 4----------------------------------
+GPU Update factor: 1.09052e+39, 4.8e+10, 4.40155e-29, 4.8e+10
+GPU Update factor: 1.16497e+14, 2.7e+10, 0.000231765, 2.7e+10
+GPU Update factor: 0.123939, 3000, 24205.4, 3000
+This is test GPU 
+C_lam=7.34549e+08 
+C_mu=0.000666644 
+C_rho=0.000666644 
 
------------------------ ABSORBING BOUNDARY ------------------------
- Width (FW) of absorbing frame should be at least 10 gridpoints.
- You have specified a width of 10 gridpoints.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.58721e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 2.03521e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000593262, L2 = 2.07123e-11, counter = 4
+L2_test = [2.08539e-11, 2.07842e-11, 2.07123e-11 ]
+CASE 2.1
+Could not found a proper 3rd step length which brackets the minimum
+-------------------------------------------------------
+Step Length: 0.000889893, L2 = 2.07123e-11, counter = 5
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+---------------------countStep= 5----------------------------------
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 2.08539e-11, 2.07842e-11, 2.07123e-11
+SL: 0, 7.8125e-05, 0.000593262
+Optimum Step Length: <calculated>3.90625e-05, <adopted> 0.000593262
 
-THE COMPUTATION STARTS IN CPU
-**OpenMP running with 6 threads**
-Full Waveform Inversion....
+
+ *****STEP LENGTH GPU ******0.000593262
+GPU Update factor: 1.09052e+39, 4.8e+10, 4.40155e-29, 4.8e+10
+GPU Update factor: 1.16497e+14, 2.7e+10, 0.000231765, 2.7e+10
+GPU Update factor: 0.123939, 3000, 24205.4, 3000
+==================================
+the time of single FWI iteration = 33.5075s
+==================================
+Iteration step: 3, 1, 0
+Writing updated material to binary file for ITERATION 3 <DONE>
 
 
 ==================================
-FWI: Iteration 0
+FWI: Iteration 4
 ==================================
+This is test GPU 
+C_lam=7.34549e+08 
+C_mu=0.000666644 
+C_rho=0.000666644 
+
 FWI KERNEL: SHOT 0 of 3.
-Time step: 0 of 2999
-Time step: 1000 of 2999
-Time step: 2000 of 2999
-Time step: 2999 of 2999
-time taken parallel 33.6465
-Calculated norm : 3.22231e-07
-L2 NORM: 1, 3.22231e-07
-Time step: 2999 of 2999
-Time step: 2000 of 2999
-Time step: 1000 of 2999
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.58721e-13
+L2 NORM: 0.0168367, 3.58721e-13
+L2 Diff: 0.98283
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.68149e-11
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 2.03521e-11
+L2 NORM: 0.972068, 2.07108e-11
+L2 Diff: 0.00870121
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 3.40356e-12
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+L2 NORM: 0.972139, 2.07123e-11
+L2 Diff: 0.00862873
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.0645e-15
+Applying Preconditioning
+GPU Update factor: 8.66377e+38, 4.8e+10, 5.54031e-29, 4.8e+10
+GPU Update factor: 1.15744e+14, 2.7e+10, 0.000233272, 2.7e+10
+GPU Update factor: 0.103016, 3000, 29121.6, 3000
+This is test GPU 
+C_lam=7.34155e+08 
+C_mu=0.000666629 
+C_rho=0.000666629 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 4.9542e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.98687e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000593262, L2 = 2.03657e-11, counter = 0
+L2_test = [2.07123e-11, 2.03657e-11, 9.88131e-323 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.000889893, L2 = 2.03657e-11, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 0----------------------------------
+GPU Update factor: 8.66377e+38, 4.8e+10, 5.54031e-29, 4.8e+10
+GPU Update factor: 1.15744e+14, 2.7e+10, 0.000233272, 2.7e+10
+GPU Update factor: 0.103016, 3000, 29121.6, 3000
+This is test GPU 
+C_lam=7.33958e+08 
+C_mu=0.000666622 
+C_rho=0.000666622 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 6.62425e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.96391e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000889893, L2 = 2.03031e-11, counter = 0
+L2_test = [2.07123e-11, 2.03657e-11, 2.03031e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.00133484, L2 = 2.03031e-11, counter = 1
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 1----------------------------------
+GPU Update factor: 8.66377e+38, 4.8e+10, 5.54031e-29, 4.8e+10
+GPU Update factor: 1.15744e+14, 2.7e+10, 0.000233272, 2.7e+10
+GPU Update factor: 0.103016, 3000, 29121.6, 3000
+This is test GPU 
+C_lam=7.33663e+08 
+C_mu=0.000666611 
+C_rho=0.000666611 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.03689e-12
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.93099e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.00133484, L2 = 2.03483e-11, counter = 1
+L2_test = [2.07123e-11, 2.03657e-11, 2.03483e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.00200226, L2 = 2.03483e-11, counter = 2
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 2----------------------------------
+GPU Update factor: 8.66377e+38, 4.8e+10, 5.54031e-29, 4.8e+10
+GPU Update factor: 1.15744e+14, 2.7e+10, 0.000233272, 2.7e+10
+GPU Update factor: 0.103016, 3000, 29121.6, 3000
+This is test GPU 
+C_lam=7.3322e+08 
+C_mu=0.000666594 
+C_rho=0.000666594 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.8793e-12
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.88505e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.00200226, L2 = 2.07313e-11, counter = 2
+L2_test = [2.07123e-11, 2.03657e-11, 2.07313e-11 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.00200226, L2 = 2.07313e-11, counter = 2
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+---------------------countStep= 2----------------------------------
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 2.07123e-11, 2.03657e-11, 2.07313e-11
+SL: 0, 0.000593262, 0.00200226
+Optimum Step Length: <calculated>0.000296631, <adopted> 0.000296631
+
+
+ *****STEP LENGTH GPU ******0.000296631
+GPU Update factor: 8.66377e+38, 4.8e+10, 5.54031e-29, 4.8e+10
+GPU Update factor: 1.15744e+14, 2.7e+10, 0.000233272, 2.7e+10
+GPU Update factor: 0.103016, 3000, 29121.6, 3000
+==================================
+the time of single FWI iteration = 25.2709s
+==================================
+Iteration step: 4, 1, 0
+Writing updated material to binary file for ITERATION 4 <DONE>
+
+
+==================================
+FWI: Iteration 5
+==================================
+This is test GPU 
+C_lam=7.34352e+08 
+C_mu=0.000666637 
+C_rho=0.000666637 
+
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.94254e-13
+L2 NORM: 0.0185044, 3.94254e-13
+L2 Diff: 0.981094
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.6182e-11
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 2.01064e-11
+L2 NORM: 0.962203, 2.05007e-11
+L2 Diff: 0.0169392
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 3.36592e-12
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+L2 NORM: 0.962274, 2.05022e-11
+L2 Diff: 0.0168665
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.0645e-15
+Applying Preconditioning
+GPU Update factor: 7.19296e+38, 4.8e+10, 6.67319e-29, 4.8e+10
+GPU Update factor: 8.53686e+13, 2.7e+10, 0.000316275, 2.7e+10
+GPU Update factor: 0.0872529, 3000, 34382.8, 3000
+This is test GPU 
+C_lam=7.34151e+08 
+C_mu=0.000666629 
+C_rho=0.000666629 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.87722e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.98956e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000296631, L2 = 2.02848e-11, counter = 0
+L2_test = [2.05022e-11, 2.02848e-11, 9.88131e-323 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.000444946, L2 = 2.02848e-11, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 0----------------------------------
+GPU Update factor: 7.19296e+38, 4.8e+10, 6.67319e-29, 4.8e+10
+GPU Update factor: 8.53686e+13, 2.7e+10, 0.000316275, 2.7e+10
+GPU Update factor: 0.0872529, 3000, 34382.8, 3000
+This is test GPU 
+C_lam=7.34051e+08 
+C_mu=0.000666626 
+C_rho=0.000666626 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 4.39552e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.97927e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000444946, L2 = 2.02338e-11, counter = 0
+L2_test = [2.05022e-11, 2.02848e-11, 2.02338e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000667419, L2 = 2.02338e-11, counter = 1
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 1----------------------------------
+GPU Update factor: 7.19296e+38, 4.8e+10, 6.67319e-29, 4.8e+10
+GPU Update factor: 8.53686e+13, 2.7e+10, 0.000316275, 2.7e+10
+GPU Update factor: 0.0872529, 3000, 34382.8, 3000
+This is test GPU 
+C_lam=7.33901e+08 
+C_mu=0.00066662 
+C_rho=0.00066662 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 5.86315e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.96415e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000667419, L2 = 2.02293e-11, counter = 1
+L2_test = [2.05022e-11, 2.02848e-11, 2.02293e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.00100113, L2 = 2.02293e-11, counter = 2
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 2----------------------------------
+GPU Update factor: 7.19296e+38, 4.8e+10, 6.67319e-29, 4.8e+10
+GPU Update factor: 8.53686e+13, 2.7e+10, 0.000316275, 2.7e+10
+GPU Update factor: 0.0872529, 3000, 34382.8, 3000
+This is test GPU 
+C_lam=7.33675e+08 
+C_mu=0.000666611 
+C_rho=0.000666611 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 9.62117e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.94218e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.00100113, L2 = 2.03854e-11, counter = 2
+L2_test = [2.05022e-11, 2.02848e-11, 2.03854e-11 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.00100113, L2 = 2.03854e-11, counter = 2
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+---------------------countStep= 2----------------------------------
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 2.05022e-11, 2.02848e-11, 2.03854e-11
+SL: 0, 0.000296631, 0.00100113
+Optimum Step Length: <calculated>0.000148315, <adopted> 0.000148315
+
+
+ *****STEP LENGTH GPU ******0.000148315
+GPU Update factor: 7.19296e+38, 4.8e+10, 6.67319e-29, 4.8e+10
+GPU Update factor: 8.53686e+13, 2.7e+10, 0.000316275, 2.7e+10
+GPU Update factor: 0.0872529, 3000, 34382.8, 3000
+==================================
+the time of single FWI iteration = 25.2608s
+==================================
+Iteration step: 5, 1, 0
+Writing updated material to binary file for ITERATION 5 <DONE>
+
+
+==================================
+FWI: Iteration 6
+==================================
+This is test GPU 
+C_lam=7.34251e+08 
+C_mu=0.000666633 
+C_rho=0.000666633 
+
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.72641e-13
+L2 NORM: 0.01749, 3.72641e-13
+L2 Diff: 0.982009
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.46929e-11
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 2.00002e-11
+L2 NORM: 0.956202, 2.03728e-11
+L2 Diff: 0.0163935
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 3.35188e-12
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+L2 NORM: 0.956273, 2.03743e-11
+L2 Diff: 0.0163204
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.0645e-15
+Applying Preconditioning
+GPU Update factor: 6.16188e+38, 4.8e+10, 7.78983e-29, 4.8e+10
+GPU Update factor: 6.25961e+13, 2.7e+10, 0.000431337, 2.7e+10
+GPU Update factor: 0.0754321, 3000, 39770.9, 3000
+This is test GPU 
+C_lam=7.34166e+08 
+C_mu=0.000666629 
+C_rho=0.000666629 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.6057e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.99123e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000148315, L2 = 2.02744e-11, counter = 0
+L2_test = [2.03743e-11, 2.02744e-11, 9.88131e-323 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.000222473, L2 = 2.02744e-11, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 0----------------------------------
+GPU Update factor: 6.16188e+38, 4.8e+10, 7.78983e-29, 4.8e+10
+GPU Update factor: 6.25961e+13, 2.7e+10, 0.000431337, 2.7e+10
+GPU Update factor: 0.0754321, 3000, 39770.9, 3000
+This is test GPU 
+C_lam=7.34123e+08 
+C_mu=0.000666628 
+C_rho=0.000666628 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.67759e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.98689e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000222473, L2 = 2.02382e-11, counter = 0
+L2_test = [2.03743e-11, 2.02744e-11, 2.02382e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.00033371, L2 = 2.02382e-11, counter = 1
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 1----------------------------------
+GPU Update factor: 6.16188e+38, 4.8e+10, 7.78983e-29, 4.8e+10
+GPU Update factor: 6.25961e+13, 2.7e+10, 0.000431337, 2.7e+10
+GPU Update factor: 0.0754321, 3000, 39770.9, 3000
+This is test GPU 
+C_lam=7.34059e+08 
+C_mu=0.000666625 
+C_rho=0.000666625 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.95082e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.98044e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.00033371, L2 = 2.0201e-11, counter = 1
+L2_test = [2.03743e-11, 2.02744e-11, 2.0201e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000500565, L2 = 2.0201e-11, counter = 2
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 2----------------------------------
+GPU Update factor: 6.16188e+38, 4.8e+10, 7.78983e-29, 4.8e+10
+GPU Update factor: 6.25961e+13, 2.7e+10, 0.000431337, 2.7e+10
+GPU Update factor: 0.0754321, 3000, 39770.9, 3000
+This is test GPU 
+C_lam=7.33963e+08 
+C_mu=0.000666621 
+C_rho=0.000666621 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 4.73305e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.97091e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000500565, L2 = 2.01839e-11, counter = 2
+L2_test = [2.03743e-11, 2.02744e-11, 2.01839e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000750847, L2 = 2.01839e-11, counter = 3
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 3----------------------------------
+GPU Update factor: 6.16188e+38, 4.8e+10, 7.78983e-29, 4.8e+10
+GPU Update factor: 6.25961e+13, 2.7e+10, 0.000431337, 2.7e+10
+GPU Update factor: 0.0754321, 3000, 39770.9, 3000
+This is test GPU 
+C_lam=7.33819e+08 
+C_mu=0.000666614 
+C_rho=0.000666614 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 6.74507e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.95693e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000750847, L2 = 2.02453e-11, counter = 3
+L2_test = [2.03743e-11, 2.02744e-11, 2.02453e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.00112627, L2 = 2.02453e-11, counter = 4
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 4----------------------------------
+GPU Update factor: 6.16188e+38, 4.8e+10, 7.78983e-29, 4.8e+10
+GPU Update factor: 6.25961e+13, 2.7e+10, 0.000431337, 2.7e+10
+GPU Update factor: 0.0754321, 3000, 39770.9, 3000
+This is test GPU 
+C_lam=7.33603e+08 
+C_mu=0.000666605 
+C_rho=0.000666605 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.1653e-12
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.93667e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.00112627, L2 = 2.05335e-11, counter = 4
+L2_test = [2.03743e-11, 2.02744e-11, 2.05335e-11 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.00112627, L2 = 2.05335e-11, counter = 4
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+---------------------countStep= 4----------------------------------
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 2.03743e-11, 2.02744e-11, 2.05335e-11
+SL: 0, 0.000148315, 0.00112627
+Optimum Step Length: <calculated>7.41577e-05, <adopted> 7.41577e-05
+
+
+ *****STEP LENGTH GPU ******7.41577e-05
+GPU Update factor: 6.16188e+38, 4.8e+10, 7.78983e-29, 4.8e+10
+GPU Update factor: 6.25961e+13, 2.7e+10, 0.000431337, 2.7e+10
+GPU Update factor: 0.0754321, 3000, 39770.9, 3000
+==================================
+the time of single FWI iteration = 33.549s
+==================================
+Iteration step: 6, 1, 0
+Writing updated material to binary file for ITERATION 6 <DONE>
+
+
+==================================
+FWI: Iteration 7
+==================================
+This is test GPU 
+C_lam=7.34209e+08 
+C_mu=0.000666631 
+C_rho=0.000666631 
+
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.62199e-13
+L2 NORM: 0.0169999, 3.62199e-13
+L2 Diff: 0.982334
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.39536e-11
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.99561e-11
+L2 NORM: 0.953643, 2.03183e-11
+L2 Diff: 0.00896955
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 3.34648e-12
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+L2 NORM: 0.953714, 2.03198e-11
+L2 Diff: 0.00889569
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.0645e-15
+Applying Preconditioning
+GPU Update factor: 5.39737e+38, 4.8e+10, 8.89322e-29, 4.8e+10
+GPU Update factor: 4.91561e+13, 2.7e+10, 0.00054927, 2.7e+10
+GPU Update factor: 0.0663119, 3000, 45240.8, 3000
+This is test GPU 
+C_lam=7.34172e+08 
+C_mu=0.000666629 
+C_rho=0.000666629 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.53129e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.99177e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 7.41577e-05, L2 = 2.02724e-11, counter = 0
+L2_test = [2.03198e-11, 2.02724e-11, 9.88131e-323 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.000111237, L2 = 2.02724e-11, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 0----------------------------------
+GPU Update factor: 5.39737e+38, 4.8e+10, 8.89322e-29, 4.8e+10
+GPU Update factor: 4.91561e+13, 2.7e+10, 0.00054927, 2.7e+10
+GPU Update factor: 0.0663119, 3000, 45240.8, 3000
+This is test GPU 
+C_lam=7.34154e+08 
+C_mu=0.000666629 
+C_rho=0.000666629 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.51504e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.98986e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000111237, L2 = 2.02517e-11, counter = 0
+L2_test = [2.03198e-11, 2.02724e-11, 2.02517e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000166855, L2 = 2.02517e-11, counter = 1
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 1----------------------------------
+GPU Update factor: 5.39737e+38, 4.8e+10, 8.89322e-29, 4.8e+10
+GPU Update factor: 4.91561e+13, 2.7e+10, 0.00054927, 2.7e+10
+GPU Update factor: 0.0663119, 3000, 45240.8, 3000
+This is test GPU 
+C_lam=7.34127e+08 
+C_mu=0.000666627 
+C_rho=0.000666627 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.52701e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.98702e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000166855, L2 = 2.02244e-11, counter = 1
+L2_test = [2.03198e-11, 2.02724e-11, 2.02244e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000250282, L2 = 2.02244e-11, counter = 2
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 2----------------------------------
+GPU Update factor: 5.39737e+38, 4.8e+10, 8.89322e-29, 4.8e+10
+GPU Update factor: 4.91561e+13, 2.7e+10, 0.00054927, 2.7e+10
+GPU Update factor: 0.0663119, 3000, 45240.8, 3000
+This is test GPU 
+C_lam=7.34086e+08 
+C_mu=0.000666625 
+C_rho=0.000666625 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.62681e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.98277e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000250282, L2 = 2.01919e-11, counter = 2
+L2_test = [2.03198e-11, 2.02724e-11, 2.01919e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000375423, L2 = 2.01919e-11, counter = 3
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 3----------------------------------
+GPU Update factor: 5.39737e+38, 4.8e+10, 8.89322e-29, 4.8e+10
+GPU Update factor: 4.91561e+13, 2.7e+10, 0.00054927, 2.7e+10
+GPU Update factor: 0.0663119, 3000, 45240.8, 3000
+This is test GPU 
+C_lam=7.34024e+08 
+C_mu=0.000666622 
+C_rho=0.000666622 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 3.96066e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.97648e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000375423, L2 = 2.01624e-11, counter = 3
+L2_test = [2.03198e-11, 2.02724e-11, 2.01624e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000563135, L2 = 2.01624e-11, counter = 4
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 4----------------------------------
+GPU Update factor: 5.39737e+38, 4.8e+10, 8.89322e-29, 4.8e+10
+GPU Update factor: 4.91561e+13, 2.7e+10, 0.00054927, 2.7e+10
+GPU Update factor: 0.0663119, 3000, 45240.8, 3000
+This is test GPU 
+C_lam=7.33932e+08 
+C_mu=0.000666617 
+C_rho=0.000666617 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 4.87591e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.96719e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000563135, L2 = 2.0161e-11, counter = 4
+L2_test = [2.03198e-11, 2.02724e-11, 2.0161e-11 ]
+CASE 2.1
+Could not found a proper 3rd step length which brackets the minimum
+-------------------------------------------------------
+Step Length: 0.000844703, L2 = 2.0161e-11, counter = 5
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+---------------------countStep= 5----------------------------------
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 2.03198e-11, 2.02724e-11, 2.0161e-11
+SL: 0, 7.41577e-05, 0.000563135
+Optimum Step Length: <calculated>3.70789e-05, <adopted> 0.000563135
+
+
+ *****STEP LENGTH GPU ******0.000563135
+GPU Update factor: 5.39737e+38, 4.8e+10, 8.89322e-29, 4.8e+10
+GPU Update factor: 4.91561e+13, 2.7e+10, 0.00054927, 2.7e+10
+GPU Update factor: 0.0663119, 3000, 45240.8, 3000
+==================================
+the time of single FWI iteration = 33.2387s
+==================================
+Iteration step: 7, 1, 0
+Writing updated material to binary file for ITERATION 7 <DONE>
+
+
+==================================
+FWI: Iteration 8
+==================================
+This is test GPU 
+C_lam=7.33932e+08 
+C_mu=0.000666617 
+C_rho=0.000666617 
+
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 4.87591e-13
+L2 NORM: 0.0228852, 4.87591e-13
+L2 Diff: 0.976068
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.25305e-11
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.96719e-11
+L2 NORM: 0.946191, 2.01595e-11
+L2 Diff: 0.0105436
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 3.31353e-12
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+L2 NORM: 0.946262, 2.0161e-11
+L2 Diff: 0.0104693
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.0645e-15
+Applying Preconditioning
+GPU Update factor: 4.86617e+38, 4.8e+10, 9.86402e-29, 4.8e+10
+GPU Update factor: 4.92891e+13, 2.7e+10, 0.000547788, 2.7e+10
+GPU Update factor: 0.0593514, 3000, 50546.4, 3000
+This is test GPU 
+C_lam=7.33717e+08 
+C_mu=0.000666604 
+C_rho=0.000666604 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 7.18555e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.94e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000563135, L2 = 2.01201e-11, counter = 0
+L2_test = [2.0161e-11, 2.01201e-11, 9.88131e-323 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.000844703, L2 = 2.01201e-11, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 0----------------------------------
+GPU Update factor: 4.86617e+38, 4.8e+10, 9.86402e-29, 4.8e+10
+GPU Update factor: 4.92891e+13, 2.7e+10, 0.000547788, 2.7e+10
+GPU Update factor: 0.0593514, 3000, 50546.4, 3000
+This is test GPU 
+C_lam=7.33609e+08 
+C_mu=0.000666598 
+C_rho=0.000666598 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 9.06112e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.927e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000844703, L2 = 2.01776e-11, counter = 0
+L2_test = [2.0161e-11, 2.01201e-11, 2.01776e-11 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.000844703, L2 = 2.01776e-11, counter = 0
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+---------------------countStep= 0----------------------------------
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 2.0161e-11, 2.01201e-11, 2.01776e-11
+SL: 0, 0.000563135, 0.000844703
+Optimum Step Length: <calculated>0.000281568, <adopted> 0.000281568
+
+
+ *****STEP LENGTH GPU ******0.000281568
+GPU Update factor: 4.86617e+38, 4.8e+10, 9.86402e-29, 4.8e+10
+GPU Update factor: 4.92891e+13, 2.7e+10, 0.000547788, 2.7e+10
+GPU Update factor: 0.0593514, 3000, 50546.4, 3000
+==================================
+the time of single FWI iteration = 16.7931s
+==================================
+Iteration step: 8, 1, 0
+Writing updated material to binary file for ITERATION 8 <DONE>
+
+
+==================================
+FWI: Iteration 9
+==================================
+This is test GPU 
+C_lam=7.33824e+08 
+C_mu=0.000666611 
+C_rho=0.000666611 
+
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 5.78983e-13
+L2 NORM: 0.0271747, 5.78983e-13
+L2 Diff: 0.971506
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.32288e-11
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.9534e-11
+L2 NORM: 0.944007, 2.0113e-11
+L2 Diff: 0.0101781
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 3.29798e-12
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+L2 NORM: 0.944078, 2.01145e-11
+L2 Diff: 0.0101036
+Time step: 999 of 999
+Time step: 0 of 999
+Max. Energy Weight = 1.0645e-15
+Applying Preconditioning
+GPU Update factor: 4.45164e+38, 4.8e+10, 1.07825e-28, 4.8e+10
+GPU Update factor: 5.3425e+13, 2.7e+10, 0.000505381, 2.7e+10
+GPU Update factor: 0.0536617, 3000, 55905.8, 3000
+This is test GPU 
+C_lam=7.33739e+08 
+C_mu=0.000666605 
+C_rho=0.000666605 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 6.19919e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.93874e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000281568, L2 = 2.00089e-11, counter = 0
+L2_test = [2.01145e-11, 2.00089e-11, 9.88131e-323 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.000422351, L2 = 2.00089e-11, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 0----------------------------------
+GPU Update factor: 4.45164e+38, 4.8e+10, 1.07825e-28, 4.8e+10
+GPU Update factor: 5.3425e+13, 2.7e+10, 0.000505381, 2.7e+10
+GPU Update factor: 0.0536617, 3000, 55905.8, 3000
+This is test GPU 
+C_lam=7.33696e+08 
+C_mu=0.000666602 
+C_rho=0.000666602 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 6.68756e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.93157e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000422351, L2 = 1.9986e-11, counter = 0
+L2_test = [2.01145e-11, 2.00089e-11, 1.9986e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000633527, L2 = 1.9986e-11, counter = 1
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 1----------------------------------
+GPU Update factor: 4.45164e+38, 4.8e+10, 1.07825e-28, 4.8e+10
+GPU Update factor: 5.3425e+13, 2.7e+10, 0.000505381, 2.7e+10
+GPU Update factor: 0.0536617, 3000, 55905.8, 3000
+This is test GPU 
+C_lam=7.33632e+08 
+C_mu=0.000666597 
+C_rho=0.000666597 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 7.7731e-13
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.92102e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000633527, L2 = 1.9989e-11, counter = 1
+L2_test = [2.01145e-11, 2.00089e-11, 1.9989e-11 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.000950291, L2 = 1.9989e-11, counter = 2
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+---------------------countStep= 2----------------------------------
+GPU Update factor: 4.45164e+38, 4.8e+10, 1.07825e-28, 4.8e+10
+GPU Update factor: 5.3425e+13, 2.7e+10, 0.000505381, 2.7e+10
+GPU Update factor: 0.0536617, 3000, 55905.8, 3000
+This is test GPU 
+C_lam=7.33536e+08 
+C_mu=0.00066659 
+C_rho=0.00066659 
+
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.01919e-12
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.90564e-11
+Time step: 0 of 999
+Time step: 999 of 999
+Calculated norm: 1.51427e-15
+Step Length: 0.000950291, L2 = 2.00771e-11, counter = 2
+L2_test = [2.01145e-11, 2.00089e-11, 2.00771e-11 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.000950291, L2 = 2.00771e-11, counter = 2
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+---------------------countStep= 2----------------------------------
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 2.01145e-11, 2.00089e-11, 2.00771e-11
+SL: 0, 0.000281568, 0.000950291
+Optimum Step Length: <calculated>0.000140784, <adopted> 0.000140784
+
+
+ *****STEP LENGTH GPU ******0.000140784
+GPU Update factor: 4.45164e+38, 4.8e+10, 1.07825e-28, 4.8e+10
+GPU Update factor: 5.3425e+13, 2.7e+10, 0.000505381, 2.7e+10
+GPU Update factor: 0.0536617, 3000, 55905.8, 3000
+==================================
+the time of single FWI iteration = 25.1017s
+==================================
+Iteration step: 9, 1, 0
+Writing updated material to binary file for ITERATION 9 <DONE>
+Time taken by GPU: 259.346 microseconds
+Simulation Complete
+total time taken 259.416#python3 ./scripts/post_proc.py

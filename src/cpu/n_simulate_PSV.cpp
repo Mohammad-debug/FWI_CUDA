@@ -536,11 +536,11 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
         double end = omp_get_wtime(); // end the timer
         dif = end - start;            // stores the difference in dif
-             std::cout << "==================================" << std::endl;
+        std::cout << "==================================" << std::endl;
         std::cout << "the time of single FWI iteration = " << dif << "s\n";
         std::cout << "==================================" << std::endl;
 
-        return;
+        //return;
 
         //
         // Saving the Accumulative storage file to a binary file for every shots
