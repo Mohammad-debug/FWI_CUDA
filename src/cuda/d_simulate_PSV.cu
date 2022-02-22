@@ -23,8 +23,9 @@
 #include <iostream>
 #include <math.h>
 #include <chrono>
+#include <omp.h>
 using namespace std::chrono;
-  
+
 void g_simulate_PSV(int *&npml, int nt, int nz, int nx, real dt, real dz, real dx,
                     int snap_z1, int snap_z2, int snap_x1, int snap_x2, int snap_dt, int snap_dz, int snap_dx,
                     bool surf, bool pml_z, bool pml_x, int nsrc, int nrec, int nshot, int stf_type, int rtf_type,
@@ -47,7 +48,7 @@ void g_simulate_PSV(int *&npml, int nt, int nz, int nx, real dt, real dz, real d
     // ---------------------------------------------
     // MEMORY ESPECIALLY INPUT, PREPROCESS FOR SIMULATION
     // ---------------------------------------------
-auto start = high_resolution_clock::now();
+    auto start = high_resolution_clock::now();
 
     real *d_hc;
     int *d_isurf;
@@ -150,10 +151,9 @@ auto start = high_resolution_clock::now();
     if (fwinv)
     {
 
-// Use auto keyword to avoid typing long
-// type definitions to get the timepoint
-// at this instant use function now()
-
+        // Use auto keyword to avoid typing long
+        // type definitions to get the timepoint
+        // at this instant use function now()
 
         std::cout << "Here you go: FWI" << std::endl;
         simulate_fwi_PSV_GPU(nt, nz, nx, dt, dz, dx,
@@ -191,11 +191,12 @@ auto start = high_resolution_clock::now();
     auto stop = high_resolution_clock::now();
 
     auto duration = duration_cast<microseconds>(stop - start);
-  
-// To get the value of duration use the count()
-// member function on the duration object
-std::cout << "Time taken by GPU: "
-         << duration.count() << " microseconds" << "\n";
+
+    // To get the value of duration use the count()
+    // member function on the duration object
+    std::cout << "Time taken by GPU: "
+              << duration.count()/1000000.0 << " seconds"
+              << "\n";
 }
 
 void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
@@ -249,12 +250,17 @@ void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                           accu_szz, accu_szx, accu_sxx, pml_z, pml_x, nrec, accu, grad, snap_z1,
                           snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, nt, nz, nx);
 
+    double start = omp_get_wtime();
+
     mat_av2_GPU(lam, mu, rho, mu_zx, rho_zp, rho_xp,
                 scalar_lam, scalar_mu, scalar_rho, nz, nx);
 
     //Seismic forward kernel
+            // start the timer
+           
     for (int ishot = 0; ishot < nshot; ishot++)
     {
+         std::cout << "FORWARD KERNEL: SHOT " << ishot << " of " << nshot <<"." << std::endl;
         accu = true;  // Accumulated storage for output
         grad = false; // no gradient computation in forward kernel
         kernel_PSV_GPU(ishot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder,
@@ -270,33 +276,36 @@ void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                        snap_z1, snap_z2, snap_x1, snap_x2,
                        snap_dt, snap_dz, snap_dx);
 
-        //Saving the Accumulative storage file to a binary file for every shots
-        // if (accu_save){
-        //     // Writing the accumulation array
-        //     std::cout << "Writing accu to binary file for SHOT " << ishot ;
-        //     write_accu_GPU(accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, nt, snap_z1, snap_z2, snap_x1,
-        //     snap_x2, snap_dt, snap_dz, snap_dx, ishot);
-        //     std::cout <<" <DONE>"<< std::endl;
-        // }
+        //   //  Saving the Accumulative storage file to a binary file for every shots
+        //     if (accu_save){
+        //         // Writing the accumulation array
+        //         std::cout << "Writing accu to binary file for SHOT " << ishot ;
+        //         write_accu_GPU(accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx, nt, snap_z1, snap_z2, snap_x1,
+        //         snap_x2, snap_dt, snap_dz, snap_dx, ishot);
+        //         std::cout <<" <DONE>"<< std::endl;
+        //     }
 
-        // // Saving the Accumulative storage file to a binary file for every shots
-        // if (seismo_save){
-        //     // Writing the accumulation array
-        //     std::cout << "Writing accu to binary file for SHOT " << ishot  ;
-        //     write_seismo_GPU(rtf_uz, rtf_ux, nrec, nt, ishot);
-        //     std::cout <<" <DONE>"<< std::endl;
-        // }
+        //     // Saving the Accumulative storage file to a binary file for every shots
+        //     if (seismo_save){
+        //         // Writing the accumulation array
+        //         std::cout << "Writing accu to binary file for SHOT " << ishot  ;
+        //         write_seismo_GPU(rtf_uz, rtf_ux, nrec, nt, ishot);
+        //         std::cout <<" <DONE>"<< std::endl;
+        //     }
     }
+            double end = omp_get_wtime(); // end the timer
+            double dif = end - start;          // stores the difference in dif
+            std::cout << "\n-----------\nthe time of FWD GPU = " << dif  << " s\n----------\n\n";
 }
 
 __global__ void forLoop(int *rec_shot_to_fire, int ishot, int nrec)
 {
     int ir = blockDim.x * blockIdx.x + threadIdx.x;
-   
-    if (ir < nrec && ir >= 0){
+
+    if (ir < nrec && ir >= 0)
+    {
         rec_shot_to_fire[ir] = ishot;
         // printf("    %d\n",ir);
-
     }
 
     return;
@@ -338,23 +347,22 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
     real *grad_lam_shot, *grad_mu_shot, *grad_rho_shot;       // Gradient of materials in each shot (snapped)
     real *rtf_uz, *rtf_ux;                                    // receiver time functions (displacements)
     real *accu_vz, *accu_vx, *accu_szz, *accu_szx, *accu_sxx; // forward accumulated storage arrays
-    // -----------------------------------------------------------------------------------------------------
-    //real **grad_lam_old, **grad_mu_old, **grad_rho_old; // Storing old material gradients for optimization
-    // real **PCG_lam, **PCG_dir_lam; // Old conjugate gradient storages
-    // real **PCG_mu, **PCG_dir_mu;
-    // real **PCG_rho, **PCG_dir_rho;
+                                                              // -----------------------------------------------------------------------------------------------------
+                                                              //real **grad_lam_old, **grad_mu_old, **grad_rho_old; // Storing old material gradients for optimization
+                                                              // real **PCG_lam, **PCG_dir_lam; // Old conjugate gradient storages
+                                                              // real **PCG_mu, **PCG_dir_mu;
+                                                              // real **PCG_rho, **PCG_dir_rho;
 
     // -----------------------------------------------------------------------------------------------------
     // real beta_PCG, beta_i, beta_j;
 
-///HOST ARRAYS TO SAVE THE RESULT
-        real **h_lam;
-        real **h_mu;
-        real **h_rho;
+    ///HOST ARRAYS TO SAVE THE RESULT
+    real **h_lam;
+    real **h_mu;
+    real **h_rho;
     allocate_array_cpu(h_lam, nz, nx);
     allocate_array_cpu(h_mu, nz, nx);
     allocate_array_cpu(h_rho, nz, nx);
-
 
     // allocating main computational arrays
     accu = true;
@@ -399,10 +407,10 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
     // Calculate PML factors if necessary
 
     // Start of FWI iteration loop
-    
+
     bool iter = true;
-    int iterstep = 0; //  0
-    int maxIter = 10; // 1000
+    int iterstep = 0;   //  0
+    int maxIter = 10;   // 1000
     real L2_norm[1000]; // size is maxIter
     for (int ll = 0; ll < 1000; ll++)
     {
@@ -411,8 +419,6 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
     real step_length = 0.01;     // step length set to initial
     real step_length_rho = 0.01; // step length set to initial
 
-   
-
     while (iter)
     { // currently 10 just for test (check the conditions later)
         std::cout << std::endl
@@ -420,6 +426,8 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         std::cout << "==================================" << std::endl;
         std::cout << "FWI: Iteration " << iterstep << std::endl;
         std::cout << "==================================" << std::endl;
+
+        double start = omp_get_wtime();
         //-----------------------------------------------
         // 1.0. INNER PREPROCESSING (IN EVERY FWI LOOPS)
         // ----------------------------------------------
@@ -430,9 +438,7 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
 
         // calculate material average
         mat_av2_GPU(lam, mu, rho, mu_zx, rho_zp, rho_xp,
-                    scalar_lam, scalar_mu, scalar_rho, nz, nx);//this gives C_lam
-
-        
+                    scalar_lam, scalar_mu, scalar_rho, nz, nx); //this gives C_lam
 
         for (int ishot = 0; ishot < nshot; ishot++)
         {
@@ -440,7 +446,6 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             // -----------------------------------
             // 2.0. FORWARD MODELLING
             // ------------------------------------
-            
             // Seismic forward kernel
             accu = true;  // Accumulated storage for output
             grad = false; // no gradient computation in forward kernel
@@ -471,28 +476,19 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                 std::cout << "L2 Diff: " << abs(L2_norm[iterstep] - L2_norm[iterstep - 2]) / L2_norm[iterstep - 2] << std::endl;
             }
 
+            double l = 0, m = 0, r = 0;
+            int snap_nz = 1 + (snap_z2 - snap_z1) / snap_dz;
+            int snap_nx = 1 + (snap_x2 - snap_x1) / snap_dx;
 
+            // thrust::device_ptr<real> dev_ptr11 = thrust::device_pointer_cast(grad_lam_shot);
+            // thrust::device_ptr<real> dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
+            // thrust::device_ptr<real> dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
 
-            
+            // l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+            // m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+            // r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
 
-
-   double l=0,m=0,r=0;
-   int snap_nz = 1 + (snap_z2 - snap_z1) / snap_dz;
-   int snap_nx = 1 + (snap_x2 - snap_x1) / snap_dx;
-
-    thrust::device_ptr<real> dev_ptr11 = thrust::device_pointer_cast(grad_lam_shot);
-    thrust::device_ptr<real> dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
-    thrust::device_ptr<real> dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
-
-    // l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
-    // m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
-    // r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
-
-  //  std::cout << "This is test GPU>FORWARD \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
-
-
-
-
+            //  std::cout << "This is test GPU>FORWARD \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
 
             // -----------------------------------
             // 4.0. ADJOING MODELLING
@@ -503,7 +499,7 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
 
             int box1 = 32;
             dim3 threadsPerBlock(box1);
-            
+
             dim3 blocksPerGrid(nrec / box1 + 1);
             forLoop<<<blocksPerGrid, threadsPerBlock>>>(rec_shot_to_fire, ishot, nrec);
             // Seismic adjoint kernel
@@ -525,6 +521,11 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                            snap_z1, snap_z2, snap_x1, snap_x2,
                            snap_dt, snap_dz, snap_dx);
 
+            //TEST
+            //    l=0;m=0;r=0;
+            //      dev_ptr11 = thrust::device_pointer_cast(grad_lam_shot);
+            //      dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
+            //      dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
 
 
   //TEST
@@ -545,18 +546,23 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             // APPLY GAUSSIAN SMOOTHING (BLURRING) FUNCTIONS TO
             // to grad_lam_shot, grad_mu_shot, grad_rho_shot,
             // -----------------------------------------------------
+            //     l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+            //     m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+            //     r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+            // std::cout << "This is test GPU> ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+
+            // Smooth gradients
 
             // Calculate Energy Weights
-           energy_weights2_GPU(We, We_adj, snap_z1, snap_z2, snap_x1, snap_x2, nx);
+            energy_weights2_GPU(We, We_adj, snap_z1, snap_z2, snap_x1, snap_x2, nx);
 
-          
             // [We_adj used as temporary gradient here after]
 
             // GRAD_LAM
             // ----------------------------------------
             // Interpolate gradients to temporary array
-           interpol_grad2_GPU(We_adj, grad_lam_shot, snap_z1, snap_z2,
-                              snap_x1, snap_x2, snap_dz, snap_dx, nx);
+            interpol_grad2_GPU(We_adj, grad_lam_shot, snap_z1, snap_z2,
+                               snap_x1, snap_x2, snap_dz, snap_dx, nx);
 
             // Scale to energy weight and add to global array
             scale_grad_E2_GPU(grad_lam, We_adj, scalar_lam, We,
@@ -565,8 +571,8 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             // GRAD_MU
             // ----------------------------------------
             // Interpolate gradients to temporary array
-           interpol_grad2_GPU(We_adj, grad_mu_shot, snap_z1, snap_z2,
-                              snap_x1, snap_x2, snap_dz, snap_dx, nx);
+            interpol_grad2_GPU(We_adj, grad_mu_shot, snap_z1, snap_z2,
+                               snap_x1, snap_x2, snap_dz, snap_dx, nx);
             // Scale to energy weight and add to global array
             scale_grad_E2_GPU(grad_mu, We_adj, scalar_mu, We,
                               snap_z1, snap_z2, snap_x1, snap_x2, nz, nx);
@@ -574,8 +580,8 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             // GRAD_RHO
             // ----------------------------------------
             // Interpolate gradients to temporary array
-           interpol_grad2_GPU(We_adj, grad_rho_shot, snap_z1, snap_z2,
-                              snap_x1, snap_x2, snap_dz, snap_dx, nx);
+            interpol_grad2_GPU(We_adj, grad_rho_shot, snap_z1, snap_z2,
+                               snap_x1, snap_x2, snap_dz, snap_dx, nx);
             // Scale to energy weight and add to global array
             scale_grad_E2_GPU(grad_rho, We_adj, scalar_rho, We,
                               snap_z1, snap_z2, snap_x1, snap_x2, nz, nx);
@@ -621,7 +627,6 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         // ---------------------
 
         // Step length estimation for wave parameters
-      
 
         step_length = step_length_PSV_GPU(step_length, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder,
                                           vz, vx, uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x,
@@ -635,31 +640,7 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                                           nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
                                           rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx,
                                           snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 0);
-                                          std::cout<<"\n\n *****STEP LENGTH GPU ******"<<step_length<<"\n";
 
-<<<<<<< HEAD
-       //========================================================================
-       // APPLY GAUSSIAN SMOOTHING / BLURRING TO grad_lam, grad_mu and grad_rho
-       //======================================================================
-=======
-                                          
-
-        // Separate Step length for density update
-        /*
-        step_length_rho = step_length_PSV(step_length_rho, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
-            vz, vx,  uz, ux, szz, szx, sxx,  We, dz_z, dx_z, dz_x, dx_x, 
-            lam, mu, rho, lam_copy, mu_copy, rho_copy, 
-            mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
-            pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
-            pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
-            mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, 
-            mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
-            nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
-            nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
-            rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx,  accu_szz, accu_szx, accu_sxx, 
-            snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 2);
-        */
->>>>>>> cuda_fwi_integration
 
         // Update material parameters to the gradients !!
         update_mat2_GPU(lam, lam_copy, grad_lam, 4.8e+10, 0.0, step_length, nz, nx);
@@ -668,8 +649,13 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         step_length_rho = 0.5 * step_length;
         update_mat2_GPU(rho, rho_copy, grad_rho, 3000.0, 1.25, step_length_rho, nz, nx);
 
+        double end = omp_get_wtime(); // end the timer
+        double dif = end - start;     // stores the difference in dif
+        std::cout << "==================================" << std::endl;
+        std::cout << "the time of single FWI iteration = " << dif << "s\n";
+        std::cout << "==================================" << std::endl;
 
-          
+       // return;
 
         //
         // Saving the Accumulative storage file to a binary file for every shots
@@ -679,10 +665,9 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             // Writing the accumulation array
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep;
 
-
-        cudaCheckError(cudaMemcpy(h_lam[0],lam, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
-        cudaCheckError(cudaMemcpy(h_mu[0],mu,  nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
-        cudaCheckError(cudaMemcpy(h_rho[0],rho, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
+            cudaCheckError(cudaMemcpy(h_lam[0], lam, nz * nx * sizeof(real), cudaMemcpyDeviceToHost));
+            cudaCheckError(cudaMemcpy(h_mu[0], mu, nz * nx * sizeof(real), cudaMemcpyDeviceToHost));
+            cudaCheckError(cudaMemcpy(h_rho[0], rho, nz * nx * sizeof(real), cudaMemcpyDeviceToHost));
 
             write_mat(h_lam, h_mu, h_rho, nz, nx, iterstep);
             std::cout << " <DONE>" << std::endl;
@@ -691,8 +676,8 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         // smooth model
 
         //
-    
-        return;
+
+        //return;
 
         iterstep++;
         iter = (iterstep < maxIter) ? true : false; // Temporary condition
@@ -709,9 +694,9 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         // Writing the accumulation array
         std::cout << "Writing updated material to binary file <FINAL> ITERATION " << iterstep;
 
-        cudaCheckError(cudaMemcpy(h_lam[0],lam, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
-        cudaCheckError(cudaMemcpy(h_mu[0],mu,  nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
-        cudaCheckError(cudaMemcpy(h_rho[0],rho, nz*nx* sizeof(real), cudaMemcpyDeviceToHost));
+        cudaCheckError(cudaMemcpy(h_lam[0], lam, nz * nx * sizeof(real), cudaMemcpyDeviceToHost));
+        cudaCheckError(cudaMemcpy(h_mu[0], mu, nz * nx * sizeof(real), cudaMemcpyDeviceToHost));
+        cudaCheckError(cudaMemcpy(h_rho[0], rho, nz * nx * sizeof(real), cudaMemcpyDeviceToHost));
 
         write_mat(h_lam, h_mu, h_rho, nz, nx, iterstep);
         //write_mat(lam, mu, rho, nz, nx, iterstep);
