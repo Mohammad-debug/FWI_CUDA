@@ -527,8 +527,6 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             //      dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
             //      dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
 
-<<<<<<< HEAD
-=======
 
   //TEST
 //    l=0;m=0;r=0;
@@ -548,7 +546,6 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             // APPLY GAUSSIAN SMOOTHING (BLURRING) FUNCTIONS TO
             // to grad_lam_shot, grad_mu_shot, grad_rho_shot,
             // -----------------------------------------------------
->>>>>>> 10a335c17ee112c245526a7bcd6a0d2ab22577e8
             //     l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
             //     m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
             //     r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());

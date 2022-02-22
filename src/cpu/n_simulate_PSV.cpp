@@ -251,7 +251,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     //allocate_array(gauss_filter, 2*hfs+1, 2*hfs+1);
     //allocate_array(gauss_temp_shot, snap_nz, snap_nx);
     //gauss_filter_kernel(gauss_filter, hfs);
-    
+
     std::cout<< "Gauss filter calculated";
 
     while (iter){ // currently 10 just for test (check the conditions later)
@@ -378,16 +378,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     //     }
     // }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-       
-        std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
-=======
-    //     std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
->>>>>>> cuda_fwi_integration
-=======
-    //     std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
->>>>>>> 10a335c17ee112c245526a7bcd6a0d2ab22577e8
+
 
         // Smoothen the grad shots
         // Applying gauss filter to material gradients
@@ -562,26 +553,13 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         step_length_rho = 0.5 * step_length;
         update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.25, step_length_rho, nz, nx);
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        // Applying gauss filter to the updated materials
-        //apply_gauss_filter(lam, lam_copy, gauss_filter, snap_z1, snap_z2, snap_x1, snap_x2, hfs);
-        //apply_gauss_filter(mu, mu_copy, gauss_filter, snap_z1, snap_z2, snap_x1, snap_x2, hfs);
-        //apply_gauss_filter(rho, rho_copy, gauss_filter, snap_z1, snap_z2, snap_x1, snap_x2, hfs);
-=======
-=======
->>>>>>> 10a335c17ee112c245526a7bcd6a0d2ab22577e8
         double end = omp_get_wtime(); // end the timer
-        dif = end - start;            // stores the difference in dif
+        double dif = end - start;            // stores the difference in dif
         std::cout << "==================================" << std::endl;
         std::cout << "the time of single FWI iteration = " << dif << "s\n";
         std::cout << "==================================" << std::endl;
 
         //return;
-<<<<<<< HEAD
->>>>>>> cuda_fwi_integration
-=======
->>>>>>> 10a335c17ee112c245526a7bcd6a0d2ab22577e8
 
         //
         // Saving the Accumulative storage file to a binary file for every Iteration
@@ -589,15 +567,9 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         if (mat_save_interval>0 && !(iterstep%mat_save_interval)){
             // Writing the accumulation array
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep ;
-<<<<<<< HEAD
-<<<<<<< HEAD
+
             write_mat(lam, mu, rho, nz, nx, iterstep);
-=======
-           write_mat(lam, mu, rho, nz, nx, iterstep);
->>>>>>> cuda_fwi_integration
-=======
-            write_mat(lam, mu, rho, nz, nx, iterstep);
->>>>>>> 10a335c17ee112c245526a7bcd6a0d2ab22577e8
+
             std::cout <<" <DONE>"<< std::endl;
         }
         
