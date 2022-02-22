@@ -1,5 +1,5 @@
 CXX      := g++
-#CUXX 	:= nvcc 
+CUXX 	:= nvcc 
 CXXFLAGS := -fopenmp #-std=c++17 -pedantic-errors -Wall -Wextra -Werror 
 CUXXFLAGS :=  #-std=c++17 -pedantic-errors -Wall -Wextra -Werror
 #LDFLAGS  := -L/usr/lib -L/opt/cuda/include -lstdc++ -lm -lcudart 
@@ -12,7 +12,7 @@ INCLUDE_CUDA := -Iinclude/cuda
 
 #-I/usr/include/hdf5
 SRC  :=  $(wildcard src/*.cpp) $(wildcard src/cpu/*.cpp) $(wildcard ext/*/*.cpp) 
-#SRC_CUDA := $(wildcard src/cuda/*.cu)
+SRC_CUDA := $(wildcard src/cuda/*.cu)
 
 LIB = #ext/inih/*.o
 
@@ -25,9 +25,9 @@ $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
 
-#$(OBJ_DIR)/%.o: %.cu
-#	@mkdir -p $(@D)
-#	$(CUXX) $(CUXXFLAGS) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
+$(OBJ_DIR)/%.o: %.cu
+	@mkdir -p $(@D)
+	$(CUXX) $(CUXXFLAGS) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
 
 $(APP_DIR)/$(TARGET): $(OBJECTS)
 	@mkdir -p $(@D)
