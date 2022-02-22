@@ -242,22 +242,10 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     for (int ll=0;ll<1000;ll++){ L2_norm[ll] = 0.0;}
     real step_length = 0.01; // step length set to initial
     real step_length_rho = 0.01; // step length set to initial
-<<<<<<< HEAD
-
-    real**gauss_filter, **gauss_temp_shot;
-    int hfs = 3;
-    int snap_nz = 1 + (snap_z2 - snap_z1)/snap_dz;
-    int snap_nx = 1 + (snap_x2 - snap_x1)/snap_dx;
-    allocate_array(gauss_filter, 2*hfs+1, 2*hfs+1);
-    allocate_array(gauss_temp_shot, snap_nz, snap_nx);
-    gauss_filter_kernel(gauss_filter, hfs);
-    std::cout<< "Gauss filter calculated";
-=======
     
     double dif=0;
    
 
->>>>>>> 540a437049a3ee7d281284c017bc592dd2130f9f
     while (iter){ // currently 10 just for test (check the conditions later)
         //
          double start = omp_get_wtime();
@@ -382,12 +370,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     //     }
     // }
 
-<<<<<<< HEAD
-       
-        std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
-=======
     //     std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
->>>>>>> 540a437049a3ee7d281284c017bc592dd2130f9f
 
         // Smoothen the grad shots
         // Applying gauss filter to material gradients
@@ -562,12 +545,6 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         step_length_rho = 0.5 * step_length;
         update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.25, step_length_rho, nz, nx);
 
-<<<<<<< HEAD
-        // Applying gauss filter to the updated materials
-        //apply_gauss_filter(lam, lam_copy, gauss_filter, snap_z1, snap_z2, snap_x1, snap_x2, hfs);
-        //apply_gauss_filter(mu, mu_copy, gauss_filter, snap_z1, snap_z2, snap_x1, snap_x2, hfs);
-        //apply_gauss_filter(rho, rho_copy, gauss_filter, snap_z1, snap_z2, snap_x1, snap_x2, hfs);
-=======
         double end = omp_get_wtime(); // end the timer
         dif = end - start;            // stores the difference in dif
         std::cout << "==================================" << std::endl;
@@ -575,7 +552,6 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         std::cout << "==================================" << std::endl;
 
         //return;
->>>>>>> 540a437049a3ee7d281284c017bc592dd2130f9f
 
         //
         // Saving the Accumulative storage file to a binary file for every Iteration
@@ -583,11 +559,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         if (mat_save_interval>0 && !(iterstep%mat_save_interval)){
             // Writing the accumulation array
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep ;
-<<<<<<< HEAD
             write_mat(lam, mu, rho, nz, nx, iterstep);
-=======
-           write_mat(lam, mu, rho, nz, nx, iterstep);
->>>>>>> 540a437049a3ee7d281284c017bc592dd2130f9f
             std::cout <<" <DONE>"<< std::endl;
         }
         
