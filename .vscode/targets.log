@@ -1,4 +1,4 @@
-make all -f /home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile --print-data-base --no-builtin-variables --no-builtin-rules --question
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,176 +6,287 @@ make all -f /home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile --print-d
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Apr 15 12:20:12 2021
+# Make data base, printed on Tue Jul 13 21:45:05 2021
 
 # Variables
 
+# 'override' directive
+GNUMAKEFLAGS := 
 # automatic
 <D = $(patsubst %/,%,$(dir $<))
 # automatic
 ?F = $(notdir $?)
+# environment
+DESKTOP_SESSION = ubuntu
 # default
 .SHELLFLAGS := -c
 # environment
 XDG_SESSION_CLASS = user
-# environment
-VSCODE_AGENT_FOLDER = /home/min/.vscode-server
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 12)
+# makefile (from 'Makefile', line 14)
 SRC := src/h_simulate_PSV.cpp src/h_io_PSV.cpp src/h_preproc_PSV.cpp src/h_checkfd_ssg_elastic.cpp src/h_holbergcoeff.cpp src/h_main.cpp src/cpu/n_simulate_PSV.cpp src/cpu/n_step_length_PSV.cpp src/cpu/n_PCG_PSV.cpp src/cpu/n_kernel_lib_PSV.cpp src/cpu/n_alloc_PSV.cpp src/cpu/n_kernel_PSV.cpp  
 # environment
-XDG_SESSION_TYPE = tty
+SNAP_COMMON = /var/snap/code/common
+# environment
+XDG_SESSION_TYPE = x11
 # environment
 VSCODE_LOG_NATIVE = false
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 7)
+# makefile (from 'Makefile', line 9)
 TARGET := seis_fwi
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # automatic
 @D = $(patsubst %/,%,$(dir $@))
-# automatic
-@F = $(notdir $@)
-# default
-MAKE_VERSION := 4.2.1
+# environment
+XAUTHORITY = /run/user/1000/gdm/Xauthority
+# environment
+GDMSESSION = ubuntu
+# environment
+XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/min/Documents/git/Finite_Difference_FWI_PSV
+CURDIR := /home/zain/CPU_code/Finite_Difference_FWI_PSV
 # makefile
 SHELL = /bin/sh
 # environment
-VSCODE_NLS_CONFIG = {"locale":"en","availableLanguages":{}}
+SNAP_DATA = /var/snap/code/68
 # environment
-_ = /home/min/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/node
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 1)
-MAKEFILE_LIST :=  /home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile
-# 'override' directive
-GNUMAKEFLAGS := 
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 5)
+VTE_VERSION = 6003
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
+# environment
+JOURNAL_STREAM = 8:32168
+# environment
+XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
+# environment
+SNAP_INSTANCE_NAME = code
+# environment
+SNAP_ARCH = amd64
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+IM_CONFIG_PHASE = 1
+# environment
+USERNAME = zain
+# makefile (from 'Makefile', line 7)
 OBJ_DIR := obj
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 3)
-CXXFLAGS := 
+# makefile (from 'Makefile', line 3)
+CXXFLAGS := -fopenmp 
 # environment
-XDG_DATA_DIRS = /usr/local/share:/usr/share:/var/lib/snapd/desktop
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
-DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1001/bus
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
+MANAGERPID = 1013
+# environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
-VSCODE_CWD = /home/min
+VSCODE_CWD = /home/zain/CPU_code
 # environment
-SSH_CONNECTION = 134.245.30.131 50140 134.245.30.91 22
+GSETTINGS_SCHEMA_DIR = /snap/code/68/usr/share/glib-2.0/schemas
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
 # environment
-PATH = /home/min/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/bin:/home/min/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+PATH = /home/zain/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
-XDG_RUNTIME_DIR = /run/user/1001
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 13)
-SRC_CUDA := src/cuda/d_simulate_PSV.cu
+GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
+# environment
+SESSION_MANAGER = local/zain:@/tmp/.ICE-unix/1352,unix/zain:/tmp/.ICE-unix/1352
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+GDK_PIXBUF_MODULE_FILE = /home/zain/snap/code/common/.cache/gdk-pixbuf-loaders.cache
+# environment
+SNAP = /snap/code/68
+# makefile (from 'Makefile', line 15)
+SRC_CUDA := 
+# environment
+SNAP_VERSION = 2d23c42a
+# environment
+XDG_MENU_PREFIX = gnome-
 # environment
 VSCODE_LOG_STACK = false
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-8490afd8-935c-4dbb-947d-9e128cad99f4.sock
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 4)
-LDFLAGS := -L/usr/lib -L/usr/lib/cuda -lstdc++ -lm -lcudart 
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 15)
+DISABLE_WAYLAND = 1
+# environment
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=e3afa984-dc9a-402e-9e73-2afdabd4dae5&iid=e3afa984-dc9a-402e-9e73-2afdabd4dae5&sid=e3afa984-dc9a-402e-9e73-2afdabd4dae5","uploadToServer":true}
+# environment
+INVOCATION_ID = 47b284772d654d5686d826291772eb06
+# environment
+GDK_PIXBUF_MODULEDIR = /snap/code/68/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+# makefile (from 'Makefile', line 17)
 LIB = 
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
-LS_COLORS = 
+LS_COLORS = rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+# environment
+XDG_SESSION_DESKTOP = ubuntu
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # automatic
 %F = $(notdir $%)
 # environment
+DISPLAY = :0
+# environment
 VSCODE_PIPE_LOGGING = true
 # environment
-PWD = /home/min/Documents/git/Finite_Difference_FWI_PSV
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 2)
+SNAP_INSTANCE_KEY = 
+# environment
+PWD = /home/zain/CPU_code/Finite_Difference_FWI_PSV
+# makefile (from 'Makefile', line 2)
 CUXX := nvcc 
 # default
 .LOADED := 
-# automatic
-*D = $(patsubst %/,%,$(dir $*))
 # environment
-VSCODE_AMD_ENTRYPOINT = vs/server/remoteExtensionHostProcess
+SSH_AGENT_PID = 1283
 # environment
-HOME = /home/min
+ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
+# environment
+GTK_MODULES = gail:atk-bridge
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
+# environment
+HOME = /home/zain
 # environment
 LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
-LOGNAME = min
+VSCODE_CLI = 1
+# environment
+VSCODE_CODE_CACHE_PATH = /home/zain/.config/Code/CachedData/2d23c42a936db1c7b3b06f918cde29561cc47cd6
+# environment
+LOGNAME = zain
 # environment
 APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
-# automatic
-+F = $(notdir $+)
+# environment
+SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
+# environment
+SNAP_CONTEXT = XCahBo7f7Kj7hg4n85sVYTsf1903XroyjHoGHV1PgQOcVSqiZrzw
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+SNAP_USER_COMMON = /home/zain/snap/code/common
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
 # automatic
 ^D = $(patsubst %/,%,$(dir $^))
 # environment
 MAKELEVEL := 0
+# environment
+SNAP_REAL_HOME = /home/zain
+# environment
+COLORTERM = truecolor
 # default
 MAKE = $(MAKE_COMMAND)
 # default
 MAKECMDGOALS := all
 # environment
-SHLVL = 0
+QT_IM_MODULE = ibus
 # environment
-XDG_SESSION_ID = 4
+SNAP_USER_DATA = /home/zain/snap/code/68
 # environment
-USER = min
+SHLVL = 1
+# environment
+GNOME_SHELL_SESSION_MODE = ubuntu
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-62336105-2b8d-4c5c-8744-d8cc65a0ab55.sock
+# default
+MAKE_VERSION := 4.2.1
+# environment
+USER = zain
+# environment
+SNAP_REVISION = 68
 # makefile
 .DEFAULT_GOAL := all
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 8)
+# makefile (from 'Makefile', line 10)
 INCLUDE := -Iinclude -Iinclude/cpu 
+# environment
+XDG_CURRENT_DESKTOP = Unity
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # default
 MAKE_COMMAND := make
+# environment
+OLDPWD = /home/zain/CPU_code/Finite_Difference_FWI_PSV
 # default
 .VARIABLES := 
 # automatic
 *F = $(notdir $*)
+# environment
+LANGUAGE = en_IN:en
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-56437f06-1.58.0-main.sock
 # makefile
 MAKEFLAGS = pqrR
 # environment
 MFLAGS = -pqrR
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
 # environment
-SSH_CLIENT = 134.245.30.131 50140 22
+BREAKPAD_DUMP_LOCATION = /home/zain/.config/Code/exthost Crash Reports
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # environment
-BROWSER = /home/min/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/bin/helpers/browser.sh
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 9)
-INCLUDE_CUDA := -Iinclude/cuda
+GDK_BACKEND = x11
+# makefile (from 'Makefile', line 4)
+CUXXFLAGS := 
+# automatic
++F = $(notdir $+)
+# environment
+QT_ACCESSIBILITY = 1
+# makefile (from 'Makefile', line 11)
+INCLUDE_CUDA := 
 # default
 MAKEFILES := 
+# environment
+SNAP_COOKIE = XCahBo7f7Kj7hg4n85sVYTsf1903XroyjHoGHV1PgQOcVSqiZrzw
+# environment
+VSCODE_BROWSER_CODE_LOADING = bypassHeatCheck
 # automatic
 <F = $(notdir $<)
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 1)
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# makefile (from 'Makefile', line 1)
 CXX := g++
+# environment
+SNAP_NAME = code
+# environment
+LC_ALL = C
+# environment
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/66bac6e7_a2dd_4cf0_9ca7_b7bc9e523264
 # automatic
 ^F = $(notdir $^)
+# environment
+GNOME_TERMINAL_SERVICE = :1.80
 # default
 SUFFIXES := 
+# environment
+SNAP_REEXEC = 
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+WINDOWPATH = 2
 # default
 .INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
-# environment
-VSCODE_INJECT_NODE_MODULE_LOOKUP_PATH = /home/min/.vscode-server/bin/3c4e3df9e89829dce27b7b5c24508306b151f30d/remote/node_modules
 # default
 .RECIPEPREFIX := 
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 17)
-OBJECTS := obj/src/h_simulate_PSV.o obj/src/h_io_PSV.o obj/src/h_preproc_PSV.o obj/src/h_checkfd_ssg_elastic.o obj/src/h_holbergcoeff.o obj/src/h_main.o obj/src/cpu/n_simulate_PSV.o obj/src/cpu/n_step_length_PSV.o obj/src/cpu/n_PCG_PSV.o obj/src/cpu/n_kernel_lib_PSV.o obj/src/cpu/n_alloc_PSV.o obj/src/cpu/n_kernel_PSV.o obj/src/cuda/d_simulate_PSV.o 
-# default
-MAKE_HOST := x86_64-pc-linux-gnu
+# makefile (from 'Makefile', line 19)
+OBJECTS := obj/src/h_simulate_PSV.o obj/src/h_io_PSV.o obj/src/h_preproc_PSV.o obj/src/h_checkfd_ssg_elastic.o obj/src/h_holbergcoeff.o obj/src/h_main.o obj/src/cpu/n_simulate_PSV.o obj/src/cpu/n_step_length_PSV.o obj/src/cpu/n_PCG_PSV.o obj/src/cpu/n_kernel_lib_PSV.o obj/src/cpu/n_alloc_PSV.o obj/src/cpu/n_kernel_PSV.o  
+ 
 # environment
-LANG = en_US.UTF-8
+LANG = C
 # environment
-VSCODE_EXTHOST_WILL_SEND_SOCKET = true
+TERM = xterm-256color
 # environment
-MOTD_SHOWN = pam
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 6)
+VSCODE_PID = 2266
+# makefile (from 'Makefile', line 8)
 APP_DIR := bin
 # variable set hash-table stats:
-# Load=82/1024=8%, Rehash=0, Collisions=10/126=8%
+# Load=137/1024=13%, Rehash=0, Collisions=17/180=9%
 
 # Pattern-specific Variable Values
 
@@ -183,26 +294,21 @@ APP_DIR := bin
 
 # Directories
 
-# src/cpu (device 2050, inode 99681618): 8 files, no impossibilities.
-# src/cuda (device 2050, inode 99681625): 3 files, no impossibilities.
-# src (device 2050, inode 99418156): 11 files, no impossibilities.
+# . (device 2053, inode 1049479): 15 files, no impossibilities.
+# src/cpu (device 2053, inode 1049566): 8 files, no impossibilities.
+# src (device 2053, inode 1049565): 11 files, no impossibilities.
 # ext: could not be stat'd.
 
-# 22 files, no impossibilities in 4 directories.
+# 34 files, no impossibilities in 4 directories.
 
 # Implicit Rules
 
 obj/%.o: %.cpp
-#  recipe to execute (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 23):
+#  recipe to execute (from 'Makefile', line 25):
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(INCLUDE_CUDA) -c $< -o $@ $(LDFLAGS)
 
-obj/%.o: %.cu
-#  recipe to execute (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 27):
-	@mkdir -p $(@D)
-	$(CUXX) -arch $(CXXFLAGS)  -c $< -o $@ $(LDFLAGS)
-
-# 2 implicit rules, 0 (0.0%) terminal.
+# 1 implicit rules, 0 (0.0%) terminal.
 
 # Files
 
@@ -252,12 +358,19 @@ obj/src/cpu/n_PCG_PSV.o:
 #  File has not been updated.
 
 # Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2021-07-06 11:41:25.566190382
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
 obj/src/cpu/n_kernel_PSV.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
 
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 40)
+# makefile (from 'Makefile', line 42)
 debug: CXXFLAGS += -DDEBUG -g
 debug: all
 #  Phony target (prerequisite of .PHONY).
@@ -278,7 +391,6 @@ build:
 # @ := build
 # automatic
 # % := 
- 
 # automatic
 # * := 
 # automatic
@@ -293,15 +405,9 @@ build:
 # ? := 
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/13=8%
-#  recipe to execute (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 37):
+#  recipe to execute (from 'Makefile', line 39):
 	@mkdir -p $(APP_DIR)
 	@mkdir -p $(OBJ_DIR)
-
-# Not a target:
-obj/src/cuda/d_simulate_PSV.o:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
 
 # Not a target:
 obj/src/h_checkfd_ssg_elastic.o:
@@ -321,22 +427,15 @@ obj/src/h_io_PSV.o:
 #  Modification time never checked.
 #  File has not been updated.
 
-# Not a target:
-/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile:
-#  Implicit rule search has been done.
-#  Last modified 2021-04-15 12:20:10.469105404
-#  File has been updated.
-#  Successfully updated.
-
-bin/seis_fwi: obj/src/h_simulate_PSV.o obj/src/h_io_PSV.o obj/src/h_preproc_PSV.o obj/src/h_checkfd_ssg_elastic.o obj/src/h_holbergcoeff.o obj/src/h_main.o obj/src/cpu/n_simulate_PSV.o obj/src/cpu/n_step_length_PSV.o obj/src/cpu/n_PCG_PSV.o obj/src/cpu/n_kernel_lib_PSV.o obj/src/cpu/n_alloc_PSV.o obj/src/cpu/n_kernel_PSV.o obj/src/cuda/d_simulate_PSV.o
+bin/seis_fwi: obj/src/h_simulate_PSV.o obj/src/h_io_PSV.o obj/src/h_preproc_PSV.o obj/src/h_checkfd_ssg_elastic.o obj/src/h_holbergcoeff.o obj/src/h_main.o obj/src/cpu/n_simulate_PSV.o obj/src/cpu/n_step_length_PSV.o obj/src/cpu/n_PCG_PSV.o obj/src/cpu/n_kernel_lib_PSV.o obj/src/cpu/n_alloc_PSV.o obj/src/cpu/n_kernel_PSV.o
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 31):
+#  recipe to execute (from 'Makefile', line 33):
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -o $(APP_DIR)/$(TARGET) $^ $(LDFLAGS)
 
-# makefile (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 43)
+# makefile (from 'Makefile', line 45)
 release: CXXFLAGS += -O2
 release: all
 #  Phony target (prerequisite of .PHONY).
@@ -356,7 +455,7 @@ run:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 47):
+#  recipe to execute (from 'Makefile', line 49):
 	python3 ./scripts/pre_proc.py
 	$(APP_DIR)/$(TARGET) 
 	#python3 ./scripts/post_proc.py
@@ -366,8 +465,7 @@ clean:
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
- 
-#  recipe to execute (from '/home/min/Documents/git/Finite_Difference_FWI_PSV/Makefile', line 52):
+#  recipe to execute (from 'Makefile', line 54):
 	-@rm -rvf $(OBJ_DIR)/*
 	-@rm -rvf $(APP_DIR)/*
 
@@ -396,19 +494,19 @@ obj/src/h_simulate_PSV.o:
 #  File has not been updated.
 
 # files hash-table stats:
-# Load=24/1024=2%, Rehash=0, Collisions=0/65=0%
+# Load=23/1024=2%, Rehash=0, Collisions=0/63=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 51 / storage = 803 B / avg = 15 B
-# current buf: size = 8162 B / used = 803 B / count = 51 / avg = 15 B
+# strcache buffers: 1 (0) / strings = 58 / storage = 780 B / avg = 13 B
+# current buf: size = 8162 B / used = 780 B / count = 58 / avg = 13 B
 
-# strcache performance: lookups = 80 / hit rate = 36%
+# strcache performance: lookups = 88 / hit rate = 34%
 # hash-table stats:
-# Load=51/8192=1%, Rehash=0, Collisions=4/80=5%
-# Finished Make data base on Thu Apr 15 12:20:12 2021
+# Load=58/8192=1%, Rehash=0, Collisions=4/88=5%
+# Finished Make data base on Tue Jul 13 21:45:05 2021
 
  

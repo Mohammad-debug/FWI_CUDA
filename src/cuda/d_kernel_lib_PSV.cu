@@ -228,7 +228,7 @@ void mat_av2_GPU(
 
     std::cout << "This is test GPU \nC_lam=" << C_lam << " \nC_mu=" << C_mu << " \nC_rho=" << C_rho << " \n\n";
 
-    std::cout << "This is test GPU II \nlam sum =" << l << " \nmu sum=" << m << " \nr sum=" << r << " \n\n";
+    //std::cout << "This is test GPU II \nlam sum =" << l << " \nmu sum=" << m << " \nr sum=" << r << " \n\n";
 }
 
 void reset_sv2_GPU(

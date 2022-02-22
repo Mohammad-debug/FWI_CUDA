@@ -1,0 +1,2838 @@
+python3 ./scripts/pre_proc.py
+Plotting initial materials
+Metaint:  [   0    0    1    1    0    1    1    1 3000  401  201    0 2999   20
+  380   20  180    3    1    1   38   74  362  326   28   44  172  156
+    3  181    3    1    0    2    1    1    1]
+Metafloat:  [1.00e-04 4.00e-01 4.00e-01 2.00e+00 2.00e+03 1.00e-03 1.00e+00 5.00e+01
+ 4.53e+09 7.35e+08 1.50e+03]
+bin/seis_fwi 
+Reading input parameters <INT>.
+Allocating memory for the variables.
+Receivers allocated
+Reading input parameters <INTEGER ARAYS>.
+The read data is: 
+The data are: 200, 20, 0, 180
+Reading input parameters <FLOAT>.
+The read data is: 
+The data are: 4.53e+09, 7.35e+08, 1500
+Reading field measurements <FLOAT>.
+Cannot open output files.Cannot open output files.Cannot open output files.Reading material grids <FLOAT>.
+LAM <FLOAT>.
+MU <FLOAT>.
+RHO <FLOAT>.
+Input parameters loaded.
+nz = 401, nx = 201, dz = 0.4, dt = 0.0001, freq = 50, npml = 10
+DHSTAB = 0.583333, DH = 0.4
+ The simulation will be stable. DTSTAB = 0.00014128 DT = 0.0001
+
+----------------------- ABSORBING BOUNDARY ------------------------
+ Width (FW) of absorbing frame should be at least 10 gridpoints.
+ You have specified a width of 10 gridpoints.
+
+THE COMPUTATION STARTS IN CPU
+**OpenMP running with 6 threads**
+Full Waveform Inversion....
+
+
+==================================
+FWI: Iteration 0
+==================================
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.1932
+Calculated norm : 3.22231e-07
+L2 NORM: 1, 3.22231e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 21.4454
+Max. Energy Weight = 3.74448e-08
+Max. Energy part = 51.9752, 3.3508e-17
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.9153
+Calculated norm : 3.2272e-07
+L2 NORM: 1, 6.44951e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 21.7587
+Max. Energy Weight = 3.00545e-08
+Max. Energy part = 51.975, 2.11679e-17
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.3981
+Calculated norm : 3.16009e-07
+L2 NORM: 1, 9.6096e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 20.8873
+Max. Energy Weight = 3.75244e-08
+Max. Energy part = 51.9752, 3.38105e-17
+Applying Preconditioning
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.8264
+Calculated norm : 2.9896e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.5398
+Calculated norm : 2.9777e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.1721
+Calculated norm : 2.92711e-07
+Step Length: 0.01, L2 = 8.89441e-07, counter = 0
+L2_test = [9.6096e-07, 8.89441e-07, 2.122e-314 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.015, L2 = 8.89441e-07, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.0742
+Calculated norm : 2.92063e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.2565
+Calculated norm : 2.86846e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.2089
+Calculated norm : 2.85558e-07
+Step Length: 0.015, L2 = 8.64468e-07, counter = 0
+L2_test = [9.6096e-07, 8.89441e-07, 8.64468e-07 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.0225, L2 = 8.64468e-07, counter = 1
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.4317
+Calculated norm : 2.85513e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.6317
+Calculated norm : 2.75958e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.3707
+Calculated norm : 2.78401e-07
+Step Length: 0.0225, L2 = 8.39873e-07, counter = 1
+L2_test = [9.6096e-07, 8.89441e-07, 8.39873e-07 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.03375, L2 = 8.39873e-07, counter = 2
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.513
+Calculated norm : 2.8252e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.9333
+Calculated norm : 2.74999e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 17.7775
+Calculated norm : 2.74104e-07
+Step Length: 0.03375, L2 = 8.31623e-07, counter = 2
+L2_test = [9.6096e-07, 8.89441e-07, 8.31623e-07 ]
+CASE 2.1
+-------------------------------------------------------
+Step Length: 0.050625, L2 = 8.31623e-07, counter = 3
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.6353
+Calculated norm : 2.91483e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.0897
+Calculated norm : 3.19168e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.6043
+Calculated norm : 2.83472e-07
+Step Length: 0.050625, L2 = 8.94124e-07, counter = 3
+L2_test = [9.6096e-07, 8.89441e-07, 8.94124e-07 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.050625, L2 = 8.94124e-07, counter = 3
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 9.6096e-07, 8.89441e-07, 8.94124e-07
+SL: 0, 0.01, 0.050625
+Optimum Step Length: <calculated>0.029911, <adopted> 0.029911
+Iteration step: 0, 1, 0
+Writing updated material to binary file for ITERATION 0 <DONE>
+
+
+==================================
+FWI: Iteration 1
+==================================
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.1939
+Calculated norm : 2.82676e-07
+L2 NORM: 0.29416, 2.82676e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 24.0265
+Max. Energy Weight = 2.48646e-08
+Max. Energy part = 52.1212, 1.50933e-17
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.2872
+Calculated norm : 2.72926e-07
+L2 NORM: 0.578173, 5.55601e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 23.4933
+Max. Energy Weight = 1.68311e-08
+Max. Energy part = 1.54725, 1.03337e-17
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.2211
+Calculated norm : 2.74748e-07
+L2 NORM: 0.864084, 8.3035e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 23.7073
+Max. Energy Weight = 2.49566e-08
+Max. Energy part = 52.1324, 1.56997e-17
+Applying Preconditioning
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.1298
+Calculated norm : 2.78689e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.2718
+Calculated norm : 2.88054e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.3824
+Calculated norm : 2.66948e-07
+Step Length: 0.029911, L2 = 8.33691e-07, counter = 0
+L2_test = [8.3035e-07, 8.33691e-07, 2.122e-314 ]
+CASE 1.1
+-------------------------------------------------------
+Step Length: 0.0149555, L2 = 8.33691e-07, counter = 1
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.4996
+Calculated norm : 2.73993e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.5253
+Calculated norm : 2.61345e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.409
+Calculated norm : 2.6527e-07
+Step Length: 0.0149555, L2 = 8.00607e-07, counter = 1
+L2_test = [8.3035e-07, 8.00607e-07, 2.122e-314 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.0224333, L2 = 8.00607e-07, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.5747
+Calculated norm : 2.74567e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.1108
+Calculated norm : 2.68594e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.4145
+Calculated norm : 2.65225e-07
+Step Length: 0.0224333, L2 = 8.08386e-07, counter = 0
+L2_test = [8.3035e-07, 8.00607e-07, 8.08386e-07 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.0224333, L2 = 8.08386e-07, counter = 0
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 8.3035e-07, 8.00607e-07, 8.08386e-07
+SL: 0, 0.0149555, 0.0224333
+Optimum Step Length: <calculated>0.0148423, <adopted> 0.0148423
+Iteration step: 1, 1, 0
+Writing updated material to binary file for ITERATION 1 <DONE>
+
+
+==================================
+FWI: Iteration 2
+==================================
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.3778
+Calculated norm : 2.74014e-07
+L2 NORM: 0.285146, 2.74014e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 23.3861
+Max. Energy Weight = 2.1806e-08
+Max. Energy part = 52.2182, 1.17835e-17
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.7143
+Calculated norm : 2.61332e-07
+L2 NORM: 0.557096, 5.35347e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 23.5061
+Max. Energy Weight = 1.41465e-08
+Max. Energy part = 52.1635, 7.91136e-18
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.7128
+Calculated norm : 2.65304e-07
+L2 NORM: 0.833178, 8.00651e-07
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 23.3161
+Max. Energy Weight = 2.17793e-08
+Max. Energy part = 52.235, 1.23424e-17
+Applying Preconditioning
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.2441
+Calculated norm : 2.6704e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.427
+Calculated norm : 2.59872e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.9162
+Calculated norm : 2.58564e-07
+Step Length: 0.0148423, L2 = 7.85476e-07, counter = 0
+L2_test = [8.00651e-07, 7.85476e-07, 2.122e-314 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.0222634, L2 = 7.85476e-07, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.4864
+Calculated norm : 2.71308e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.6205
+Calculated norm : 2.70989e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.8181
+Calculated norm : 2.61722e-07
+Step Length: 0.0222634, L2 = 8.04019e-07, counter = 0
+L2_test = [8.00651e-07, 7.85476e-07, 8.04019e-07 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.0222634, L2 = 8.04019e-07, counter = 0
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 8.00651e-07, 7.85476e-07, 8.04019e-07
+SL: 0, 0.0148423, 0.0222634
+Optimum Step Length: <calculated>0.0106535, <adopted> 0.0106535
+Iteration step: 2, 1, 0
+Writing updated material to binary file for ITERATION 2 <DONE>
+
+
+==================================
+FWI: Iteration 3
+==================================
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.6986
+Calculated norm : 2.67133e-07
+L2 NORM: 0.277985, 2.67133e-07
+L2 Diff: 0.678289
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 25.0559
+Max. Energy Weight = 1.98833e-08
+Max. Energy part = 52.287, 1.02589e-17
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.6038
+Calculated norm : 2.57623e-07
+L2 NORM: 0.546075, 5.24756e-07
+L2 Diff: 0.36803
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 25.6692
+Max. Energy Weight = 1.35565e-08
+Max. Energy part = 52.1595, 7.31077e-18
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.8354
+Calculated norm : 2.58765e-07
+L2 NORM: 0.815352, 7.8352e-07
+L2 Diff: 0.056397
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 25.6404
+Max. Energy Weight = 2.00244e-08
+Max. Energy part = 52.3024, 1.08625e-17
+Applying Preconditioning
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.6704
+Calculated norm : 2.62655e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.643
+Calculated norm : 2.54998e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.0167
+Calculated norm : 2.54982e-07
+Step Length: 0.0106535, L2 = 7.72635e-07, counter = 0
+L2_test = [7.8352e-07, 7.72635e-07, 2.122e-314 ]
+CASE 1.2
+-------------------------------------------------------
+Step Length: 0.0159803, L2 = 7.72635e-07, counter = 0
+step1 = 1, step2 = 0 itests = 2 iteste = 2
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.1753
+Calculated norm : 2.62318e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.5937
+Calculated norm : 2.55891e-07
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.4138
+Calculated norm : 2.54742e-07
+Step Length: 0.0159803, L2 = 7.7295e-07, counter = 0
+L2_test = [7.8352e-07, 7.72635e-07, 7.7295e-07 ]
+CASE 2.2
+-------------------------------------------------------
+Step Length: 0.0159803, L2 = 7.7295e-07, counter = 0
+step1 = 1, step2 = 1 itests = 2 iteste = 2
+=================================================
+calculate optimal step length epsilon for Vp and Vs
+=================================================
+L2: 7.8352e-07, 7.72635e-07, 7.7295e-07
+SL: 0, 0.0106535, 0.0159803
+Optimum Step Length: <calculated>0.0128791, <adopted> 0.0128791
+Iteration step: 3, 1, 0
+Writing updated material to binary file for ITERATION 3 <DONE>
+
+
+==================================
+FWI: Iteration 4
+==================================
+FWI KERNEL: SHOT 0 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.724
+Calculated norm : 2.62461e-07
+L2 NORM: 0.273123, 2.62461e-07
+L2 Diff: 0.672191
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 31.4404
+Max. Energy Weight = 1.90849e-08
+Max. Energy part = 52.3212, 9.83725e-18
+FWI KERNEL: SHOT 1 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.2943
+Calculated norm : 2.55243e-07
+L2 NORM: 0.538736, 5.17703e-07
+L2 Diff: 0.353397
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 27.0667
+Max. Energy Weight = 1.31677e-08
+Max. Energy part = 52.1544, 7.26402e-18
+FWI KERNEL: SHOT 2 of 3.
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.0907
+Calculated norm : 2.54766e-07
+L2 NORM: 0.803852, 7.7247e-07
+L2 Diff: 0.0351982
+Time step: 2999 of 2999
+Time step: 2000 of 2999
+Time step: 1000 of 2999
+Time step: 0 of 2999
+time taken parallel 36.5103
+Max. Energy Weight = 1.94556e-08
+Max. Energy part = 52.3286, 1.03214e-17
+Applying Preconditioning
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.031
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.479
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.5907
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.4344
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.6197
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.7107
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.9156
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.347
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.2551
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.994
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.5908
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.2359
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.6772
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.97
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.2866
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.4806
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 30.6309
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 31.9829
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.6618
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.7819
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 30.3793
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.8716
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.3907
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 33.5855
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.9377
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.3943
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.9843
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.5555
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.448
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.2107
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.4913
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.4449
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.2625
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.2232
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.9707
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.8008
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.9656
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.1847
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.9196
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.08
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.9251
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.2757
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.2995
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.6247
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.9484
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.7389
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.8925
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.0157
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.8583
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.5856
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.7572
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.1707
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.6266
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.9068
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.7809
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.5634
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.7492
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.1291
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.2753
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.8202
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.5447
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.9691
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.8634
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.6953
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.6265
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.8656
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.9879
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.8729
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.4171
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.3456
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.8659
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.803
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.0254
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.191
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.7542
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.1197
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.7999
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.1605
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.8636
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.4754
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.6493
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.015
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.2827
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.1239
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.1127
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.1457
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.8874
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.4768
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.8939
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.1626
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.587
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.4842
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.4124
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.3638
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.7165
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.7575
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.5405
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.384
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.6112
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 18.6272
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.1548
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.0318
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.932
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.5636
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.5596
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.0844
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.0622
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.7537
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.0685
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.3486
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.388
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.6235
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.1833
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.1112
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 19.9685
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.7563
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.2178
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.9365
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.3733
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.8948
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.4309
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.4974
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.7435
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.4616
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.0536
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.621
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.5891
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.747
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.2683
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.0784
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.1714
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 30.1852
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.0527
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.2885
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.1128
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.0931
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.1492
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.7198
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.7013
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.2715
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.7046
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.8504
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.6897
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.083
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.7649
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.0994
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.6733
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.9572
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.963
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.6257
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.51
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.4772
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.2265
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.8903
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.0565
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 30.1149
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.9352
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.2795
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.1192
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.6288
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.2723
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.4413
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.553
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.0114
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.3177
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.262
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.3821
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 31.0528
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.4303
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.7991
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.1507
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.5334
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.8736
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 34.7672
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 31.7246
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.6658
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.8774
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.8191
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.2727
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.9075
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 20.7723
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.2453
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.636
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.105
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.8892
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.0006
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.6032
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 30.0012
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.0825
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.0667
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.9003
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.3723
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.844
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.0512
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.7382
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.0621
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.1118
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.6892
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.194
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.0289
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.0447
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.9021
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.951
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.0415
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.3873
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.6469
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.851
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.6174
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.5557
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.8907
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.1766
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.5038
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.1698
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.3388
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.0996
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.5193
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.2149
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.336
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.4778
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.5068
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.5675
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.9976
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.6813
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.4962
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.8411
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.1893
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.1806
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.2912
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.2819
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.8542
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.7466
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.0177
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.3387
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.5643
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.1729
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.7445
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.4976
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.4769
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.5916
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.5083
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 28.5817
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.8421
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.5155
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.2152
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.4994
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.3383
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.9029
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.8608
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.958
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.9611
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.9936
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.7258
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.4426
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.635
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.1314
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.5688
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.0382
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.2897
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.1587
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.088
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.5695
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.2665
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.6449
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.2125
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.1238
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.8241
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.3644
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.0552
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.1279
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.9218
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.7949
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.134
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.1146
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.0133
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 24.9901
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.1568
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.3683
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 25.491
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.1996
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.6427
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.3859
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 21.6197
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.3312
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 30.6441
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 27.3742
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 23.1652
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 26.4047
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 29.8902
+Calculated norm : -nan
+Step Length: 0.0128791, L2 = -nan, counter = 0
+L2_test = [7.7247e-07, -nan, 2.122e-314 ]
+-------------------------------------------------------
+Step Length: 0.0128791, L2 = -nan, counter = 0
+step1 = 0, step2 = 0 itests = 1 iteste = 1
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 30.7845
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999
+Time step: 2999 of 2999
+time taken parallel 22.6764
+Calculated norm : -nan
+Time step: 0 of 2999
+Time step: 1000 of 2999
+Time step: 2000 of 2999

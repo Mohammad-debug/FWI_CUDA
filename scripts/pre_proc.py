@@ -10,10 +10,10 @@ ftype = np.float64
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = False# True: computation in GPU, False: in CPU
+cuda_computation = True# True: computation in GPU, False: in CPU
 
 #forward only or fWI?
-fwinv = True # True: FWI, False: Forward only
+fwinv = False # True: FWI, False: Forward only
 
 #---------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ fwinv = True # True: FWI, False: Forward only
 
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
-nt = 3000; nz = 401; nx = 201 # grid numbers (adding for PMLs as well)
+nt = 1000; nz = 3501; nx = 3001 # grid numbers (adding for PMLs as well)
 
 
 # Number of PMLs in each direction
@@ -83,7 +83,6 @@ else:
 
 # ---------------------------------------------------------------------------------
     
-
 #------------------------------------------------------------------
 # MEDIUM (MATERIAL) PARAMETERS
 #-----------------------------------------------------------------
@@ -172,20 +171,20 @@ nrec = zrec.size
 # PLOTTING INPUTS
 #---------------------------------------------------
 
-print('Plotting initial materials')
-plt.figure(1)
-plt.subplot(221)
-plt.imshow(lam) # lamda parameter
-plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=4) # source positions
-plt.plot(xrec,zrec, ls = '', marker= '+', markersize=3) # reciever positions
-plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
-plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
-plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
-plt.subplot(222)
-plt.imshow(mu)
-plt.subplot(223)
-plt.imshow(rho)
-plt.show()
+# print('Plotting initial materials')
+# plt.figure(1)
+# plt.subplot(221)
+# plt.imshow(lam) # lamda parameter
+# plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=4) # source positions
+# plt.plot(xrec,zrec, ls = '', marker= '+', markersize=3) # reciever positions
+# plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
+# plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
+# plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
+# plt.subplot(222)
+# plt.imshow(mu)
+# plt.subplot(223)
+# plt.imshow(rho)
+# plt.show()
 
 #--------------------------------------------------------
 
@@ -247,4 +246,8 @@ material_inp.tofile('./bin/mat.bin')
 
 
 
+<<<<<<< HEAD
 # %%
+=======
+# %%
+>>>>>>> cuda_fwi_integration
