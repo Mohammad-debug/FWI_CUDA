@@ -46,7 +46,7 @@ release: CXXFLAGS += -O2
 release: all
 
 run:
-	python3 ./scripts/pre_proc_dinesh.py
+	python3 ./scripts/pre_proc_dyke_4000.py
 	$(APP_DIR)/$(TARGET) 
 	#python3 ./scripts/post_proc.py
 
