@@ -10,10 +10,10 @@ ftype = np.float64
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = False# True: computation in GPU, False: in CPU
+cuda_computation = True# True: computation in GPU, False: in CPU
 
 #forward only or fWI?
-fwinv = True # True: FWI, False: Forward only
+fwinv = False # True: FWI, False: Forward only
 
 #---------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ fwinv = True # True: FWI, False: Forward only
 
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
-nt = 1000; nz = 1001; nx = 201 # grid numbers (adding for PMLs as well)
+nt = 1000; nz = 3501; nx = 3001 # grid numbers (adding for PMLs as well)
 
 
 # Number of PMLs in each direction
