@@ -3,12 +3,12 @@ CXX      := g++
 CXXFLAGS := -fopenmp #-std=c++17 -pedantic-errors -Wall -Wextra -Werror 
 CUXXFLAGS :=  #-std=c++17 -pedantic-errors -Wall -Wextra -Werror
 #LDFLAGS  := -L/usr/lib -L/opt/cuda/include -lstdc++ -lm -lcudart 
-LDFLAGS  := -L/usr/lib -L/usr/lib/cuda -lstdc++ -lm #-lcudart 
+LDFLAGS  := -L/usr/lib -L/usr/lib/cuda -lstdc++ -lm -lcudart 
 OBJ_DIR  := obj
 APP_DIR  := bin
 TARGET   := seis_fwi
 INCLUDE  := -Iinclude -Iinclude/cpu 
-#INCLUDE_CUDA := -Iinclude/cuda
+INCLUDE_CUDA := -Iinclude/cuda
 
 #-I/usr/include/hdf5
 SRC  :=  $(wildcard src/*.cpp) $(wildcard src/cpu/*.cpp) $(wildcard ext/*/*.cpp) 

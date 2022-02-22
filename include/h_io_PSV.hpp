@@ -31,7 +31,8 @@ void read_inp_metafloat(real &dt, real &dz, real &dx, real &npower_pml, real &da
 
 void read_material_array(real **&lam, real **&mu, real **&rho,  int nz, int nx);
 
-void read_seismo(real ***&rtf_uz, real ***&rtf_ux, int nrec, int nt, int ishot);
+void read_seismo(real ***&rtf_uz, real ***&rtf_ux, int nrec, int nt, int ishot); // reading reciever seismograms
+void read_seismo_src(real **&stf_uz, real **&stf_ux, int nsrc, int nt); // Reading source seismograms
 
 
 // Writing the accumulative data for velocity and stress tensor to the disk
