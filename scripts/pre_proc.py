@@ -27,7 +27,7 @@ fwinv = True # True: FWI, False: Forward only
 
 # Geometric data
 dt = 0.1e-3; dz = 0.4; dx = 0.4 # grid intervals
-nt = 3000; nz = 401; nx = 201 # grid numbers (adding for PMLs as well)
+nt = 3000; nz = 250; nx = 201 # grid numbers (adding for PMLs as well)
 
 
 # Number of PMLs in each direction

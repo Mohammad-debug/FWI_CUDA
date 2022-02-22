@@ -22,7 +22,9 @@
 #include "d_preproc.cuh"
 #include <iostream>
 #include <math.h>
-
+#include <chrono>
+using namespace std::chrono;
+  
 void g_simulate_PSV(int *&npml, int nt, int nz, int nx, real dt, real dz, real dx,
                     int snap_z1, int snap_z2, int snap_x1, int snap_x2, int snap_dt, int snap_dz, int snap_dx,
                     bool surf, bool pml_z, bool pml_x, int nsrc, int nrec, int nshot, int stf_type, int rtf_type,
@@ -45,6 +47,7 @@ void g_simulate_PSV(int *&npml, int nt, int nz, int nx, real dt, real dz, real d
     // ---------------------------------------------
     // MEMORY ESPECIALLY INPUT, PREPROCESS FOR SIMULATION
     // ---------------------------------------------
+auto start = high_resolution_clock::now();
 
     real *d_hc;
     int *d_isurf;
@@ -146,6 +149,12 @@ void g_simulate_PSV(int *&npml, int nt, int nz, int nx, real dt, real dz, real d
     // Calling global device functions (forward and fwi kernels)
     if (fwinv)
     {
+
+// Use auto keyword to avoid typing long
+// type definitions to get the timepoint
+// at this instant use function now()
+
+
         std::cout << "Here you go: FWI" << std::endl;
         simulate_fwi_PSV_GPU(nt, nz, nx, dt, dz, dx,
                              snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx,
@@ -178,6 +187,15 @@ void g_simulate_PSV(int *&npml, int nt, int nz, int nx, real dt, real dz, real d
 
         //simulate_fwd_PSV() // call the global device code with device variables
     }
+
+    auto stop = high_resolution_clock::now();
+
+    auto duration = duration_cast<microseconds>(stop - start);
+  
+// To get the value of duration use the count()
+// member function on the duration object
+std::cout << "Time taken by GPU: "
+         << duration.count() << " microseconds" << "\n";
 }
 
 void simulate_fwd_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
@@ -381,9 +399,10 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
     // Calculate PML factors if necessary
 
     // Start of FWI iteration loop
+    
     bool iter = true;
-    int iterstep = 0;
-    int maxIter = 1000;
+    int iterstep = 0; //  0
+    int maxIter = 10; // 1000
     real L2_norm[1000]; // size is maxIter
     for (int ll = 0; ll < 1000; ll++)
     {
@@ -391,6 +410,8 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
     }
     real step_length = 0.01;     // step length set to initial
     real step_length_rho = 0.01; // step length set to initial
+
+   
 
     while (iter)
     { // currently 10 just for test (check the conditions later)
@@ -452,10 +473,10 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
 
 
 
+            
 
-//test
 
-    double l=0,m=0,r=0;
+   double l=0,m=0,r=0;
    int snap_nz = 1 + (snap_z2 - snap_z1) / snap_dz;
    int snap_nx = 1 + (snap_x2 - snap_x1) / snap_dx;
 
@@ -463,11 +484,11 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
     thrust::device_ptr<real> dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
     thrust::device_ptr<real> dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
 
-    l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
-    m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
-    r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+    // l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+    // m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+    // r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
 
-    std::cout << "This is test GPU>FORWARD \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+  //  std::cout << "This is test GPU>FORWARD \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
 
 
 
@@ -507,15 +528,15 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
 
 
   //TEST
-   l=0;m=0;r=0;
-     dev_ptr11 = thrust::device_pointer_cast(grad_lam_shot);
-     dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
-     dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
+//    l=0;m=0;r=0;
+//      dev_ptr11 = thrust::device_pointer_cast(grad_lam_shot);
+//      dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
+//      dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
 
-    l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
-    m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
-    r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
-    std::cout << "This is test GPU> ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+//     l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+//     m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+//     r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+    // std::cout << "This is test GPU> ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
 
             
 
@@ -600,6 +621,7 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         // ---------------------
 
         // Step length estimation for wave parameters
+      
 
         step_length = step_length_PSV_GPU(step_length, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder,
                                           vz, vx, uz, ux, szz, szx, sxx, We, dz_z, dx_z, dz_x, dx_x,
@@ -615,9 +637,29 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                                           snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 0);
                                           std::cout<<"\n\n *****STEP LENGTH GPU ******"<<step_length<<"\n";
 
+<<<<<<< HEAD
        //========================================================================
        // APPLY GAUSSIAN SMOOTHING / BLURRING TO grad_lam, grad_mu and grad_rho
        //======================================================================
+=======
+                                          
+
+        // Separate Step length for density update
+        /*
+        step_length_rho = step_length_PSV(step_length_rho, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
+            vz, vx,  uz, ux, szz, szx, sxx,  We, dz_z, dx_z, dz_x, dx_x, 
+            lam, mu, rho, lam_copy, mu_copy, rho_copy, 
+            mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
+            pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
+            pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
+            mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, 
+            mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
+            nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
+            nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
+            rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx,  accu_szz, accu_szx, accu_sxx, 
+            snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 2);
+        */
+>>>>>>> cuda_fwi_integration
 
         // Update material parameters to the gradients !!
         update_mat2_GPU(lam, lam_copy, grad_lam, 4.8e+10, 0.0, step_length, nz, nx);
@@ -625,6 +667,9 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
 
         step_length_rho = 0.5 * step_length;
         update_mat2_GPU(rho, rho_copy, grad_rho, 3000.0, 1.25, step_length_rho, nz, nx);
+
+
+          
 
         //
         // Saving the Accumulative storage file to a binary file for every shots
@@ -646,6 +691,9 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
         // smooth model
 
         //
+    
+        return;
+
         iterstep++;
         iter = (iterstep < maxIter) ? true : false; // Temporary condition
         if (iterstep > 25)
