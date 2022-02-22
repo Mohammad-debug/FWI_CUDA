@@ -640,35 +640,7 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                                           nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
                                           rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx,
                                           snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 0);
-<<<<<<< HEAD
-                                          std::cout<<"\n\n *****STEP LENGTH GPU ******"<<step_length<<"\n";
 
-<<<<<<< HEAD
-       //========================================================================
-       // APPLY GAUSSIAN SMOOTHING / BLURRING TO grad_lam, grad_mu and grad_rho
-       //======================================================================
-=======
-                                          
-=======
-        std::cout << "\n\n *****STEP LENGTH GPU ******" << step_length << "\n";
->>>>>>> 540a437049a3ee7d281284c017bc592dd2130f9f
-
-        // Separate Step length for density update
-        /*
-        step_length_rho = step_length_PSV(step_length_rho, L2_norm[iterstep], nshot, nt, nz, nx, dt, dx, dz, surf, isurf, hc, fdorder, 
-            vz, vx,  uz, ux, szz, szx, sxx,  We, dz_z, dx_z, dz_x, dx_x, 
-            lam, mu, rho, lam_copy, mu_copy, rho_copy, 
-            mu_zx, rho_zp, rho_xp, grad, grad_lam, grad_mu, grad_rho,
-            pml_z, a_z, b_z, K_z, a_half_z, b_half_z, K_half_z,
-            pml_x, a_x, b_x, K_x, a_half_x, b_half_x, K_half_x, 
-            mem_vz_z, mem_vx_z, mem_szz_z, mem_szx_z, 
-            mem_vz_x, mem_vx_x, mem_szx_x, mem_sxx_x,
-            nsrc, stf_type, stf_z, stf_x, z_src, x_src, src_shot_to_fire,
-            nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
-            rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx,  accu_szz, accu_szx, accu_sxx, 
-            snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 2);
-        */
->>>>>>> cuda_fwi_integration
 
         // Update material parameters to the gradients !!
         update_mat2_GPU(lam, lam_copy, grad_lam, 4.8e+10, 0.0, step_length, nz, nx);
