@@ -175,12 +175,15 @@ void simulate_PSV()
     // STABILITY AND DISPERSION CHECK
     checkfd_ssg_elastic(NZ, NX, DZ, DT, h_FREQ_PML, h_NPML[1], RHO, LAM, MU, HC);
 
-    for (int is = 0; is < NSRC; is++)
-    {
-        wavelet(STF_Z[is], NT, DT, 0.0, h_FREQ_PML, 0.0, 1); // Creating one Ricker wavelet
-        wavelet(STF_X[is], NT, DT, 1.0, h_FREQ_PML, 0.0, 1); // zero amplitude wavelet
-    }
-
+   
+    // Creating source wavelet
+    read_seismo_src(STF_Z, STF_X, NSRC, NT);
+    
+    //for (int is=0;is<NSRC;is++){
+    //    wavelet(STF_Z[is], NT, DT, 0.0, h_FREQ_PML, 0.0, 1); // Creating one Ricker wavelet 
+    //    wavelet(STF_X[is], NT, DT, 1.0, h_FREQ_PML, 0.0, 1); // zero amplitude wavelet
+    //}
+    
     //std::cout << "Error here 4"<<std::endl;
     // --------------------------------------------------------------------------
     // B. MEMORY COPY TO THE DEVICE

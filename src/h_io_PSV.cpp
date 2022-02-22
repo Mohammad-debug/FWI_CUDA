@@ -293,11 +293,11 @@ void write_seismo(real **&rtf_uz, real **&rtf_ux,
             int nrec, int nt, int ishot){
     // Saves data to bin folder
 
-    std::string fpath = "./bin/shot";
+    std::string fpath = "./io/shot";
 
     // saving accumulated tensors
-    std::ofstream outfile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_uz.bin", std::ios::out | std::ios::binary);
-    std::ofstream outfile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_ux.bin", std::ios::out | std::ios::binary);
+    std::ofstream outfile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_z.bin", std::ios::out | std::ios::binary);
+    std::ofstream outfile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_x.bin", std::ios::out | std::ios::binary);
    
     if(!outfile_rtf_uz || !outfile_rtf_ux ){
         std::cout << "Cannot open output files.";
@@ -324,8 +324,8 @@ void read_seismo(real ***&rtf_uz, real ***&rtf_ux,
     std::string fpath = "./bin/shot";
     
     // saving accumulated tensors
-    std::ifstream infile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_uz.bin", std::ios::in | std::ios::binary);
-    std::ifstream infile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_ux.bin", std::ios::in | std::ios::binary);
+    std::ifstream infile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_z.bin", std::ios::in | std::ios::binary);
+    std::ifstream infile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_x.bin", std::ios::in | std::ios::binary);
   
     if(!infile_rtf_uz || !infile_rtf_ux ){
         std::cout << "Cannot open output files.";
@@ -341,6 +341,34 @@ void read_seismo(real ***&rtf_uz, real ***&rtf_ux,
    
     infile_rtf_uz.close();
     infile_rtf_ux.close();
+
+}
+
+// Reading source Seismogram to hard disk binary file
+void read_seismo_src(real **&stf_uz, real **&stf_ux, 
+            int nsrc, int nt){
+    // Saves data to bin folder
+
+    std::string fpath = "./io/shot";
+    
+    // saving accumulated tensors
+    std::ifstream infile_stf_uz(fpath+"_rtf_z.bin", std::ios::in | std::ios::binary);
+    std::ifstream infile_stf_ux(fpath+"_rtf_x.bin", std::ios::in | std::ios::binary);
+  
+    if(!infile_stf_uz || !infile_stf_ux ){
+        std::cout << "Cannot open output files.";
+        return;
+    }
+    
+    for (int ir=0; ir<nsrc; ir++){
+        for (int it=0; it<nt; it++){
+            infile_stf_uz.read(reinterpret_cast<char*> (&stf_uz[ir][it]), sizeof(real));
+            infile_stf_ux.read(reinterpret_cast<char*> (&stf_ux[ir][it]), sizeof(real));
+        }
+    }
+   
+    infile_stf_uz.close();
+    infile_stf_ux.close();
 
 }
 

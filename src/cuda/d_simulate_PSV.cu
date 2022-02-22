@@ -527,6 +527,28 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
             //      dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
             //      dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
 
+<<<<<<< HEAD
+=======
+
+  //TEST
+//    l=0;m=0;r=0;
+//      dev_ptr11 = thrust::device_pointer_cast(grad_lam_shot);
+//      dev_ptr22 = thrust::device_pointer_cast(grad_mu_shot);
+//      dev_ptr33 = thrust::device_pointer_cast(grad_rho_shot);
+
+//     l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+//     m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+//     r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
+    // std::cout << "This is test GPU> ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
+
+            
+
+            // Smooth gradients (Option 2 here)
+            // ----------------------------------------------------
+            // APPLY GAUSSIAN SMOOTHING (BLURRING) FUNCTIONS TO
+            // to grad_lam_shot, grad_mu_shot, grad_rho_shot,
+            // -----------------------------------------------------
+>>>>>>> 10a335c17ee112c245526a7bcd6a0d2ab22577e8
             //     l += thrust::reduce(dev_ptr11 , dev_ptr11 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
             //     m += thrust::reduce(dev_ptr22 , dev_ptr22 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
             //     r += thrust::reduce(dev_ptr33 , dev_ptr33 + snap_nz*snap_nx, 0.0, thrust::plus<real>());
@@ -621,11 +643,7 @@ void simulate_fwi_PSV_GPU(int nt, int nz, int nx, real dt, real dz, real dx,
                                           nrec, rtf_type, rtf_uz, rtf_ux, z_rec, x_rec,
                                           rtf_z_true, rtf_x_true, accu, accu_vz, accu_vx, accu_szz, accu_szx, accu_sxx,
                                           snap_z1, snap_z2, snap_x1, snap_x2, snap_dt, snap_dz, snap_dx, 0);
-        std::cout << "\n\n *****STEP LENGTH GPU ******" << step_length << "\n";
 
-       //========================================================================
-       // APPLY GAUSSIAN SMOOTHING / BLURRING TO grad_lam, grad_mu and grad_rho
-       //======================================================================
 
         // Update material parameters to the gradients !!
         update_mat2_GPU(lam, lam_copy, grad_lam, 4.8e+10, 0.0, step_length, nz, nx);
