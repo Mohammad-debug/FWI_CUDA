@@ -16,8 +16,8 @@ tex_fonts = {
         "lines.markerfacecolor" : "None",
         "lines.markeredgecolor" : "b",
         "lines.markeredgewidth" : "0.5",
-        "axes.spines.top":    False,
-        "axes.spines.right":  False,
+        "axes.spines.top":    True,
+        "axes.spines.right":  True,
         "legend.frameon":    False,
         "legend.fancybox": False
         }

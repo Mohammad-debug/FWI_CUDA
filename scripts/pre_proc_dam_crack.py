@@ -62,7 +62,7 @@ npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
 
 # Geometric data
 dt = 0.3e-4; dz = 0.1; dx = 0.1; # grid intervals
-nt = 1000.0; 
+nt = 10000.0; 
 nz = fpad + npml_top + np.int32(dep/dz) + npml_bottom + fpad+ 1
 nx = fpad + npml_left + np.int32(len/dx) + npml_right + fpad + 1 # grid numbers (adding for PMLs as well)
 
@@ -101,6 +101,7 @@ taper_r1 = snap_x2 - np.int32(nx_snap*0.0); taper_r2 = taper_r1 - np.int32(nx_sn
 
 
 
+
 #------------------------------------------------------------------
 # MEDIUM (MATERIAL) PARAMETERS
 #-----------------------------------------------------------------
@@ -116,9 +117,6 @@ lam_air, mu_air = v_lami(0.0, 0.0, rho_air)
 rho_water = 1000.0
 lam_water, mu_water = v_lami(1500, 0.0, rho_water)
 
-#rho_sub = 1800.0
-#lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
-
 rho_sub = 2000.0
 lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
 
@@ -133,15 +131,7 @@ lam_sand_grout, mu_sand_grout = v_lami(300, 100.0, rho_sand_grout)
 # Getting wave velocities for hardest layers
 Cp, Cs = w_vel(lam_sub, mu_sub, rho_sub)
 
-# Scalar material values to pass to the kernelsdam
-for iz in range(0, nz):
-    for ix in range(0, nx):
-        if (iz>np.int32(fpad + npml_top+d_top/dz)): # top boundary 
-            if (iz - np.int32(fpad + npml_top+d_top/dz) >= 0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl + l_top)/dx)))):
-                if (iz - (fpad + npml_top + np.int32(d_top/dz)) >= -0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl)/dx)))):
-                    lam[iz][ix] = lam_sand
-                    mu[iz][ix] = mu_sand
-                    rho[iz][ix] = rho_sand
+# Scalar material values to pass to the kernels
 scalar_rho = rho_sand
 scalar_mu = mu_sand
 scalar_lam = lam_sand
@@ -157,21 +147,21 @@ rho = np.full((nz, nx), rho_air)
 for iz in range(0, nz):
     for ix in range(0, nx):
         # for sand dam
-        if (iz>np.int32(fpad + npml_top+d_top/dz)): # top boundary 
-            if (iz - np.int32(fpad + npml_top+d_top/dz) >= 0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl + l_top)/dx)))):
-                if (iz - (fpad + npml_top + np.int32(d_top/dz)) >= -0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl)/dx)))):
+        if (iz>np.int(fpad + npml_top+d_top/dz)): # top boundary 
+            if (iz - np.int(fpad + npml_top+d_top/dz) >= 0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl + l_top)/dx)))):
+                if (iz - (fpad + npml_top + np.int(d_top/dz)) >= -0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl)/dx)))):
                     lam[iz][ix] = lam_sand
                     mu[iz][ix] = mu_sand
                     rho[iz][ix] = rho_sand
                     
                     
-        if (iz>np.int32(fpad + npml_top+d_wt/dz)): # water level boundary
-            if (iz - (fpad + npml_top + np.int32(d_top/dz)) < -0.33*(ix - (fpad + npml_left + np.int32((l_uadd + l_usl)/dx)))):
+        if (iz>np.int(fpad + npml_top+d_wt/dz)): # water level boundary
+            if (iz - (fpad + npml_top + np.int(d_top/dz)) < -0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl)/dx)))):
                 lam[iz][ix] = lam_water
                 mu[iz][ix] = mu_water
                 rho[iz][ix] = rho_water
                 
-        if (iz>np.int32(fpad + npml_top +d_sub/dz)): # subsurface boundary
+        if (iz>np.int(fpad + npml_top +d_sub/dz)): # subsurface boundary
             lam[iz][ix] = lam_sub
             mu[iz][ix] = mu_sub
             rho[iz][ix] = rho_sub
@@ -191,29 +181,6 @@ for iz in range(0, nz):
                         lam[iz][ix] = lam_sand_grout
                         mu[iz][ix] = mu_sand_grout
                         rho[iz][ix] = rho_sand_grout
-
-            '''
-
-            if ((ix*dx - (nx*dx/2-0.2))**2 +(iz*dx - (nz*dz/2+0.4))**2 < 0.5):
-                lam[iz][ix] = lam_sand_grout
-                mu[iz][ix] = mu_sand_grout
-                rho[iz][ix] = rho_sand_grout
-
-            if ((ix*dx - (nx*dx/2+0.2))**2 +(iz*dx - (nz*dz/2+0.4))**2 < 0.5):
-                lam[iz][ix] = lam_sand_grout
-                mu[iz][ix] = mu_sand_grout
-                rho[iz][ix] = rho_sand_grout
-
-            if ((ix*dx - (nx*dx/2-0.2))**2 +(iz*dx - (nz*dz/2+1.0))**2 < 0.5):
-                lam[iz][ix] = lam_sand_grout
-                mu[iz][ix] = mu_sand_grout
-                rho[iz][ix] = rho_sand_grout
-
-            if ((ix*dx - (nx*dx/2+0.2))**2 +(iz*dx - (nz*dz/2+1.0))**2 < 0.5):
-                lam[iz][ix] = lam_sand_grout
-                mu[iz][ix] = mu_sand_grout
-                rho[iz][ix] = rho_sand_grout
-            '''
 
 #------------------------------------------------------------
 
@@ -278,7 +245,9 @@ for ir in range(0,zrec.size):
     xrec[ir] = np.int32(fpad + npml_left + (l_uadd + l_usl + l_top + ir*ix - 0.5)/dx)
     zrec[ir] = np.int32(fpad + npml_top + (d_top +ir*iz+0.1)/dz)
     
-
+# overwrite the recorder to the last source location
+xrec[0] = xsrc[2]
+zrec[0] = zsrc[2]
 
 
 # -----------------------------------------------------
@@ -372,5 +341,3 @@ material_inp.tofile('./bin/mat.bin')
 #-------------------------------------------------------
 
 
-
-# %%
