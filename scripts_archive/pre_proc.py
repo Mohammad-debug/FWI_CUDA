@@ -10,7 +10,7 @@ ftype = np.float64
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = True # True: computation in GPU, False: in CPU
+cuda_computation = False# True: computation in GPU, False: in CPU
 
 #forward only or fWI?
 fwinv = False # True: FWI, False: Forward only
@@ -241,15 +241,3 @@ material_inp.tofile('./bin/mat.bin')
 
 #--------------------------------------------------------
 #-------------------------------------------------------
-
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-# %%
-=======
-# %%
->>>>>>> cuda_fwi_integration
-=======
-# %%
->>>>>>> 10a335c17ee112c245526a7bcd6a0d2ab22577e8

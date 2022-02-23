@@ -33,20 +33,11 @@ npml_fpad = 20
 
 dt = 0.3e-4; dz = 0.1; dx = 0.1; # grid intervals
 
-<<<<<<< HEAD
-=======
-
-
-
-
-# Create Seismic source (Ricker wavelet)
->>>>>>> cpu_extension
 def ricker_wavelet(nt, dt, amp, fc, ts):
     #// Create signal
     #// **signal: The array in which signal is to be written
     #// nt: number of time steps, dt: time step size, ts: time shift
     #// fc: peak frequency, amp: amplitude of the signal
-<<<<<<< HEAD
 
     fci = 1.0/fc;
 
@@ -54,32 +45,6 @@ def ricker_wavelet(nt, dt, amp, fc, ts):
         t = it * dt
         tau = math.pi * (t - 1.5 * fci - ts) / (1.5 * fci)
         signal[it] = amp*(1.0 - 2.0 * tau * tau) * exp(-2.0 * tau * tau)
-=======
-    vel = np.zeros(nt)
-    disp = np.zeros(nt)
-    fci = 1.0/fc
-    for it in range(0, nt):
-        t = it * dt
-        tau = math.pi* (t - 1.5 * fci - ts) / (1.5 * fci)
-        vel[it] = amp*(1.0 - 2.0 * tau * tau) * math.exp(-2.0 * tau * tau)
-
-        '''
-        #
-        #transform into displacement
-        if it == 0:
-            disp[it] = dt*vel[it]/(dz*dx)
-        else:
-            disp[it] = disp[it-1] + dt * vel[it]/(dz*dx)
-        '''
-
-    return vel
-
-src = ricker_wavelet(9000, dt, 1, 50,0)
-plt.plot(src)
-#plt.plot(disp)
-plt.show()
-
->>>>>>> cpu_extension
 
 def read_metaint(filename, dtype):
     
@@ -398,14 +363,6 @@ else:
     # Plot figure for the paper
     # create the standard size for the figure
     fw, fh = set_size('thesis', subplots=(1,2))
-<<<<<<< HEAD
-=======
-    # Using seaborn's style
-    #plt.style.use('seaborn')
-    #width = 345
-    
-
->>>>>>> cpu_extension
     # Set the rc parameter updates
     plt.rcParams.update(tex_fonts)
     

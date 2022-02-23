@@ -57,7 +57,7 @@ def read_tensor(filename, dtype, dshape):
 
 
 # reading the input data for the array size
-read_metaint("../bin/metaint.bin", np.int32)
+read_metaint("./bin/metaint.bin", np.int32)
 snap_nt = np.int32(1 + (ndim[0]-1)//snap[6])
 snap_nz = 1 + (snap[3] - snap[2])//snap[7]
 snap_nx = 1 + (snap[4] - snap[5])//snap[8]
@@ -119,8 +119,8 @@ else:
     
     # Plot the rtf first
     print("NREC: ", nrec)
-    rtf_uz = read_tensor("../bin/shot2_rtf_uz.bin", np.float64, (nrec, ndim[0]))
-    rtf_ux = read_tensor("../bin/shot2_rtf_ux.bin", np.float64, (nrec, ndim[0]))
+    rtf_uz = read_tensor("./io/shot0_rtf_z.bin", np.float64, (nrec, ndim[0]))
+    rtf_ux = read_tensor("./io/shot0_rtf_x.bin", np.float64, (nrec, ndim[0]))
     
     
     # Plotting the RTF functions
@@ -135,8 +135,8 @@ else:
     plt.grid()
     plt.show()
     
-    vz_dat = read_tensor("../bin/shot2_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
-    vx_dat = read_tensor("../bin/shot2_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vz_dat = read_tensor("./bin/shot0_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vx_dat = read_tensor("./bin/shot0_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     
     clip_pz = np.amax(vz_dat)
     clip_mz = np.amin(vz_dat)
@@ -146,7 +146,7 @@ else:
     clip_mx = np.amin(vx_dat)
     clipx = 0.3*max([clip_px, np.abs(clip_mx)])
     
-    for ii in range(1,snap_nt, 20):
+    for ii in range(1,snap_nt, 1):
         # reading data from csv file
         vz = vz_dat[ii,:,:]
         vx = vx_dat[ii,:,:]  

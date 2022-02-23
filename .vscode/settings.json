@@ -53,7 +53,8 @@
         "ratio": "cpp",
         "set": "cpp",
         "mutex": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "__locale": "cpp"
     },
     "jupyter.jupyterServerType": "local"
 }

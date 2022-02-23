@@ -3,6 +3,7 @@
 import numpy as np
 from seismic_def import read_tensor, e_lami, v_lami, w_vel
 import matplotlib.pyplot as plt
+from matplotlib import cm
 from scipy import interpolate
 import pickle
 
@@ -16,7 +17,7 @@ fdorder = 2 # finite difference order
 fpad = 1 # number of additional grids for finite difference computation
 
 #forward only or fWI?
-fwinv = True # True: FWI, False: Forward only
+fwinv = False # True: FWI, False: Forward only
 
 # Internal parameters for different cases 
 if (fwinv):
@@ -64,8 +65,8 @@ npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
 
 # Geometric data
 x0 = -0.5; x1 = 18.0 # the start and end of model in meters
-dt = dt_field; dz = 0.25/5; dx = 0.25/5; # grid intervals
-nt = int(nSample*2/3) # taking portion of total samples
+dt = dt_field; dz = 0.25/2; dx = 0.25/2; # grid intervals
+nt = int(nSample*5/3) # taking portion of total samples
 
 range_y= abs(max(xy_profile[1]) - min(xy_profile[1]))
 
@@ -250,12 +251,12 @@ Cp = np.sqrt((lam + 2 * mu)/rho)
 print('Plotting initial materials')
 plt.figure(1)
 plt.subplot(111)
-plt.imshow(Cp) # lamda parameter
-plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=2) # source positions
-plt.plot(xrec,zrec, ls = '', marker= '+', markersize=2) # reciever positions
-plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
-plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
-plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
+plt.imshow(Cp, cmap=cm.Paired) # lamda parameter
+plt.plot(xsrc,zsrc, ls = '', marker= 'o', markersize=4, color='k') # source positions
+plt.plot(xrec,zrec, ls = '', marker= '+', markersize=4, color='k') # reciever positions
+#plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
+#plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
+#plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
 '''
 plt.subplot(222)
 plt.imshow(Cs)
