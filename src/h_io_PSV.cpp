@@ -293,11 +293,11 @@ void write_seismo(real **&rtf_uz, real **&rtf_ux,
             int nrec, int nt, int ishot){
     // Saves data to bin folder
 
-    std::string fpath = "./io/shot";
+    std::string fpath = "./bin/shot";
 
     // saving accumulated tensors
-    std::ofstream outfile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_z.bin", std::ios::out | std::ios::binary);
-    std::ofstream outfile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_x.bin", std::ios::out | std::ios::binary);
+    std::ofstream outfile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_uz.bin", std::ios::out | std::ios::binary);
+    std::ofstream outfile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_ux.bin", std::ios::out | std::ios::binary);
    
     if(!outfile_rtf_uz || !outfile_rtf_ux ){
         std::cout << "Cannot open output files.";
@@ -324,8 +324,8 @@ void read_seismo(real ***&rtf_uz, real ***&rtf_ux,
     std::string fpath = "./io/shot";
     
     // saving accumulated tensors
-    std::ifstream infile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_z.bin", std::ios::in | std::ios::binary);
-    std::ifstream infile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_x.bin", std::ios::in | std::ios::binary);
+    std::ifstream infile_rtf_uz(fpath+std::to_string(ishot)+"_rtf_uz.bin", std::ios::in | std::ios::binary);
+    std::ifstream infile_rtf_ux(fpath+std::to_string(ishot)+"_rtf_ux.bin", std::ios::in | std::ios::binary);
   
     if(!infile_rtf_uz || !infile_rtf_ux ){
         std::cout << "Cannot open output files.";

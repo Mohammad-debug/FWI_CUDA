@@ -569,8 +569,8 @@ void vsrc2(
                 if (src_shot_to_fire[is] == ishot){
                     //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it]<<"\n";
                     //printf("it=%d  is=%d vz=%lf z_src=%d x_src=%d \n",it, is, vz[z_src[is] ][ x_src[is]],z_src[is], x_src[is] );
-                    vz[z_src[is]][x_src[is]] += stf_z[is][it];
-                    vx[z_src[is]][x_src[is]] += stf_x[is][it];
+                    vz[z_src[is]][x_src[is]] = stf_z[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
+                    vx[z_src[is]][x_src[is]] = stf_x[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
                     //std::cout << "v:" << vz[z_src[is]][x_src[is]] <<", " << stf_z[is][it]<<std::endl;
 
                     //printf("after it=%d is=%d vz=%lf stfz=%lf  \n",it,  is, vz[z_src[is] ][ x_src[is]], stf_z[is][it]);
@@ -581,6 +581,7 @@ void vsrc2(
     }
     
 }
+
 //paralellised
 void urec2(int rtf_type,
     // reciever time functions
@@ -599,19 +600,22 @@ void urec2(int rtf_type,
     // rz: corresponding grid index along z direction
     // rx: corresponding grid index along x direction
     // it: time step index
+    
+    //std::cout << "urec rtf type: " << rtf_type << std::endl;
 
     if (rtf_type == 0){
         // This module is only for rtf type as displacement
         #pragma omp parallel for
         for(int ir=0; ir<nrec; ir++){//when function is called only one of the case would get executed
             if (it ==0){
-                rtf_uz[ir][it] = dt * vz[rz[ir]][rx[ir]] / (dz*dx);
-                rtf_ux[ir][it] = dt * vx[rz[ir]][rx[ir]] / (dz*dx);
+                rtf_uz[ir][it] = dt * vz[rz[ir]][rx[ir]]* (dz*dx);
+                rtf_ux[ir][it] = dt * vx[rz[ir]][rx[ir]]* (dz*dx);
             }
             else{
-                rtf_uz[ir][it] = rtf_uz[ir][it-1] + dt * vz[rz[ir]][rx[ir]] / (dz*dx);
-                rtf_ux[ir][it] = rtf_ux[ir][it-1] + dt * vx[rz[ir]][rx[ir]] / (dz*dx);
+                rtf_uz[ir][it] = rtf_uz[ir][it-1] + dt * vz[rz[ir]][rx[ir]]* (dz*dx);
+                rtf_ux[ir][it] = rtf_ux[ir][it-1] + dt * vx[rz[ir]][rx[ir]]* (dz*dx);
             }
+            //std::cout << rtf_uz[ir][it] << ", ";
         }
 
     } 
@@ -642,18 +646,17 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
                     // calculating adjoint sources
                     a_stf_uz[is][it] = rtf_uz_mod[is][it] - rtf_uz_true[ishot][is][it];
                   
-                    a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[ishot][is][it];
+                    //a_stf_ux[is][it] = rtf_ux_mod[is][it] - rtf_ux_true[ishot][is][it];
 
                     //if (!(abs(a_stf_uz[is][it])<1000.0 || abs(a_stf_uz[is][it])<1000.0)){
                     //    std::cout << rtf_uz_mod[is][it] <<"," << rtf_uz_true[ishot][is][it] << "::";
                     //}
-                    
 
                     // Calculating L2 norm
                    
-                    L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2)+ 0.5 * dt * pow(a_stf_ux[is][it], 2); 
+                    L2 += 0.5 * dt * pow(a_stf_uz[is][it], 2) ; //+ 0.5 * dt * pow(a_stf_ux[is][it], 2); 
                    
-                  //  L2 += 0.5 * dt * pow(a_stf_ux[is][it], 2);
+                    //  L2 += 0.5 * dt * pow(a_stf_ux[is][it], 2);
                    
                     
                 }
@@ -670,6 +673,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     return L2;
 
 }
+
 
 void interpol_grad2(
     // Global and shot gradient
@@ -824,13 +828,14 @@ void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat,
 
     // Scale factors for gradients
     real grad_max = 0.0, mat_array_max = 0.0, step_factor;
-    #pragma omp parallel for collapse(2) reduction(max: grad_max,mat_array_max)
+    //#pragma omp parallel for collapse(2) reduction(max: grad_max,mat_array_max)
     for (int iz=0;iz<nz;iz++){
         for (int ix=0;ix<nx;ix++){
-            
-            grad_max = std::max(grad_max, abs(grad_mat[iz][ix]));
+            if (mat_old[iz][ix] > 50.0){
+                grad_max = std::max(grad_max, abs(grad_mat[iz][ix]));
 
-            mat_array_max = std::max(mat_array_max, abs(mat_old[iz][ix]));
+                mat_array_max = std::max(mat_array_max, abs(mat_old[iz][ix]));
+            }
         }
     }
 
@@ -845,23 +850,27 @@ void update_mat2(real **&mat, real **&mat_old,  real **&grad_mat,
     {
         for (int ix = 0; ix < nx; ix++)
         {
-            mat[iz][ix] = mat_old[iz][ix] + step_length * step_factor * grad_mat[iz][ix];
-            if (mat[iz][ix] > mat_max)
-            {
-                mat[iz][ix] = mat_max;
-            }
-            if (mat[iz][ix] < mat_min)
-            {
-                mat[iz][ix] = mat_min;
-            }
-
+            //considering not updating air
+            if (mat_old[iz][ix] > 50.0){
+                mat[iz][ix] = mat_old[iz][ix] + step_length * step_factor * grad_mat[iz][ix];
+                if (mat[iz][ix] > mat_max)
+                {
+                    mat[iz][ix] = mat_max;
+                }
+                if (mat[iz][ix] < mat_min)
+                {
+                    mat[iz][ix] = mat_min;
+                }
+            
             mat_av += mat[iz][ix];
             mat_av_old += mat_old[iz][ix];
             mat_av_grad += grad_mat[iz][ix];
+            }
         }
     }
-    //std::cout << "Mat update: SL = " <<step_length <<", new = " << mat_av <<", old = " << mat_av_old <<", grad = " << mat_av_grad << std::endl;;
+    std::cout << "Mat update: SL = " <<step_length <<", new = " << mat_av <<", old = " << mat_av_old <<", grad = " << mat_av_grad << std::endl;;
 }
+
 
 void copy_mat(real **&lam_copy, real **&mu_copy,  real **&rho_copy,
         real **&lam, real **&mu,  real **&rho, int nz, int nx){

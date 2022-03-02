@@ -170,7 +170,7 @@ void simulate_PSV()
     holbergcoeff(FDORDER, MAXRELERROR, HC);
 
     std::cout << "nz = " << NZ << ", nx = " << NX << ", dz = " << DZ << ", dt = " << DT
-              << ", freq = " << h_FREQ_PML << ", npml = " << h_NPML[1] << std::endl;
+              << ", freq = " << h_FREQ_PML << ", npml = " << h_NPML[1]  << std::endl;
 
     // STABILITY AND DISPERSION CHECK
     checkfd_ssg_elastic(NZ, NX, DZ, DT, h_FREQ_PML, h_NPML[1], RHO, LAM, MU, HC);
@@ -194,7 +194,7 @@ void simulate_PSV()
     // --------------------------------------------------------------------------
     // C. MEMORY COPY TO THE DEVICE
     // -------------------------------------------------------------------------
-
+    
     if (GPU_CODE)
     {
         // Calling now the device codes

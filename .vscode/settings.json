@@ -54,7 +54,17 @@
         "set": "cpp",
         "mutex": "cpp",
         "thread": "cpp",
-        "__locale": "cpp"
+        "__locale": "cpp",
+        "bitset": "cpp",
+        "codecvt": "cpp",
+        "compare": "cpp",
+        "concepts": "cpp",
+        "iomanip": "cpp",
+        "numbers": "cpp",
+        "ranges": "cpp",
+        "stop_token": "cpp",
+        "semaphore": "cpp",
+        "__nullptr": "cpp"
     },
     "jupyter.jupyterServerType": "local"
 }
