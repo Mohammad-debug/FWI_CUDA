@@ -205,21 +205,21 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     //PCG_old = new real[nz*nx*3];
     //PCG_dir = new real[nz*nx*3];
     //allocate_array(PCG_new, nz, nx);
-    // allocate_array(PCG_lam, nz, nx);
-    // allocate_array(PCG_mu, nz, nx);
-    // allocate_array(PCG_rho, nz, nx);
+    allocate_array(PCG_lam, nz, nx);
+    allocate_array(PCG_mu, nz, nx);
+    allocate_array(PCG_rho, nz, nx);
 
-    // allocate_array(PCG_dir_lam, nz, nx);
-    // allocate_array(PCG_dir_mu, nz, nx);
-    // allocate_array(PCG_dir_rho, nz, nx);
+    allocate_array(PCG_dir_lam, nz, nx);
+    allocate_array(PCG_dir_mu, nz, nx);
+    allocate_array(PCG_dir_rho, nz, nx);
     
-    // for (int iz=0;iz<nz;iz++){
-    //     for (int ix=0;ix<nx;ix++){
-    //         PCG_dir_lam[iz][ix] = 0.0;
-    //         PCG_dir_mu[iz][ix] = 0.0;
-    //         PCG_dir_rho[iz][ix] = 0.0;
-    //     }
-    // }
+    for (int iz=0;iz<nz;iz++){
+        for (int ix=0;ix<nx;ix++){
+            PCG_dir_lam[iz][ix] = 0.0;
+            PCG_dir_mu[iz][ix] = 0.0;
+            PCG_dir_rho[iz][ix] = 0.0;
+        }
+    }
 
 
     //-----------------------------------------------
@@ -464,12 +464,14 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         //apply_gauss_filter(grad_mu, We_adj, gauss_filter, 0, nz, 0, nx, hfs);
         //apply_gauss_filter(grad_rho, We_adj, gauss_filter, 0, nz, 0, nx, hfs);
 
-        /*
+        
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
         // Applying PSG method
         beta_i = 0.0; beta_j = 0.0;
+        
         for (int iz=0;iz<nz;iz++){
             for (int ix=0;ix<nx;ix++){
+                
 
                 // Fletcher-Reeves [Fletcher and Reeves, 1964]:
                 beta_i += grad_lam[iz][ix] * (grad_lam[iz][ix] - PCG_lam[iz][ix]);
@@ -486,6 +488,8 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
            
             }
         }
+        
+
         beta_PCG = (iterstep) ? (beta_i/beta_j) : 0.0;
         std::cout << "beta = "<< beta_PCG ;
         beta_PCG = (beta_PCG >0) ? beta_PCG : 0.0;
@@ -505,7 +509,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
            
             }
         }
-        */
+        
 
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+2);
         // ----------------------

@@ -557,7 +557,7 @@ void vsrc2(
 
                     //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it] << std::endl;;
                     vz[z_src[is]][x_src[is]] += dt*rho_zp[z_src[is]][x_src[is]]*stf_z[is][it]/(dz*dx);
-                    vx[z_src[is]][x_src[is]] += dt*rho_xp[z_src[is]][x_src[is]]*stf_x[is][it]/(dz*dx);
+                    //vx[z_src[is]][x_src[is]] += dt*rho_xp[z_src[is]][x_src[is]]*stf_x[is][it]/(dz*dx);
                 }
                 
             }
@@ -569,8 +569,8 @@ void vsrc2(
                 if (src_shot_to_fire[is] == ishot){
                     //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it]<<"\n";
                     //printf("it=%d  is=%d vz=%lf z_src=%d x_src=%d \n",it, is, vz[z_src[is] ][ x_src[is]],z_src[is], x_src[is] );
-                    vz[z_src[is]][x_src[is]] = stf_z[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
-                    vx[z_src[is]][x_src[is]] = stf_x[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
+                    vz[z_src[is]][x_src[is]] += stf_z[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
+                    //vx[z_src[is]][x_src[is]] = stf_x[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
                     //std::cout << "v:" << vz[z_src[is]][x_src[is]] <<", " << stf_z[is][it]<<std::endl;
 
                     //printf("after it=%d is=%d vz=%lf stfz=%lf  \n",it,  is, vz[z_src[is] ][ x_src[is]], stf_z[is][it]);
@@ -608,18 +608,29 @@ void urec2(int rtf_type,
         #pragma omp parallel for
         for(int ir=0; ir<nrec; ir++){//when function is called only one of the case would get executed
             if (it ==0){
-                rtf_uz[ir][it] = dt * vz[rz[ir]][rx[ir]]* (dz*dx);
-                rtf_ux[ir][it] = dt * vx[rz[ir]][rx[ir]]* (dz*dx);
+                rtf_uz[ir][it] = dt * vz[rz[ir]][rx[ir]];
+                //rtf_ux[ir][it] = dt * vx[rz[ir]][rx[ir]];
             }
             else{
-                rtf_uz[ir][it] = rtf_uz[ir][it-1] + dt * vz[rz[ir]][rx[ir]]* (dz*dx);
-                rtf_ux[ir][it] = rtf_ux[ir][it-1] + dt * vx[rz[ir]][rx[ir]]* (dz*dx);
+                rtf_uz[ir][it] = rtf_uz[ir][it-1] + dt * vz[rz[ir]][rx[ir]];
+                //rtf_ux[ir][it] = rtf_ux[ir][it-1] + dt * vx[rz[ir]][rx[ir]];
             }
             //std::cout << rtf_uz[ir][it] << ", ";
         }
 
     } 
-    rtf_type = 0; // Displacement rtf computed
+    if (rtf_type == 1){
+        // This module is only for rtf type as velocity
+        for(int ir=0; ir<nrec; ir++){//when function is called only one of the case would get executed
+            
+                rtf_uz[ir][it] = vz[rz[ir]][rx[ir]];
+                //rtf_ux[ir][it] = vx[rz[ir]][rx[ir]];
+          
+
+        }
+
+    } 
+    
 }
 
 //parallelised
@@ -634,7 +645,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     real L2;
     L2 = 0;
     
-    if (rtf_type == 0){
+    if (rtf_type == 1){
         // RTF type is displacement
         //parallel region starts
 

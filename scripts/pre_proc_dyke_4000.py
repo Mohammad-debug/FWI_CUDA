@@ -1,6 +1,7 @@
 #%%
 # # preprocessing of the files
 import numpy as np
+import random
 from seismic_def import read_tensor, e_lami, v_lami, w_vel
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -81,10 +82,10 @@ surf = True # surface exists
 isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
-snap_z1 = 30 #fpad +npml_top
-snap_z2 = 50 #nz - fpad - npml_bottom #fpad+npml_top+np.int32(d_tot/dz) # snap boundaries z
-snap_x1 = 70 #fpad +npml_left + 15
-snap_x2 = 100 #nx - fpad - npml_bottom - 15 # snap boundaries x
+snap_z1 = fpad +npml_top
+snap_z2 = nz - fpad - npml_bottom #fpad+npml_top+np.int32(d_tot/dz) # snap boundaries z
+snap_x1 = fpad +npml_left + 15
+snap_x2 = nx - fpad - npml_bottom - 15 # snap boundaries x
 snap_dt = 1; snap_dz = 1; snap_dx = 1; # the snap interval
 
 # Taper position
@@ -176,9 +177,9 @@ rho = np.full((nz, nx), rho_air)
 for iz in range(0, nz):
     for ix in range(0, nx):
         if iz>=surf_idz[ix]:
-            lam[iz][ix] = lam_sand
-            mu[iz][ix] = mu_sand
-            rho[iz][ix] = rho_sand
+            lam[iz][ix] = lam_sand *(1+ 0.05*random.uniform(0,1))
+            mu[iz][ix] = mu_sand *(1+ 0.05*random.uniform(0,1))
+            rho[iz][ix] = rho_sand *(1+ 0.05*random.uniform(0,1))
 
 #------------------------------------------------------------
 
@@ -194,7 +195,7 @@ pml_npower_pml = 2.0
 damp_v_pml = Cp
 rcoef = 0.001
 k_max_pml = 1.0
-freq_pml = 50.0 # PML frequency in Hz
+freq_pml = (50.0 + 120)/2.0 # PML frequency in Hz
 
 # -----------------------------------------------------
 
@@ -206,7 +207,7 @@ freq_pml = 50.0 # PML frequency in Hz
 #--------------------------------------------------------
 
 # source and reciever time functions type
-stf_type = 1; rtf_type = 0 # 1:velocity, 0:displacement
+stf_type = 1; rtf_type = 1 # 1:velocity, 0:displacement
 
 # finding the source and reciever locations
 xsrc = np.zeros((nsrc,), dtype=np.int32)
