@@ -52,7 +52,7 @@ real step_length_PSV(real est_step_length, real L2_norm_0, int nshot, // shot in
 
 	real step_factor_rho = 0.5; // Scale factor for updating density
     real scalefac = 2.0; // Step factor in next approximation
-    real stepmax_1 = 15; // The maximum number of steps to find optimum step length
+    real stepmax_1 = 30; // The maximum number of steps to find optimum step length
     real stepmax_2 = 4;
     
     int *a_stf_type;

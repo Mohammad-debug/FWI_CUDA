@@ -493,7 +493,7 @@ void fwi_grad2(
 
             grad_lam[jz][jx] += snap_dt * dt * s1 ; 
             grad_mu[jz][jx]  += snap_dt * dt  *(s3 + s1 + s2) ;
-            grad_rho[jz][jx] += snap_dt * dt * s4 ;
+            grad_rho[jz][jx] -= snap_dt * dt * s4 ;
                 
             /*
             lm = lam[iz][ix] + 2.0 *mu[iz][ix];
@@ -556,8 +556,9 @@ void vsrc2(
                 if (src_shot_to_fire[is] == ishot){
 
                     //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it] << std::endl;;
-                    vz[z_src[is]][x_src[is]] += dt*rho_zp[z_src[is]][x_src[is]]*stf_z[is][it]/(dz*dx);
+                    //vz[z_src[is]][x_src[is]] += dt*rho_zp[z_src[is]][x_src[is]]*stf_z[is][it];
                     //vx[z_src[is]][x_src[is]] += dt*rho_xp[z_src[is]][x_src[is]]*stf_x[is][it]/(dz*dx);
+                    vz[z_src[is]][x_src[is]] += stf_z[is][it];
                 }
                 
             }
@@ -569,7 +570,7 @@ void vsrc2(
                 if (src_shot_to_fire[is] == ishot){
                     //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it]<<"\n";
                     //printf("it=%d  is=%d vz=%lf z_src=%d x_src=%d \n",it, is, vz[z_src[is] ][ x_src[is]],z_src[is], x_src[is] );
-                    vz[z_src[is]][x_src[is]] += stf_z[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
+                    vz[z_src[is]][x_src[is]] = stf_z[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
                     //vx[z_src[is]][x_src[is]] = stf_x[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
                     //std::cout << "v:" << vz[z_src[is]][x_src[is]] <<", " << stf_z[is][it]<<std::endl;
 
@@ -602,7 +603,7 @@ void urec2(int rtf_type,
     // it: time step index
     
     //std::cout << "urec rtf type: " << rtf_type << std::endl;
-
+    /*
     if (rtf_type == 0){
         // This module is only for rtf type as displacement
         #pragma omp parallel for
@@ -619,7 +620,7 @@ void urec2(int rtf_type,
         }
 
     } 
-    if (rtf_type == 1){
+    if (rtf_type == 1){*/
         // This module is only for rtf type as velocity
         for(int ir=0; ir<nrec; ir++){//when function is called only one of the case would get executed
             
@@ -629,7 +630,7 @@ void urec2(int rtf_type,
 
         }
 
-    } 
+    //} 
     
 }
 
@@ -645,7 +646,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
     real L2;
     L2 = 0;
     
-    if (rtf_type == 1){
+    //if (rtf_type == 1){
         // RTF type is displacement
         //parallel region starts
 
@@ -678,7 +679,7 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         //paralell region ends
         a_stf_type = &rtf_type; // Calculating displacement adjoint sources
     
-    }
+    //}
     std::cout<< "Calculated norm : " << L2 << std::endl;
     //std::cout << a_stf_type << std::endl;
     return L2;

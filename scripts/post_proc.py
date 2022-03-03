@@ -66,10 +66,10 @@ snap_nx = 1 + (snap[4] - snap[5])//snap[8]
 
 if (fwinv):
     print("Plotting material for iteration in fwi")
-    maxiter = 700
-    for ii in range(600,maxiter,1):
+    maxiter = 22
+    for ii in range(0,maxiter,1):
         # reading data from csv file
-        mat_dat = read_tensor("../bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
+        mat_dat = read_tensor("./bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
         #mat_dat = read_tensor("../io/mat_save/iter"+np.str(ii)+"_mat copy.bin", np.float64, (3, ndim[1], ndim[2]))
         
         lam = mat_dat[0][:][:]
@@ -79,19 +79,19 @@ if (fwinv):
         Cp = np.sqrt((lam + 2 * mu)/rho)
         plt.figure(1)
         
-        plt.subplot(131)
+        plt.subplot(221)
         plt.imshow(Cp, animated=True)#, cmap=cm.seismic, interpolation='nearest')#, vmin=1700, vmax=1900)
         plt.colorbar()
         #plt.title('Material [Iteration'+np.str(ii)+']', y=-0.2)
         plt.xlabel('X [no. of grids]')
         plt.ylabel('Z [no. of grids]'+np.str(ii))
-        plt.subplot(132)
+        plt.subplot(222)
         plt.imshow(Cs, animated=True)#, cmap=cm.seismic,  interpolation='nearest')#, vmin=1700, vmax=1900)
         plt.colorbar()
         #plt.title('Material [Iteration'+np.str(ii)+']', y=-0.2)
         plt.xlabel('X [no. of grids]')
         plt.ylabel('Z [no. of grids]'+np.str(ii))
-        plt.subplot(133)
+        plt.subplot(223)
         plt.imshow(rho, animated=True)#, cmap=cm.seismic,  interpolation='nearest')#, vmin=1700, vmax=1900)
         plt.colorbar()
         plt.title('Material [Iteration'+np.str(ii)+']', y=-0.2)

@@ -464,7 +464,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         //apply_gauss_filter(grad_mu, We_adj, gauss_filter, 0, nz, 0, nx, hfs);
         //apply_gauss_filter(grad_rho, We_adj, gauss_filter, 0, nz, 0, nx, hfs);
 
-        
+        /*
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
         // Applying PSG method
         beta_i = 0.0; beta_j = 0.0;
@@ -509,7 +509,18 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
            
             }
         }
-        
+        */
+        // removing gradient update in the region of air
+        for (int iz=0;iz<nz;iz++){
+            for (int ix=0;ix<nx;ix++){
+                if (rho[iz][ix] < 10){
+                    grad_lam[iz][ix] = 0.0;
+                    grad_mu[iz][ix] = 0.0;
+                    grad_rho[iz][ix] = 0.0;
+
+                }
+            }
+        }
 
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+2);
         // ----------------------
@@ -576,7 +587,11 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
             std::cout <<" <DONE>"<< std::endl;
         }
-        
+        std::cout << "L2 norm: " ;
+        for (int ii=0;ii<200;ii++){
+            std::cout << L2_norm[ii] << ", ";
+        }
+        std::cout << std::endl;
  
        //
        iterstep++ ;
@@ -594,5 +609,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         write_mat(lam, mu, rho, nz, nx, iterstep);
         std::cout <<" <DONE>"<< std::endl;
     }
+
+    
 }
 

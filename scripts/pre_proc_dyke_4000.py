@@ -1,7 +1,9 @@
 #%%
 # # preprocessing of the files
 import numpy as np
+import scipy as sp
 import random
+import scipy.ndimage
 from seismic_def import read_tensor, e_lami, v_lami, w_vel
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -67,8 +69,8 @@ npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
 
 # Geometric data
 x0 = -0.5; x1 = 18.0 # the start and end of model in meters
-dt = dt_field; dz = 0.25/2; dx = 0.25/2; # grid intervals
-nt = nSample #int(nSample*5/3) # taking portion of total samples
+dt = dt_field; dz = 0.08; dx = 0.08; # grid intervals
+nt = 7000 #int(nSample*2/3) # taking portion of total samples
 
 range_y= abs(max(xy_profile[1]) - min(xy_profile[1]))
 
@@ -86,7 +88,7 @@ snap_z1 = fpad +npml_top
 snap_z2 = nz - fpad - npml_bottom #fpad+npml_top+np.int32(d_tot/dz) # snap boundaries z
 snap_x1 = fpad +npml_left + 15
 snap_x2 = nx - fpad - npml_bottom - 15 # snap boundaries x
-snap_dt = 1; snap_dz = 1; snap_dx = 1; # the snap interval
+snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap interval
 
 # Taper position
 nz_snap = snap_z2 - snap_z1
@@ -142,21 +144,26 @@ lam_air, mu_air = v_lami(0.0, 0.0, rho_air)
 
 
 
-rho_sand = 1700.0
-lam_sand, mu_sand = v_lami(700, 200, rho_sand)
+rho_sand = 1200.0
+lam_sand, mu_sand = v_lami(300, 100, rho_sand)
 
+rho_sub = 1700.0
+lam_sub, mu_sub = v_lami(1200, 500, rho_sub)
 
 '''
 rho_water = 1000.0
 lam_water, mu_water = v_lami(1500, 0.0, rho_water)
 #rho_sub = 1800.0
 #lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
-
+rho_sand = 1700.0
+lam_sand, mu_sand = v_lami(700, 200, rho_sand)
 rho_sub = 2000.0
 lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
-rho_sand_grout = 1000.0 #2000.0
-lam_sand_grout, mu_sand_grout = v_lami(300, 100.0, rho_sand_grout)
 '''
+
+rho_sand_grout = 1200.0 #2000.0
+lam_sand_grout, mu_sand_grout = v_lami(300, 100, rho_sand_grout)
+
 # --------------------------------------------
 # The scalar material values
 scalar_lam = lam_sand
@@ -177,9 +184,35 @@ rho = np.full((nz, nx), rho_air)
 for iz in range(0, nz):
     for ix in range(0, nx):
         if iz>=surf_idz[ix]:
-            lam[iz][ix] = lam_sand *(1+ 0.05*random.uniform(0,1))
-            mu[iz][ix] = mu_sand *(1+ 0.05*random.uniform(0,1))
-            rho[iz][ix] = rho_sand *(1+ 0.05*random.uniform(0,1))
+            lam[iz][ix] = lam_sub *(1+ 0.05*random.uniform(-1,1))
+            mu[iz][ix] = mu_sub *(1+ 0.05*random.uniform(-1,1))
+            rho[iz][ix] = rho_sub *(1+ 0.05*random.uniform(-1,1))
+            
+            #if (ix >=0 and ix <100):
+            if iz<surf_idz[0]+2.0/dx:
+                lam[iz][ix] = lam_sub*(1+ 0.05*random.uniform(-1,1))
+                mu[iz][ix] = mu_sub*(1+ 0.05*random.uniform(-1,1))
+                rho[iz][ix] = rho_sub*(1+ 0.05*random.uniform(-1,1))
+                
+                if iz<surf_idz[ix]+3.0/dx:
+                    if (ix >=10/dx and ix <10.4/dx):
+                        lam[iz][ix] = lam_sand*(1+ 0.05*random.uniform(-1,1))
+                        mu[iz][ix] = mu_sand*(1+ 0.05*random.uniform(-1,1))
+                        rho[iz][ix] = rho_sand*(1+ 0.05*random.uniform(-1,1))
+
+'''        
+sigma = [1.0, 1.0]
+lam = sp.ndimage.filters.gaussian_filter(lam, sigma, mode='constant')
+mu = sp.ndimage.filters.gaussian_filter(mu, sigma, mode='constant')
+rho = sp.ndimage.filters.gaussian_filter(rho, sigma, mode='constant')
+'''
+for iz in range(0, nz):
+    for ix in range(0, nx):
+        if iz<surf_idz[ix]:
+            lam[iz][ix] = lam_air
+            mu[iz][ix] = mu_air
+            rho[iz][ix] = rho_air
+            
 
 #------------------------------------------------------------
 
@@ -207,7 +240,7 @@ freq_pml = (50.0 + 120)/2.0 # PML frequency in Hz
 #--------------------------------------------------------
 
 # source and reciever time functions type
-stf_type = 1; rtf_type = 1 # 1:velocity, 0:displacement
+stf_type = 1; rtf_type = 0 # 1:velocity, 0:displacement
 
 # finding the source and reciever locations
 xsrc = np.zeros((nsrc,), dtype=np.int32)
