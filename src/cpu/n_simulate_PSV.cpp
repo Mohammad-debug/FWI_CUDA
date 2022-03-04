@@ -13,6 +13,8 @@
 #include <iostream>
 #include <math.h>
 #include <omp.h>
+#include <fstream>
+#include <string>
 
 
 void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx, 
@@ -587,11 +589,17 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
 
             std::cout <<" <DONE>"<< std::endl;
         }
+        std::ofstream out("l2norm_out.txt");
+        std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
+        std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
+
         std::cout << "L2 norm: " ;
         for (int ii=0;ii<200;ii++){
             std::cout << L2_norm[ii] << ", ";
         }
         std::cout << std::endl;
+
+        
  
        //
        iterstep++ ;
