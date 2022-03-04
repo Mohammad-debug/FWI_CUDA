@@ -464,7 +464,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         //apply_gauss_filter(grad_mu, We_adj, gauss_filter, 0, nz, 0, nx, hfs);
         //apply_gauss_filter(grad_rho, We_adj, gauss_filter, 0, nz, 0, nx, hfs);
 
-        /*
+        
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
         // Applying PSG method
         beta_i = 0.0; beta_j = 0.0;
@@ -509,7 +509,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
            
             }
         }
-        */
+        
         // removing gradient update in the region of air
         for (int iz=0;iz<nz;iz++){
             for (int ix=0;ix<nx;ix++){

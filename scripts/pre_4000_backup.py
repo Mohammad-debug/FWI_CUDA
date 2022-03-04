@@ -184,10 +184,10 @@ rho = np.full((nz, nx), rho_air)
 for iz in range(0, nz):
     for ix in range(0, nx):
         if iz>=surf_idz[ix]:
-            lam[iz][ix] = lam_sub *(1+ 0.25*random.uniform(-1,1))
-            mu[iz][ix] = mu_sub *(1+ 0.25*random.uniform(-1,1))
-            rho[iz][ix] = rho_sub *(1+ 0.25*random.uniform(-1,1))
-            
+            lam[iz][ix] = lam_sub *(1+ 0.0*random.uniform(-1,1))
+            mu[iz][ix] = mu_sub *(1+ 0.0*random.uniform(-1,1))
+            rho[iz][ix] = rho_sub *(1+ 0.0*random.uniform(-1,1))
+            '''
             #if (ix >=0 and ix <100):
             if iz<surf_idz[0]+2.0/dx:
                 lam[iz][ix] = lam_sand*(1+ 0.25*random.uniform(-1,1))
@@ -199,12 +199,12 @@ for iz in range(0, nz):
                         lam[iz][ix] = lam_sand_grout*(1+ 0.25*random.uniform(-1,1))
                         mu[iz][ix] = mu_sand_grout*(1+ 0.25*random.uniform(-1,1))
                         rho[iz][ix] = rho_sand_grout*(1+ 0.25*random.uniform(-1,1))
-      
+            
 sigma = [5.0, 5.0]
 lam = sp.ndimage.filters.gaussian_filter(lam, sigma, mode='constant')
 mu = sp.ndimage.filters.gaussian_filter(mu, sigma, mode='constant')
 rho = sp.ndimage.filters.gaussian_filter(rho, sigma, mode='constant')
-
+'''
 for iz in range(0, nz):
     for ix in range(0, nx):
         if iz<surf_idz[ix]:
@@ -281,17 +281,30 @@ nshot = max(src_shot_to_fire)+1 # fire each shot separately
 
 Cs = np.sqrt(mu/rho)
 Cp = np.sqrt((lam + 2 * mu)/rho)
+
+
+# Real shots for plotting
+
     
 
 print('Plotting initial materials')
 plt.figure(1)
 plt.subplot(111)
 plt.imshow(Cp, cmap=cm.Paired) # lamda parameter
-plt.plot(xsrc,zsrc, ls = '', marker= 'o', markersize=4, color='k') # source positions
-plt.plot(xrec,zrec, ls = '', marker= '+', markersize=4, color='k') # reciever positions
-plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
-plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
-plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
+plt.plot(xsrc,zsrc, ls = '', marker= 'v', markersize=8, color='r', label='Shots') # source positions
+plt.plot(xrec,zrec, ls = '', marker= '+', markersize=6, color='k', label = 'Receivers') # reciever positions
+plt.plot((20, 20), (0, nz), color = 'k', label='PML layers')
+plt.plot((nx-20, nx-20), (0, nz), color='k')
+plt.plot((0, nx), (20, 20), color='k')
+plt.plot((0, nx), (nz-20, nz-20), color='k')
+plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--',label='FWI snap')
+plt.xlabel('X (grids)')
+plt.ylabel('Z (grids)')
+plt.xlim((0, nx))
+plt.ylim((nz,0))
+#plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
+#plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
+plt.legend(loc=(0.5, 0.3))
 '''
 plt.subplot(222)
 plt.imshow(Cs)
@@ -361,7 +374,7 @@ material_inp = np.concatenate((material_inp, rho), axis = None)
 metaint.tofile('./bin/metaint.bin')
 intarray.tofile('./bin/intarray.bin')
 metafloat.tofile('./bin/metafloat.bin')
-material_inp.tofile('./bin/mat.bin')
+#material_inp.tofile('./bin/mat.bin')
 #--------------------------------------------------------
 
 #--------------------------------------------------------
