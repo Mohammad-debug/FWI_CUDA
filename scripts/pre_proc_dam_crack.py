@@ -112,16 +112,16 @@ mat_grid = 1 # 0 for scalar and 1 for grid
 #---------------------------------------------------
 # Adding material properties for different materials
 rho_air = 1.25
-lam_air, mu_air = v_lami(0.0, 0.0, rho_air)
+lam_air, mu_air = v_lami(343, 0.0, rho_air)
 
-rho_water = 1000.0
-lam_water, mu_water = v_lami(1500, 0.0, rho_water)
+rho_water = 1000
+lam_water, mu_water = v_lami(1482, 0.0, rho_water)
 
 rho_sub = 2000.0
 lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
 
 rho_sand = 1700.0
-lam_sand, mu_sand = v_lami(700, 200, rho_sand)
+lam_sand, mu_sand = v_lami(800, 500, rho_sand)
 
 rho_sand_grout = 1000.0 #2000.0
 lam_sand_grout, mu_sand_grout = v_lami(300, 100.0, rho_sand_grout)
@@ -153,6 +153,13 @@ for iz in range(0, nz):
                     lam[iz][ix] = lam_sand
                     mu[iz][ix] = mu_sand
                     rho[iz][ix] = rho_sand
+
+            if (iz*dz > (fpad + npml_top+d_wt/dz+(ix*dx-0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl + l_top)/dx))))):
+                if (iz - np.int(fpad + npml_top+d_top/dz) >= 0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl + l_top)/dx)))):
+                    if (iz - (fpad + npml_top + np.int(d_top/dz)) >= -0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl)/dx)))):
+                        lam[iz][ix] = lam_air
+                        mu[iz][ix] = mu_air
+                        rho[iz][ix] = rho_air
                     
                     
         if (iz>np.int(fpad + npml_top+d_wt/dz)): # water level boundary
@@ -196,7 +203,7 @@ pml_npower_pml = 2.0
 damp_v_pml = Cp
 rcoef = 0.001
 k_max_pml = 1.0
-freq_pml = 50.0 # PML frequency in Hz
+freq_pml = 10.0 # PML frequency in Hz
 
 # -----------------------------------------------------
 
