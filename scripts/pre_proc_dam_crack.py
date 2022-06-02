@@ -123,7 +123,7 @@ lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
 rho_sand = 1700.0
 lam_sand, mu_sand = v_lami(800, 500, rho_sand)
 
-rho_sand_sat = 1900.0
+rho_sand_sat = 2000.0
 lam_sand_sat, mu_sand_sat = v_lami(1450, 400, rho_sand_sat)
 
 rho_sand_grout = 1000.0 #2000.0
@@ -135,9 +135,9 @@ lam_sand_grout, mu_sand_grout = v_lami(300, 100.0, rho_sand_grout)
 Cp, Cs = w_vel(lam_sub, mu_sub, rho_sub)
 
 # Scalar material values to pass to the kernels
-scalar_rho = rho_sand
-scalar_mu = mu_sand
-scalar_lam = lam_sand
+scalar_rho = rho_sub
+scalar_mu = mu_sub
+scalar_lam = lam_sub
 
 # --------------------------------------------------
 # preparing  the starting material arrays (Fill with Air)
