@@ -33,7 +33,7 @@ npml_fpad = 20
 
 dt = 0.3e-4; dz = 0.1; dx = 0.1; # grid intervals
 
-def ricker_wavelet(nt, dt, amp, fc, ts):
+def ricker_wavelet(signal, nt, dt, amp, fc, ts):
     #// Create signal
     #// **signal: The array in which signal is to be written
     #// nt: number of time steps, dt: time step size, ts: time shift
@@ -44,7 +44,7 @@ def ricker_wavelet(nt, dt, amp, fc, ts):
     for it in range(0, nt):
         t = it * dt
         tau = math.pi * (t - 1.5 * fci - ts) / (1.5 * fci)
-        signal[it] = amp*(1.0 - 2.0 * tau * tau) * exp(-2.0 * tau * tau)
+        signal[it] = amp*(1.0 - 2.0 * tau * tau) * math.exp(-2.0 * tau * tau)
 
 def read_metaint(filename, dtype):
     

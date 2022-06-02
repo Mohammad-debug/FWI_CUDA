@@ -61,7 +61,7 @@ pml_z = True; pml_x = True # PML exist in both direction
 npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
 
 # Geometric data
-dt = 0.3e-4; dz = 0.1; dx = 0.1; # grid intervals
+dt = 0.3e-4; dz = 0.05; dx = 0.05; # grid intervals
 nt = 10000.0; 
 nz = fpad + npml_top + np.int32(dep/dz) + npml_bottom + fpad+ 1
 nx = fpad + npml_left + np.int32(len/dx) + npml_right + fpad + 1 # grid numbers (adding for PMLs as well)
@@ -157,7 +157,7 @@ for iz in range(0, nz):
                     mu[iz][ix] = mu_sand
                     rho[iz][ix] = rho_sand
                     
-                    if (iz-31) > 0.0013*(ix-133)*(ix-133):
+                    if (iz-42) > 0.00065*(ix-248)*(ix-248):
                         lam[iz][ix] = lam_sand_sat
                         mu[iz][ix] = mu_sand_sat
                         rho[iz][ix] = rho_sand_sat
@@ -206,7 +206,7 @@ pml_npower_pml = 2.0
 damp_v_pml = Cp
 rcoef = 0.001
 k_max_pml = 1.0
-freq_pml = 10.0 # PML frequency in Hz
+freq_pml = 150.0 # PML frequency in Hz
 
 # -----------------------------------------------------
 
@@ -252,7 +252,7 @@ nrec = zrec.size # counting the recievers from the locations
 for ir in range(0,zrec.size):
     ix = (12.0)/nrec
     iz = (4.0)/nrec
-    xrec[ir] = np.int32(fpad + npml_left + (l_uadd + l_usl + l_top + ir*ix - 0.5)/dx)
+    xrec[ir] = np.int32(fpad + npml_left + (l_uadd + l_usl + l_top + ir*ix - 0.1)/dx)
     zrec[ir] = np.int32(fpad + npml_top + (d_top +ir*iz+0.1)/dz)
     
 # overwrite the recorder to the last source location
