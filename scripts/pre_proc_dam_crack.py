@@ -112,18 +112,18 @@ mat_grid = 1 # 0 for scalar and 1 for grid
 #---------------------------------------------------
 # Adding material properties for different materials
 rho_air = 1.25
-lam_air, mu_air = v_lami(343, 0.0, rho_air)
+lam_air, mu_air = v_lami(0.0, 0.0, rho_air)
 
 rho_water = 1000
 lam_water, mu_water = v_lami(1482, 0.0, rho_water)
 
-rho_sub = 2000.0
-lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
+rho_sub = 2100.0
+lam_sub, mu_sub = v_lami(1900, 700, rho_sub)
 
 rho_sand = 1700.0
-lam_sand, mu_sand = v_lami(800, 500, rho_sand)
+lam_sand, mu_sand = v_lami(800, 400, rho_sand)
 
-rho_sand_sat = 2000.0
+rho_sand_sat = 1950.0
 lam_sand_sat, mu_sand_sat = v_lami(1450, 400, rho_sand_sat)
 
 rho_sand_grout = 1000.0 #2000.0
