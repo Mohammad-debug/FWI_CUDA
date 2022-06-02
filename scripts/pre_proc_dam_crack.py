@@ -123,6 +123,9 @@ lam_sub, mu_sub = v_lami(1400, 700, rho_sub)
 rho_sand = 1700.0
 lam_sand, mu_sand = v_lami(800, 500, rho_sand)
 
+rho_sand_sat = 1900.0
+lam_sand_sat, mu_sand_sat = v_lami(1450, 400, rho_sand_sat)
+
 rho_sand_grout = 1000.0 #2000.0
 lam_sand_grout, mu_sand_grout = v_lami(300, 100.0, rho_sand_grout)
 
@@ -153,13 +156,13 @@ for iz in range(0, nz):
                     lam[iz][ix] = lam_sand
                     mu[iz][ix] = mu_sand
                     rho[iz][ix] = rho_sand
+                    
+                    if (iz-31) > 0.0013*(ix-133)*(ix-133):
+                        lam[iz][ix] = lam_sand_sat
+                        mu[iz][ix] = mu_sand_sat
+                        rho[iz][ix] = rho_sand_sat
 
-            if (iz*dz > (fpad + npml_top+d_wt/dz+(ix*dx-0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl + l_top)/dx))))):
-                if (iz - np.int(fpad + npml_top+d_top/dz) >= 0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl + l_top)/dx)))):
-                    if (iz - (fpad + npml_top + np.int(d_top/dz)) >= -0.33*(ix - (fpad + npml_left + np.int((l_uadd + l_usl)/dx)))):
-                        lam[iz][ix] = lam_air
-                        mu[iz][ix] = mu_air
-                        rho[iz][ix] = rho_air
+            
                     
                     
         if (iz>np.int(fpad + npml_top+d_wt/dz)): # water level boundary
@@ -230,7 +233,7 @@ nsrc = zsrc.size # counting number of sources from the source location data
 for isr in range(0,zsrc.size):
     ix = (12.0)/nsrc
     iz = (4.0)/nsrc
-    xsrc[isr] = np.int32(fpad + npml_left + (l_uadd + l_usl - isr*ix + 0.5)/dx)
+    xsrc[isr] = np.int32(fpad + npml_left + (l_uadd + l_usl - isr*ix + 0.1)/dx)
     zsrc[isr] = np.int32(fpad + npml_top + (d_top +isr*iz+0.1)/dz)
 
 
