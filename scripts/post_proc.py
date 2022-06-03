@@ -140,21 +140,21 @@ else:
     vz_dat = read_tensor("./bin/shot1_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     vx_dat = read_tensor("./bin/shot1_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     
-    clip_pz = np.amax(vz_dat)
-    clip_mz = np.amin(vz_dat)
+    clip_pz = np.amax(vz_dat[:400])
+    clip_mz = np.amin(vz_dat[:400])
     clipz = 0.3*max([clip_pz, np.abs(clip_mz)])
     
-    clip_px = np.amax(vx_dat)
-    clip_mx = np.amin(vx_dat)
+    clip_px = np.amax(vx_dat[:400])
+    clip_mx = np.amin(vx_dat[:400])
     clipx = 0.3*max([clip_px, np.abs(clip_mx)])
     
-    for ii in range(2000,snap_nt, 1):
+    for ii in range(0,400, 1):
         # reading data from csv file
         vz = vz_dat[ii,:,:]
         vx = vx_dat[ii,:,:]  
         plt.figure(1)
         plt.subplot(211)
-        plt.imshow(vz, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clipz*0.2, vmax=clipz*0.2)
+        plt.imshow(vz, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clipz, vmax=clipz)
         plt.colorbar()
         plt.title('Vz [Time snap '+np.str(ii)+']', y=-0.2)
         plt.xlabel('X [no. of grids]'+np.str(ii))

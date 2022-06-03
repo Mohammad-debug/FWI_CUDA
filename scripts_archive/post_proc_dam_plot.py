@@ -4,6 +4,7 @@
 # reading the output arrays
 import numpy as np
 import math
+from scipy import signal
 from matplotlib import cm
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -31,7 +32,7 @@ dep = d_tot # Depth
 npml_dz = 50
 npml_fpad = 20
 
-dt = 0.3e-4; dz = 0.1; dx = 0.1; # grid intervals
+dt = 1.85e-5; dz = 0.05; dx = 0.05; # grid intervals
 
 def ricker_wavelet(signal, nt, dt, amp, fc, ts):
     #// Create signal
@@ -353,12 +354,12 @@ else:
     
     # Plot the rtf first
     print("NREC: ", nrec)
-    rtf_uz = read_tensor("../bin/shot2_rtf_uz.bin", np.float64, (nrec, ndim[0]))
-    rtf_ux = read_tensor("../bin/shot2_rtf_ux.bin", np.float64, (nrec, ndim[0]))
+    rtf_uz = read_tensor("../bin/shot1_rtf_uz.bin", np.float64, (nrec, ndim[0]))
+    rtf_ux = read_tensor("../bin/shot1_rtf_ux.bin", np.float64, (nrec, ndim[0]))
     
     #Plotting only the wavelets (source and receivers)
     # create an array
-    dt = 0.3e-4
+    dt = 1.85e-5
     time = np.arange(0, rtf_uz.shape[1])*dt
     # Plot figure for the paper
     # create the standard size for the figure
@@ -372,11 +373,14 @@ else:
     fig.tight_layout() 
     plt.subplots_adjust(top=1, bottom=0.12, hspace=0)
     # Hide the top and right spines of the axis
+    tlim = 6000
+    # applying tukey taper
+    t_taper = signal.tukey(tlim)
     # The first figure plot
-    axs[0].plot(time, rtf_uz[1], label='rec 1')
-    axs[0].plot(time, rtf_uz[4], label='rec 2')
-    axs[0].plot(time, rtf_uz[7], label='rec 3')
-    axs[0].plot(time, rtf_uz[10], label='rec 4')
+    axs[0].plot(time[0:tlim], rtf_uz[1,0:tlim]*t_taper, label='rec 1')
+    axs[0].plot(time[0:tlim], rtf_uz[4,0:tlim]*t_taper, label='rec 2')
+    axs[0].plot(time[0:tlim], rtf_uz[7,0:tlim]*t_taper, label='rec 3')
+    axs[0].plot(time[0:tlim], rtf_uz[10,0:tlim]*t_taper, label='rec 4')
 
 
     # setting axis limits
@@ -387,10 +391,10 @@ else:
     axs[0].legend(ncol=2, loc=(0., 0.75))
     axs[0].set_title('(a)', loc=('left'))
 
-    axs[1].plot(time, rtf_ux[1], label='rec 1')
-    axs[1].plot(time, rtf_ux[4], label='rec 1')
-    axs[1].plot(time, rtf_ux[7], label='rec 1')
-    axs[1].plot(time, rtf_ux[10], label='rec 1')
+    axs[1].plot(time[0:tlim], rtf_ux[1,0:tlim]*t_taper, label='rec 1')
+    axs[1].plot(time[0:tlim], rtf_ux[4,0:tlim]*t_taper, label='rec 2')
+    axs[1].plot(time[0:tlim], rtf_ux[7,0:tlim]*t_taper, label='rec 3')
+    axs[1].plot(time[0:tlim], rtf_ux[10,0:tlim]*t_taper, label='rec 4')
 
     # setting axis limits
     #axs[1].set_xlim(-1.5, 1.5)
@@ -403,11 +407,12 @@ else:
     # Save and remove excess whitespace
 
     fig.savefig('./seismograms_dam.pdf', format='pdf', bbox_inches='tight')
+    fig.savefig('./seismograms_dam.png', format='png', bbox_inches='tight')
     plt.show()
     exit()
     
-    vz_dat = read_tensor("../bin/shot2_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
-    vx_dat = read_tensor("../bin/shot2_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vz_dat = read_tensor("../bin/shot1_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vx_dat = read_tensor("../bin/shot1_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     
     clip_pz = np.amax(vz_dat)
     clip_mz = np.amin(vz_dat)
