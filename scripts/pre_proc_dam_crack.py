@@ -127,7 +127,7 @@ rho_sand_sat = 1950.0
 lam_sand_sat, mu_sand_sat = v_lami(1450, 400, rho_sand_sat)
 
 rho_sand_grout = 1000.0 #2000.0
-lam_sand_grout, mu_sand_grout = v_lami(300, 100.0, rho_sand_grout)
+lam_sand_grout, mu_sand_grout = v_lami(1600, 100.0, rho_sand_grout)
 
 # --------------------------------------------
 
