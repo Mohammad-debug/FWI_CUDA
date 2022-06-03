@@ -61,7 +61,7 @@ pml_z = True; pml_x = True # PML exist in both direction
 npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
 
 # Geometric data
-dt = 0.3e-4; dz = 0.05; dx = 0.05; # grid intervals
+dt = 1.85e-5; dz = 0.05; dx = 0.05; # grid intervals
 nt = 10000.0; 
 nz = fpad + npml_top + np.int32(dep/dz) + npml_bottom + fpad+ 1
 nx = fpad + npml_left + np.int32(len/dx) + npml_right + fpad + 1 # grid numbers (adding for PMLs as well)
@@ -206,7 +206,7 @@ pml_npower_pml = 2.0
 damp_v_pml = Cp
 rcoef = 0.001
 k_max_pml = 1.0
-freq_pml = 150.0 # PML frequency in Hz
+freq_pml = 80.0 # PML frequency in Hz
 
 # -----------------------------------------------------
 
