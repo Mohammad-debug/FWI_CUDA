@@ -444,8 +444,8 @@ void gard_fwd_storage2(
             accu_szx[itf][jz][jx]  = szx[iz][ix];
             accu_szz[itf][jz][jx]  = szz[iz][ix];
 
-            accu_vx[itf][jz][jx] = vx[iz][ix]/dt;
-            accu_vz[itf][jz][jx] = vz[iz][ix]/dt;
+            accu_vx[itf][jz][jx] = vx[iz][ix];// /dt;
+            accu_vz[itf][jz][jx] = vz[iz][ix]; ///dt;
             
             jx++;
             }

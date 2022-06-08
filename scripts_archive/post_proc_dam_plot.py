@@ -32,7 +32,7 @@ dep = d_tot # Depth
 npml_dz = 50
 npml_fpad = 20
 
-dt = 1.85e-5; dz = 0.05; dx = 0.05; # grid intervals
+snap_dt = 10; dt = 1.85e-5; dz = 0.05; dx = 0.05; # grid intervals
 
 def ricker_wavelet(signal, nt, dt, amp, fc, ts):
     #// Create signal
@@ -354,12 +354,34 @@ else:
     
     # Plot the rtf first
     print("NREC: ", nrec)
+    # -----------------------------------------------------------------------
     rtf_uz = read_tensor("../bin/shot1_rtf_uz.bin", np.float64, (nrec, ndim[0]))
     rtf_ux = read_tensor("../bin/shot1_rtf_ux.bin", np.float64, (nrec, ndim[0]))
     
+    vz_dat = read_tensor("../bin/shot1_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vx_dat = read_tensor("../bin/shot1_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    
+    
+    vz_dat = vz_dat*dt
+    vx_dat = vx_dat*dt
+    
+    clip_pz = np.amax(vz_dat)
+    clip_mz = np.amin(vz_dat)
+    clipz = 0.3*max([clip_pz, np.abs(clip_mz)])
+    
+    clip_px = np.amax(vx_dat)
+    clip_mx = np.amin(vx_dat)
+    clipx = 0.3*max([clip_px, np.abs(clip_mx)])
+    
+    # ----------------------------------------------------
+    # Normalizing the values to strains
+    
+    # keeping the maximum strain to 0.02
+    
+    
     #Plotting only the wavelets (source and receivers)
     # create an array
-    dt = 1.85e-5
+    
     time = np.arange(0, rtf_uz.shape[1])*dt
     # Plot figure for the paper
     # create the standard size for the figure
@@ -373,7 +395,7 @@ else:
     fig.tight_layout() 
     plt.subplots_adjust(top=1, bottom=0.12, hspace=0)
     # Hide the top and right spines of the axis
-    tlim = 6000
+    tlim = time.size
     # applying tukey taper
     t_taper = signal.tukey(tlim)
     # The first figure plot
@@ -384,11 +406,11 @@ else:
 
 
     # setting axis limits
-    #axs[0].set_xlim(-1.5, 1.5)
-    #axs[0].set_ylim(0, 5)
+    axs[0].set_xlim(0, 0.10)
+    #axs[0].set_ylim(-0.22, 0.42)
     axs[0].set_xlabel( 'Time'+ r'$(sec)$')
     axs[0].set_ylabel(r'$|U_z (m)|$')
-    axs[0].legend(ncol=2, loc=(0., 0.75))
+    axs[0].legend()#ncol=1, loc=(0.75, 0.75))
     axs[0].set_title('(a)', loc=('left'))
 
     axs[1].plot(time[0:tlim], rtf_ux[1,0:tlim]*t_taper, label='rec 1')
@@ -397,11 +419,11 @@ else:
     axs[1].plot(time[0:tlim], rtf_ux[10,0:tlim]*t_taper, label='rec 4')
 
     # setting axis limits
-    #axs[1].set_xlim(-1.5, 1.5)
-    #axs[1].set_ylim(0, 5)
+    axs[1].set_xlim(0, 0.10)
+    #axs[1].set_ylim(-0.22, 0.42)
     axs[1].set_xlabel(r'$x_1/a$')
     axs[1].set_ylabel(r'$|U_i|$')
-    axs[1].legend(ncol=2, loc=(0., 0.75))
+    axs[1].legend()#loc='upper right')#ncol=1, loc=(0., 0.75))
     axs[1].set_title('(b)', loc=('left'))
 
     # Save and remove excess whitespace
@@ -409,18 +431,8 @@ else:
     fig.savefig('./seismograms_dam.pdf', format='pdf', bbox_inches='tight')
     fig.savefig('./seismograms_dam.png', format='png', bbox_inches='tight')
     plt.show()
-    exit()
     
-    vz_dat = read_tensor("../bin/shot1_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
-    vx_dat = read_tensor("../bin/shot1_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     
-    clip_pz = np.amax(vz_dat)
-    clip_mz = np.amin(vz_dat)
-    clipz = 0.3*max([clip_pz, np.abs(clip_mz)])
-    
-    clip_px = np.amax(vx_dat)
-    clip_mx = np.amin(vx_dat)
-    clipx = 0.3*max([clip_px, np.abs(clip_mx)])
     
     
     
@@ -428,7 +440,7 @@ else:
     fw, fh = set_size('thesis', subplots=(4,1)) # from local module thesis_plot.py
     fig = plt.figure(figsize=(fw, fh*0.5))
     t_step = 350
-    dt = 0.3e-4
+    #dt = 0.3e-4
     vz = np.flipud(vz_dat[t_step,:,:])
     vx = np.flipud(vx_dat[t_step,:,:]) 
     
@@ -441,7 +453,7 @@ else:
     #plt.subplot(411)
     ax1 = fig.add_subplot(411)
     t_step = 100
-    dt = 0.3e-4
+    dt = dt*snap_dt
     vz = np.flipud(vz_dat[t_step,:,:])
     vx = np.flipud(vx_dat[t_step,:,:]) 
     
@@ -478,7 +490,7 @@ else:
     # subplot 2
     plt.subplot(412)
     t_step = 200
-    dt = 0.3e-4
+    
     vz = np.flipud(vz_dat[t_step,:,:])
     vx = np.flipud(vx_dat[t_step,:,:]) 
     vz = vz[41:][:]
@@ -506,7 +518,7 @@ else:
     plt.xlabel('X'+r'$(dm)$')
     plt.ylabel('Z '+r'$(dm)$')
     #plt.colorbar()
-    plt.text(50, 50, 'Time = '+np.format_float_scientific(t_step*5*dt, precision=2)+'s', fontsize=10)
+    plt.text(50, 50, 'Time = '+np.format_float_scientific(t_step*dt, precision=2)+'s', fontsize=10)
     #plt.gca().invert_yaxis()
     #plt.axis('equal')
     # ---------------------------------------------------------------------------
@@ -517,7 +529,7 @@ else:
     # subplot 3
     ax3 = fig.add_subplot(413)
     t_step = 300
-    dt = 0.3e-4
+
     vz = np.flipud(vz_dat[t_step,:,:])
     vx = np.flipud(vx_dat[t_step,:,:]) 
     vz = vz[41:][:]
@@ -545,7 +557,7 @@ else:
     plt.xlabel('X'+r'$(dm)$')
     plt.ylabel('Z '+r'$(dm)$')
     #plt.colorbar()
-    plt.text(50, 50, 'Time = '+np.format_float_scientific(t_step*5*dt, precision=2)+'s', fontsize=10)
+    plt.text(50, 50, 'Time = '+np.format_float_scientific(t_step*dt, precision=2)+'s', fontsize=10)
     #plt.gca().invert_yaxis()
     #plt.axis('equal')
     # ---------------------------------------------------------------------------
@@ -555,7 +567,7 @@ else:
     #plt.subplot(414)
     ax4 = fig.add_subplot(414)
     t_step = 400
-    dt = 0.3e-4
+
     vz = np.flipud(vz_dat[t_step,:,:])
     vx = np.flipud(vx_dat[t_step,:,:]) 
     vz = vz[41:][:]
@@ -577,7 +589,7 @@ else:
     #-------------------------------------------------------------------------------------------------------
     
     im_ax4= ax4.imshow(vz, animated=True, cmap=cm.seismic, interpolation='nearest', vmin=-clipx, vmax=clipx)
-    plt.text(50, 50, 'Time = '+np.format_float_scientific(t_step*5*dt, precision=2)+'s', fontsize=10)
+    plt.text(50, 50, 'Time = '+np.format_float_scientific(t_step*dt, precision=2)+'s', fontsize=10)
     plt.xlim((20,300))
     plt.ylim((0,60))
     plt.xlabel('X'+r'$(dm)$')

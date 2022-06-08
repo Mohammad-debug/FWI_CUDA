@@ -206,7 +206,7 @@ pml_npower_pml = 2.0
 damp_v_pml = Cp
 rcoef = 0.001
 k_max_pml = 1.0
-freq_pml = 80.0 # PML frequency in Hz
+freq_pml = 800.0 # PML frequency in Hz
 
 # -----------------------------------------------------
 
