@@ -51,7 +51,7 @@ len = l_uadd + l_usl + l_top + l_dsl + l_dadd  # Meters
 
 d_top = 0.5
 d_wt = 1.0
-d_sub = 4.0
+d_sub = 4.5
 d_tot = 7.0
 dep = d_tot # Depth
 
@@ -74,10 +74,10 @@ isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
-snap_z1 = fpad #+npml_top+int(d_wt/dz) 
-snap_z2 = nz - fpad #- npml_bottom #fpad+npml_top+int(d_tot/dz) # snap boundaries z
-snap_x1 = fpad #int(nx/2 - 1.0*l_top/dz) 
-snap_x2 = nx - fpad #int(nx/2  + 1.0*l_top/dz) # snap boundaries x
+snap_z1 = fpad + npml_top #+int(d_wt/dz) 
+snap_z2 = nz - fpad - npml_bottom #fpad+npml_top+int(d_tot/dz) # snap boundaries z
+snap_x1 = fpad + npml_left #int(nx/2 - 1.0*l_top/dz) 
+snap_x2 = nx - fpad - npml_right #int(nx/2  + 1.0*l_top/dz) # snap boundaries x
 snap_dt = 10; snap_dz = 1; snap_dx = 1; # the snap interval
 
 # Taper position
@@ -127,7 +127,7 @@ rho_sand_sat = 1950.0
 lam_sand_sat, mu_sand_sat = v_lami(1450, 400, rho_sand_sat)
 
 rho_sand_grout = 1000.0 #2000.0
-lam_sand_grout, mu_sand_grout = v_lami(1400, 100.0, rho_sand_grout)
+lam_sand_grout, mu_sand_grout = v_lami(1482, 0.0, rho_sand_grout)
 
 # --------------------------------------------
 
@@ -157,7 +157,7 @@ for iz in range(0, nz):
                     mu[iz][ix] = mu_sand
                     rho[iz][ix] = rho_sand
                     
-                    if (iz-42) > 0.00065*(ix-248)*(ix-248):
+                    if (iz-72) > 0.00025*(ix-593)*(ix-593):
                         lam[iz][ix] = lam_sand_sat
                         mu[iz][ix] = mu_sand_sat
                         rho[iz][ix] = rho_sand_sat
@@ -226,8 +226,8 @@ stf_type = 1; rtf_type = 0 # 1:velocity, 2:displacement
 #zsrc = np.full((xsrc.size,), npml_top+ int((d_wt+0.5)/dz), dtype=int)
 
 # Creating source locations
-xsrc = np.zeros((1,), dtype=int)
-zsrc = np.zeros((1,), dtype=int)
+xsrc = np.zeros((3,), dtype=int)
+zsrc = np.zeros((3,), dtype=int)
 nsrc = zsrc.size # counting number of sources from the source location data
 
 for isr in range(0,zsrc.size):
@@ -244,9 +244,10 @@ src_shot_to_fire = np.arange(0,nsrc,1, dtype=int)
 
 nshot = nsrc # fire each shot separately
 
+'''
 # Creating reciever locations
-xrec = np.zeros((24,), dtype=int)
-zrec = np.zeros((24,), dtype=int)
+xrec1 = np.zeros((24,), dtype=int)
+zrec1 = np.zeros((24,), dtype=int)
 nrec = zrec.size # counting the recievers from the locations
 
 for ir in range(0,zrec.size):
@@ -254,7 +255,27 @@ for ir in range(0,zrec.size):
     iz = (4.0)/nrec
     xrec[ir] = int(fpad + npml_left + (l_uadd + l_usl + l_top + ir*ix - 0.1)/dx)
     zrec[ir] = int(fpad + npml_top + (d_top +ir*iz+0.1)/dz)
+'''    
+xrec = np.linspace(int(fpad + npml_left + (l_uadd )/dx), int(fpad + npml_left +(l_uadd +l_usl + l_top+l_dsl)/dx), 55, dtype=int)
+nrec = xrec.size # counting the recievers from the locations 
+zrec = np.zeros(xrec.size)  
+# plotting the middle line 
+x_mid = (2*fpad+npml_left +npml_right+(l_uadd+l_usl+l_top+l_dsl+l_dadd)/dx + 1)/2
+slope_factor = (1/3)#* (l_usl + l_top+l_dsl)/(dx*nrec)
+for ii in range(0, xrec.size):
+    if xrec[ii] < int(fpad + npml_left + (l_uadd + l_usl )/dx):
+        zrec[ii] = int(fpad + npml_top + (d_sub+0.1)/dz - 0.33*(xrec[ii]-xrec[0]))
+        #zrec[-ii+1] = int(fpad + npml_top + d_sub/dz - 0.33*(xrec[ii]-xrec[0]))
+    elif xrec[ii] < int(fpad + npml_left + (l_uadd + l_usl + l_top )/dx):
+        zrec[ii]    = int(fpad + npml_top + (d_top+0.1)/dz)
+        #zrec[-ii+1] = int(fpad + npml_top + (d_top+0.1)/dz)
+    else:
+        zrec[ii] = zrec[-ii-1]
+        
+        
     
+        
+
 # overwrite the recorder to the last source location
 #xrec[0] = xsrc[2]
 #zrec[0] = zsrc[2]
@@ -268,6 +289,7 @@ Cs = np.sqrt(mu/rho)
 Cp = np.sqrt((lam + 2 * mu)/rho)
     
 
+
 print('Plotting initial materials')
 fig = plt.figure(1)
 plt.subplot(221)
@@ -277,6 +299,7 @@ plt.plot(xrec,zrec, ls = '', marker= '+', markersize=2) # reciever positions
 plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
 plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
 plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
+plt.plot((x_mid, x_mid), (0, nz))
 plt.subplot(222)
 plt.imshow(Cs)
 plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=2) # source positions
