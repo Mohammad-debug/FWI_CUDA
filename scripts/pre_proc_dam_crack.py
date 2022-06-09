@@ -61,7 +61,7 @@ pml_z = True; pml_x = True # PML exist in both direction
 npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
 
 # Geometric data
-dt = 1.85e-5; dz = 0.02; dx = 0.02; # grid intervals
+dt = 1.85e-5; dz = 0.01; dx = 0.01; # grid intervals
 nt = 10000.0; 
 nz = fpad + npml_top + int(dep/dz) + npml_bottom + fpad+ 1
 nx = fpad + npml_left + int(len/dx) + npml_right + fpad + 1 # grid numbers (adding for PMLs as well)
