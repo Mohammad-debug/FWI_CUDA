@@ -269,7 +269,7 @@ Cp = np.sqrt((lam + 2 * mu)/rho)
     
 
 print('Plotting initial materials')
-plt.figure(1)
+fig = plt.figure(1)
 plt.subplot(221)
 plt.imshow(Cp) # lamda parameter
 plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=2) # source positions
@@ -291,6 +291,7 @@ plt.plot(xrec,zrec, ls = '', marker= '+', markersize=2) # reciever positions
 plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
 plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
 plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
+fig.savefig('./io/pre_proc_dam_crack.png', format='png', bbox_inches='tight')
 plt.show()
 
 #--------------------------------------------------------
