@@ -14,7 +14,7 @@ plt.rcParams.update(tex_fonts)
 
 
 import sys
-snap_dt = 10; dt = 1.85e-5; dz = 0.05; dx = 0.05; # grid intervals
+snap_dt = 10; dt = 1.85e-5; dz = 0.02; dx = 0.02; # grid intervals
 
 # Field parameters
 #l_shift = 0.2 # shifting of the coord in discrete blocks in plots
