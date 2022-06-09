@@ -186,9 +186,9 @@ void alloc_varmain_PSV(
             // allocation of the accumulation storage arrays
             allocate_array(accu_vz, snap_nt, snap_nz, snap_nx);
             allocate_array(accu_vx, snap_nt, snap_nz, snap_nx);
-            allocate_array(accu_szz, snap_nt, snap_nz, snap_nx);
-            allocate_array(accu_szx, snap_nt, snap_nz, snap_nx);
-            allocate_array(accu_sxx, snap_nt, snap_nz, snap_nx);
+            //allocate_array(accu_szz, snap_nt, snap_nz, snap_nx);
+            //allocate_array(accu_szx, snap_nt, snap_nz, snap_nx);
+            //allocate_array(accu_sxx, snap_nt, snap_nz, snap_nx);
         }
         if (grad){
             // Allocating medium gradient
