@@ -258,11 +258,11 @@ void write_accu(real ***&accu_vz, real ***&accu_vx,
     // saving accumulated tensors
     std::ofstream outfile_vz(fpath+std::to_string(ishot)+"_vz.bin", std::ios::out | std::ios::binary);
     std::ofstream outfile_vx(fpath+std::to_string(ishot)+"_vx.bin", std::ios::out | std::ios::binary);
-    std::ofstream outfile_szz(fpath+std::to_string(ishot)+"_szz.bin", std::ios::out | std::ios::binary);
-    std::ofstream outfile_szx(fpath+std::to_string(ishot)+"_szx.bin", std::ios::out | std::ios::binary);
-    std::ofstream outfile_sxx(fpath+std::to_string(ishot)+"_sxx.bin", std::ios::out | std::ios::binary);
+    //std::ofstream outfile_szz(fpath+std::to_string(ishot)+"_szz.bin", std::ios::out | std::ios::binary);
+    //std::ofstream outfile_szx(fpath+std::to_string(ishot)+"_szx.bin", std::ios::out | std::ios::binary);
+    //std::ofstream outfile_sxx(fpath+std::to_string(ishot)+"_sxx.bin", std::ios::out | std::ios::binary);
     
-    if(!outfile_vz || !outfile_vx || !outfile_szz || !outfile_szx || !outfile_sxx){
+    if(!outfile_vz || !outfile_vx){ // || !outfile_szz || !outfile_szx || !outfile_sxx){
         std::cout << "Cannot open output files.";
         return;
     }
@@ -272,18 +272,18 @@ void write_accu(real ***&accu_vz, real ***&accu_vx,
             for(int ix = 0; ix<snap_nx; ix++){
                 outfile_vz.write(reinterpret_cast<const char*> (&accu_vz[it][iz][ix]), sizeof(real));
                 outfile_vx.write(reinterpret_cast<const char*> (&accu_vx[it][iz][ix]), sizeof(real));
-                outfile_szz.write(reinterpret_cast<const char*> (&accu_szz[it][iz][ix]), sizeof(real));
-                outfile_szx.write(reinterpret_cast<const char*> (&accu_szx[it][iz][ix]), sizeof(real));
-                outfile_sxx.write(reinterpret_cast<const char*> (&accu_sxx[it][iz][ix]), sizeof(real));
+                //outfile_szz.write(reinterpret_cast<const char*> (&accu_szz[it][iz][ix]), sizeof(real));
+                //outfile_szx.write(reinterpret_cast<const char*> (&accu_szx[it][iz][ix]), sizeof(real));
+                //outfile_sxx.write(reinterpret_cast<const char*> (&accu_sxx[it][iz][ix]), sizeof(real));
             }
         }
     }
    
     outfile_vz.close();
     outfile_vx.close();
-    outfile_szz.close();
-    outfile_szx.close();
-    outfile_sxx.close();
+    //outfile_szz.close();
+    //outfile_szx.close();
+    //outfile_sxx.close();
 
 }
 
