@@ -570,7 +570,7 @@ void vsrc2(
                 if (src_shot_to_fire[is] == ishot){
                     //std::cout << "firing shot " << ishot << "::" << stf_z[is][it] <<"::" << stf_x[is][it]<<"\n";
                     //printf("it=%d  is=%d vz=%lf z_src=%d x_src=%d \n",it, is, vz[z_src[is] ][ x_src[is]],z_src[is], x_src[is] );
-                    vz[z_src[is]][x_src[is]] = stf_z[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
+                    vz[z_src[is]][x_src[is]] += stf_z[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
                     //vx[z_src[is]][x_src[is]] = stf_x[is][it]; // Cumulative removed as velocity boundary condition (TEMPORARILY)
                     //std::cout << "v:" << vz[z_src[is]][x_src[is]] <<", " << stf_z[is][it]<<std::endl;
 
