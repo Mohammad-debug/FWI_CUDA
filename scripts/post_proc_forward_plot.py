@@ -252,8 +252,8 @@ if plot_vel==True:
     vz = vz_dat[t_step,:,:]
     vx = vx_dat[t_step,:,:]
     
-    vz = vz[:vz.shape[0]-30,10:vz.shape[1]-10]*dt
-    vx = vx[:vx.shape[0]-30,10:vx.shape[1]-10]*dt
+    #vz = vz[:vz.shape[0]-30,10:vz.shape[1]-10]*dt
+    #vx = vx[:vx.shape[0]-30,10:vx.shape[1]-10]*dt
 
     
     ez0 = d_edge
@@ -274,8 +274,7 @@ if plot_vel==True:
   
     vz = vz_dat[t_step,:,:]
     vx = vx_dat[t_step,:,:]
-    vz = vz[:vz.shape[0]-30,10:vz.shape[1]-10]*dt
-    vx = vx[:vx.shape[0]-30,10:vx.shape[1]-10]*dt
+  
 
     # plotting dam parameters
     # plotting dam parameters
@@ -310,8 +309,7 @@ if plot_vel==True:
     #vx = np.flipud(vx_dat[t_step,:,:]) 
     vz = vz_dat[t_step,:,:]
     vx = vx_dat[t_step,:,:]
-    vz = vz[:vz.shape[0]-30,10:vz.shape[1]-10]*dt
-    vx = vx[:vx.shape[0]-30,10:vx.shape[1]-10]*dt
+ 
 
     # plotting dam parameters
     # plotting dam parameters
@@ -345,8 +343,7 @@ if plot_vel==True:
    
     vz = vz_dat[t_step,:,:]
     vx = vx_dat[t_step,:,:]
-    vz = vz[:vz.shape[0]-30,10:vz.shape[1]-10]*dt
-    vx = vx[:vx.shape[0]-30,10:vx.shape[1]-10]*dt
+   
 
     # plotting dam parameters
     # plotting dam parameters
@@ -379,8 +376,6 @@ if plot_vel==True:
  
     vz = vz_dat[t_step,:,:]
     vx = vx_dat[t_step,:,:]
-    vz = vz[:vz.shape[0]-30,10:vz.shape[1]-10]*dt
-    vx = vx[:vx.shape[0]-30,10:vx.shape[1]-10]*dt
 
     # plotting dam parameters
     # plotting dam parameters

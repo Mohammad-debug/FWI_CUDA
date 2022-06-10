@@ -625,7 +625,7 @@ void urec2(int rtf_type,
         for(int ir=0; ir<nrec; ir++){//when function is called only one of the case would get executed
             
                 rtf_uz[ir][it] = vz[rz[ir]][rx[ir]];
-                //rtf_ux[ir][it] = vx[rz[ir]][rx[ir]];
+                rtf_ux[ir][it] = vx[rz[ir]][rx[ir]];
           
 
         }
