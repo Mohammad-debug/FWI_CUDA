@@ -121,8 +121,8 @@ else:
     
     # Plot the rtf first
     print("NREC: ", nrec)
-    rtf_uz = read_tensor("./bin/shot1_rtf_uz.bin", np.float64, (nrec, ndim[0]))
-    rtf_ux = read_tensor("./bin/shot1_rtf_ux.bin", np.float64, (nrec, ndim[0]))
+    rtf_uz = read_tensor("./bin/shot0_rtf_uz.bin", np.float64, (nrec, ndim[0]))
+    rtf_ux = read_tensor("./bin/shot0_rtf_ux.bin", np.float64, (nrec, ndim[0]))
     
     
     # Plotting the RTF functions
@@ -137,8 +137,8 @@ else:
     plt.grid()
     plt.show()
     
-    vz_dat = read_tensor("./bin/shot1_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
-    vx_dat = read_tensor("./bin/shot1_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vz_dat = read_tensor("./bin/shot0_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
+    vx_dat = read_tensor("./bin/shot0_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     clip_nt = snap_nt
     clip_pz = np.amax(vz_dat[:clip_nt])
     clip_mz = np.amin(vz_dat[:clip_nt])

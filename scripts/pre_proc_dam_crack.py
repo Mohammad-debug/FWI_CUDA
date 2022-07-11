@@ -72,7 +72,7 @@ nx = fpad + npml_left + np.int32(len/dx) + npml_right + fpad + 1 # grid numbers 
 surf = True # surface exists
 isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 
-
+print('NZNX: ', nz, nx)
 
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
 snap_z1 = fpad + npml_top #+np.int32(d_wt/dz) 
