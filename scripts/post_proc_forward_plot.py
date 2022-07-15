@@ -237,59 +237,64 @@ if plot_seismograms==True:
     plt.rcParams.update(tex_fonts)
 
     # initialize the figure plots
-    fig, axs = plt.subplots(2,1, figsize=(fw, fh*1.2))
+    fig, axs = plt.subplots(1,2, figsize=(fw, fh))
     fig.tight_layout() 
-    plt.subplots_adjust(top=0.95, bottom=0.105, left=0.121, right=0.95, hspace=0.455, wspace=0.215)
+    plt.subplots_adjust(top=0.935,bottom=0.125,left=0.09,right=0.95,hspace=0.455,wspace=0.31)
     
     x_spacing = 0.5 #(l_usl+l_top+l_dsl)/(nrec-1)
     xsrc = 12 # Position of the source from the left end
     
+    nt = int(0.06/dt)
     rtf = rtf_uz
+    time = np.arange(0, nt)*dt
     axs[0].set_title('(a) ', loc=('left'))
     axs[1].set_title('(b) ', loc=('left'))
     outfile = './seismograms_dam_vz.pdf'
     #axs[0].set_xlim(0, dt*nt*0.6)
     
-    axs[0].plot((-1, 10), (0, 0), color='k') # base line
+    #axs[0].plot((-1, 10), (0, 0), color='k') # base line
     
+    counter = 0
     for ii in range(24, nrec, 6):
         dist = ii*x_spacing-13.5
         dist_str = "{:.2f}".format(dist)
         if dist<0:
-            ls = '--'
+            ls = '-'
         else:
             ls = '-'
-        axs[0].plot(time, rtf[ii], ls=ls, label='x = '+dist_str+r' $m$')
+            
+        axs[0].plot(time, counter+3*rtf[ii][0:nt], ls=ls, label='x = '+dist_str+r' $m$')
+        axs[0].set_xlim(-0.001, 0.06)
         
         # Frequency domain plot
-        fsignal = np.fft.fft(rtf[ii])
-        freq = np.fft.fftfreq(rtf[ii].shape[-1], dt)
+        fsignal = np.fft.fft(rtf[ii][0:nt])
+        freq = np.fft.fftfreq(rtf[ii][0:nt].shape[-1], dt)
         fs_max = np.max(abs(fsignal))
         fsignal_amp = np.abs(fsignal)/fs_max
         freq = freq*1.0e-3
         
-        axs[1].plot(freq[:freq.size//2], np.abs(fsignal_amp[:freq.size//2]), ls=ls, label='x = '+dist_str+r' $m$')
+        axs[1].plot(freq[:freq.size//2], counter+np.abs(fsignal_amp[:freq.size//2]), ls=ls, label='x = '+dist_str+r' $m$')
         
         # writing the text file of the frequency data
         dat_csv = np.zeros((2, nt), dtype = float)
         dat_csv[0] = time
-        dat_csv[1] = rtf[ii]
+        dat_csv[1] = rtf[ii][0:nt]
         dt_str =  "{:.5e}".format(dt)
         dat_head = 'loc: X = '+ dist_str+'m; \n time step: dt = '+dt_str+ 's \n col1: time(s); \n col2: amplitude (normalized to the source wavelet)'
         np.savetxt('./dyke_simulation_rtf_'+dist_str+'m.csv', dat_csv.T, delimiter=', ', header=dat_head, fmt='%.5e')
         
-        
+        counter +=1
     
     # setting axis limits
     
     #axs[0].set_ylim(-0.26, 0.46)
     axs[0].set_xlabel( 'Time '+ r'$(s)$')
-    axs[0].set_ylabel('Amplitude')
-    axs[0].legend(ncol=3)#, loc=(0.2, -0.6))
+    axs[0].set_ylabel('Transducer position')
+    #axs[0].legend(ncol=3)#, loc=(0.2, -0.6))
     
     axs[1].set_xlabel( 'Frequency '+ r'$(kHz)$')
-    axs[1].set_ylabel('Amplitude')
-    axs[1].legend(ncol=1)#, loc=(0.2, -0.6))
+    axs[1].set_ylabel('Transducer position')
+    #axs[1].legend(ncol=1)#, loc=(0.2, -0.6))
     axs[1].set_xlim(0, 2.5)
     #axs.set_title('(a) '+r'$v_z$', loc=('left'))
     '''
