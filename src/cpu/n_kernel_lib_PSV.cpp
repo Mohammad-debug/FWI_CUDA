@@ -477,8 +477,8 @@ void fwi_grad2(
             grad_lam[jz][jx] += snap_dt * dt * s1;
             grad_mu[jz][jx] += snap_dt * dt * (s3 + s1 + s2);
             grad_rho[jz][jx] += snap_dt * dt * s4;
-            =
-                jx++;
+            
+            jx++;
         }
     }
 }
@@ -593,8 +593,8 @@ real adjsrc2(int ishot, int *&a_stf_type, real **&a_stf_uz, real **&a_stf_ux,
         // RTF type is displacement
         //parallel region starts
 
-#pragma omp parallel for collapse(2) reduction(+ \ \
-                                               : L2)
+//#pragma omp parallel for collapse(2) reduction(+ \ 
+  //                                             : L2)
         for (int is = 0; is < nseis; is++)
         { // for all seismograms
             for (int it = 0; it < nt; it++)
@@ -706,7 +706,7 @@ void energy_weights2(
     real max_We = 0;
     real max_w1 = 0, max_w2 = 0;
     real epsilon_We = 0.005;
-    =
+    
 #pragma omp parallel for collapse(2)
         for (int iz = snap_z1; iz < snap_z2; iz++)
     {
