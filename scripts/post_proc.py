@@ -128,14 +128,15 @@ else:
     # Plotting the RTF functions
     plt.figure(1)
     plt.subplot(211)
-    for ii in range(0, nrec):   
+    for ii in range(0, nrec,10):   
         plt.plot(rtf_uz[ii][:])
     plt.grid()
     plt.subplot(212)
-    for ii in range(0, nrec):
+    for ii in range(0, nrec,10):
         plt.plot(rtf_ux[ii][:])
     plt.grid()
     plt.show()
+    plt.savefig('./rtf_signals.png', format='png', bbox_inches='tight')
     
     vz_dat = read_tensor("./bin/shot0_vz.bin", np.float64, (snap_nt, snap_nz, snap_nx))
     vx_dat = read_tensor("./bin/shot0_vx.bin", np.float64, (snap_nt, snap_nz, snap_nx))

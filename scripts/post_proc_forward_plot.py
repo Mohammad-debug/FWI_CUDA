@@ -244,7 +244,7 @@ if plot_seismograms==True:
     x_spacing = 0.5 #(l_usl+l_top+l_dsl)/(nrec-1)
     xsrc = 12 # Position of the source from the left end
     
-    nt = int(0.06/dt)
+    #nt = int(0.06/dt)
     rtf = rtf_uz
     time = np.arange(0, nt)*dt
     axs[0].set_title('(a) ', loc=('left'))

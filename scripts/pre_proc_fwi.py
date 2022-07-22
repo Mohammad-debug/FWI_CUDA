@@ -1,19 +1,37 @@
 #%%
 # # preprocessing of the files
 import numpy as np
-from seismic_def import read_tensor
+from seismic_def import read_tensor, e_lami, v_lami, w_vel
 import matplotlib.pyplot as plt
 
 ftype = np.float64
+
+# -------------------------------------------------------------------------
+# FINITE DIFFERENCE PARAMETERS
+# --------------------------------------------------------------------------
+
+fdorder = 2 # finite difference order 
+fpad = 1 # number of additional grids for finite difference computation
+
+#forward only or fWI?
+fwinv = False # True: FWI, False: Forward only
+
+# Internal parameters for different cases 
+if (fwinv):
+    accu_save = False; seismo_save=True
+    mat_save_interval = 1; rtf_meas_true = True # RTF field measurement exists
+else:
+    accu_save = True; seismo_save=True
+    mat_save_interval = -1; rtf_meas_true = False # RTF field measurement exists
+
+# ---------------------------------------------------------------------------------
+
 
 ##---------------------------------------------------------------------
 # COMPUTATION IN GPU OR CPU
 #---------------------------------------------------------------------
 
-cuda_computation = True# True: computation in GPU, False: in CPU
-
-#forward only or fWI?
-fwinv = False # True: FWI, False: Forward only
+cuda_computation = False # True: computation in GPU, False: in CPU
 
 #---------------------------------------------------------------------
 
@@ -24,12 +42,14 @@ fwinv = False # True: FWI, False: Forward only
 # GRID PARAMETERS
 #--------------------------------------------------------------------
 
-x = 20
-z = 35
+x = 10
+z = 15
 
 # Geometric data
-nt = 1000; nz = 701; nx = 401 # grid numbers (adding for PMLs as well)
-dt = 0.1e-3; dz = z/(nz-1); dx = x/(nx-1) # grid intervals
+nt = 4000; nz = 751; nx = 501 # grid numbers (adding for PMLs as well)
+dt = 0.94e-5; 
+dz = z/(nz-1) #; 
+dx = x/(nx-1) # grid intervals
 
 print('Spacing: ', dt, dz, dx)
 # Number of PMLs in each direction
@@ -45,7 +65,7 @@ isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
 snap_z1 = npml_top; snap_z2 = nz-npml_bottom  # snap boundaries z
 snap_x1 = npml_left; snap_x2 = nx-npml_right # snap boundaries x
-snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap intervals
+snap_dt = 5; snap_dz = 1; snap_dx = 1; # the snap intervals
 
 
 # Taper position
@@ -66,27 +86,14 @@ taper_r1 = snap_x2 - np.int32(nx_snap*0.05); taper_r2 = taper_r1 - np.int32(nx_s
 print('snaps: ', snap_z1, snap_z2, snap_x1, snap_x2)
 
 
-
-# -------------------------------------------------------------------------
-# FINITE DIFFERENCE PARAMETERS
-# --------------------------------------------------------------------------
-
-fdorder = 2 # finite difference order 
-fpad = 1 # number of additional grids for finite difference computation
-
-
-
-# Internal parameters for different cases 
-if (fwinv):
-    accu_save = False; seismo_save=True
-    mat_save_interval = 1; rtf_meas_true = True # RTF field measurement exists
-else:
-    accu_save = True; seismo_save=True
-    mat_save_interval = -1; rtf_meas_true = False # RTF field measurement exists
-
-# ---------------------------------------------------------------------------------
-    
 #------------------------------------------------------------------
+# MEDIUM (MATERIAL) PARAMETERS
+#-----------------------------------------------------------------
+
+# material input values scalar or arrays
+mat_grid = 1 # 0 for scalar and 1 for grid
+
+##------------------------------------------------------------------
 # MEDIUM (MATERIAL) PARAMETERS
 #-----------------------------------------------------------------
 
@@ -96,15 +103,14 @@ Cs = 400.0
 scalar_rho = 1700.0
 scalar_mu = Cs*Cs*scalar_rho
 scalar_lam = Cp*Cp*scalar_rho - 2.0*scalar_mu
-mat_grid = 1 # 0 for scalar and 1 for grid
-
 
 # --------------------------------------------------
-# preparing  the starting material arrays
+# preparing  the starting material arrays (Fill with Air)
 lam = np.full((nz, nx), scalar_lam)
 mu = np.full((nz, nx), scalar_mu)
 rho = np.full((nz, nx), scalar_rho)
 
+#-----------------------------------------------------------------------------
 
 # scalar material variables
 Cp1 = 1500
@@ -126,6 +132,9 @@ if (fwinv==False):
 
 #------------------------------------------------------------
 
+#------------------------------------------------------------
+
+
 
 
 # -----------------------------------------------------
@@ -137,7 +146,7 @@ pml_npower_pml = 2.0
 damp_v_pml = Cp
 rcoef = 0.001
 k_max_pml = 1.0
-freq_pml = 200.0 # PML frequency in Hz
+freq_pml = 800.0 # PML frequency in Hz
 
 # -----------------------------------------------------
 
@@ -151,8 +160,10 @@ freq_pml = 200.0 # PML frequency in Hz
 # source and reciever time functions type
 stf_type = 1; rtf_type = 0 # 1:velocity, 2:displacement
 
+
 # Creating source locations
-zsrc = np.array([nz/6, 2*nz/6, 3*nz/6, 4*nz/6, 5*nz/6], dtype=np.int32)
+zsrc = np.array([nz/4, 2*nz/4, 3*nz/4], dtype=np.int32)
+
 xsrc = np.full((zsrc.size,), npml_left+10, dtype=np.int32)
 nsrc = zsrc.size # counting number of sources from the source location data
 
@@ -164,9 +175,17 @@ src_shot_to_fire = np.arange(0,nsrc,1, dtype=np.int32)
 nshot = nsrc # fire each shot separately
 
 # Creating reciever locations
-zrec = np.arange((npml_top+10), (npml_bottom-10), 2, dtype=np.int32)
+zrec = np.arange((npml_top+10), (nz-npml_bottom-10), 2, dtype=np.int32)
 xrec = np.full((zrec.size,), nx-npml_right-10, dtype=np.int32)
 nrec = zrec.size
+
+
+
+# Creating source to fire arrays
+src_shot_to_fire = np.arange(0,nsrc,1, dtype=np.int32)
+#src_shot_to_fire = np.zeros((nsrc,), dtype=np.int32)
+
+nshot = nsrc # fire each shot separately
 
 
 
@@ -174,25 +193,37 @@ nrec = zrec.size
 # PLOTTING INPUTS
 #---------------------------------------------------
 
+Cs = np.sqrt(mu/rho)
+Cp = np.sqrt((lam + 2 * mu)/rho)
+    
+
 print('Plotting initial materials')
 plt.figure(1)
 plt.subplot(221)
-plt.imshow(lam) # lamda parameter
-plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=4) # source positions
-plt.plot(xrec,zrec, ls = '', marker= '+', markersize=3) # reciever positions
+plt.imshow(Cp) # lamda parameter
+plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=2) # source positions
+plt.plot(xrec,zrec, ls = '', marker= '+', markersize=2) # reciever positions
 plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
 plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
 plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
 plt.subplot(222)
-plt.imshow(mu)
+plt.imshow(Cs)
+plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=2) # source positions
+plt.plot(xrec,zrec, ls = '', marker= '+', markersize=2) # reciever positions
+plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
+plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
+plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
 plt.subplot(223)
 plt.imshow(rho)
-plt.tight_layout()
+plt.plot(xsrc,zsrc, ls = '', marker= 'x', markersize=2) # source positions
+plt.plot(xrec,zrec, ls = '', marker= '+', markersize=2) # reciever positions
+plt.plot([snap_x1, snap_x2, snap_x2, snap_x1, snap_x1], [snap_z1, snap_z1, snap_z2, snap_z2, snap_z1], ls = '--')
+plt.plot([taper_l1, taper_r1, taper_r1, taper_l1, taper_l1], [taper_t1, taper_t1, taper_b1, taper_b1, taper_t1], ls = '--')
+plt.plot([taper_l2, taper_r2, taper_r2, taper_l2, taper_l2], [taper_t2, taper_t2, taper_b2, taper_b2, taper_t2], ls = '--')
 #plt.show()
 plt.savefig('./fwi_pre_proc.png', format='png', bbox_inches='tight')
 
 #--------------------------------------------------------
-
 
 
 
@@ -250,5 +281,3 @@ material_inp.tofile('./bin/mat.bin')
 #-------------------------------------------------------
 
 
-
-# %%
