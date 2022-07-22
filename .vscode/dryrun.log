@@ -2,6 +2,23 @@ make --dry-run --keep-going --print-directory
 make: Entering directory '/home/min/git/Finite_Difference_FWI_PSV'
 mkdir -p bin
 mkdir -p obj
+mkdir -p obj/src
+g++ -fopenmp  -Iinclude -Iinclude/cpu   -c src/h_io_PSV.cpp -o obj/src/h_io_PSV.o 
+mkdir -p obj/src
+g++ -fopenmp  -Iinclude -Iinclude/cpu   -c src/h_simulate_PSV.cpp -o obj/src/h_simulate_PSV.o 
+mkdir -p obj/src
+g++ -fopenmp  -Iinclude -Iinclude/cpu   -c src/h_main.cpp -o obj/src/h_main.o 
  
+mkdir -p obj/src/cpu
+g++ -fopenmp  -Iinclude -Iinclude/cpu   -c src/cpu/n_simulate_PSV.cpp -o obj/src/cpu/n_simulate_PSV.o 
+mkdir -p obj/src/cpu
+g++ -fopenmp  -Iinclude -Iinclude/cpu   -c src/cpu/n_step_length_PSV.cpp -o obj/src/cpu/n_step_length_PSV.o 
+mkdir -p obj/src/cpu
+g++ -fopenmp  -Iinclude -Iinclude/cpu   -c src/cpu/n_kernel_lib_PSV.cpp -o obj/src/cpu/n_kernel_lib_PSV.o 
+mkdir -p obj/src/cpu
+g++ -fopenmp  -Iinclude -Iinclude/cpu   -c src/cpu/n_kernel_PSV.cpp -o obj/src/cpu/n_kernel_PSV.o 
+ 
+mkdir -p bin
+g++ -fopenmp  -o bin/seis_fwi obj/src/h_io_PSV.o obj/src/h_simulate_PSV.o obj/src/h_preproc_PSV.o obj/src/h_checkfd_ssg_elastic.o obj/src/h_holbergcoeff.o obj/src/h_main.o obj/src/cpu/n_simulate_PSV.o obj/src/cpu/n_step_length_PSV.o obj/src/cpu/n_PCG_PSV.o obj/src/cpu/n_kernel_lib_PSV.o obj/src/cpu/n_alloc_PSV.o obj/src/cpu/n_kernel_PSV.o 
 make: Leaving directory '/home/min/git/Finite_Difference_FWI_PSV'
  
