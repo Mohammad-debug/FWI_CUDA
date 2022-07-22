@@ -14,7 +14,7 @@ fdorder = 2 # finite difference order
 fpad = 1 # number of additional grids for finite difference computation
 
 #forward only or fWI?
-fwinv = False # True: FWI, False: Forward only
+fwinv = True # True: FWI, False: Forward only
 
 # Internal parameters for different cases 
 if (fwinv):
