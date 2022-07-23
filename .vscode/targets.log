@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jul 23 11:21:07 2022
+# Make data base, printed on Sat Jul 23 19:10:00 2022
 
 # Variables
 
@@ -63,7 +63,7 @@ LC_NAME = de_DE.UTF-8
 # environment
 VSCODE_CWD = /home/min
 # environment
-SSH_CONNECTION = 134.245.228.74 58265 134.245.30.91 22
+SSH_CONNECTION = 134.245.228.50 62246 134.245.30.91 22
 # environment
 PATH = /home/min/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
@@ -73,7 +73,7 @@ SRC_CUDA :=
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-8ac15994-4d91-4c40-8ca0-90e25cf2ffd6.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-4048bc9a-e051-4f26-8e67-8ba78b480f41.sock
 # makefile (from 'Makefile', line 7)
 LDFLAGS := 
 # makefile (from 'Makefile', line 18)
@@ -101,7 +101,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 LOGNAME = min
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
 # automatic
 +F = $(notdir $+)
 # environment
@@ -117,7 +117,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 0
 # environment
-XDG_SESSION_ID = 381
+XDG_SESSION_ID = 400
 # environment
 USER = min
 # environment
@@ -141,7 +141,7 @@ MAKEFLAGS = pqrR
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_CLIENT = 134.245.228.74 58265 22
+SSH_CLIENT = 134.245.228.50 62246 22
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # makefile (from 'Makefile', line 4)
@@ -263,7 +263,7 @@ obj/src/cpu/n_PCG_PSV.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-22 22:32:58.939460395
+#  Last modified 2022-07-23 11:56:59.03151299
 #  File has been updated.
 #  Successfully updated.
 
@@ -277,11 +277,11 @@ obj/src/cpu/n_kernel_PSV.o:
 debug: CXXFLAGS += -DDEBUG -g
 debug: all
 #  Phony target (prerequisite of .PHONY).
- 
 #  Implicit rule search has not been done.
 #  File does not exist.
 #  File has not been updated.
 # variable set hash-table stats:
+ 
 # Load=1/32=3%, Rehash=0, Collisions=0/2=0%
 
 build:
@@ -365,6 +365,7 @@ run:
 	python3 ./scripts/post_proc.py
 
 clean:
+ 
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
@@ -411,6 +412,6 @@ obj/src/h_simulate_PSV.o:
 # strcache performance: lookups = 108 / hit rate = 27%
 # hash-table stats:
 # Load=78/8192=1%, Rehash=0, Collisions=4/108=4%
-# Finished Make data base on Sat Jul 23 11:21:07 2022
+# Finished Make data base on Sat Jul 23 19:10:00 2022
 
  

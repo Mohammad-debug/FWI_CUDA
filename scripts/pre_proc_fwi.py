@@ -14,7 +14,7 @@ fdorder = 2 # finite difference order
 fpad = 1 # number of additional grids for finite difference computation
 
 #forward only or fWI?
-fwinv = True # True: FWI, False: Forward only
+fwinv = False # True: FWI, False: Forward only
 
 # Internal parameters for different cases 
 if (fwinv):
@@ -42,19 +42,19 @@ cuda_computation = False # True: computation in GPU, False: in CPU
 # GRID PARAMETERS
 #--------------------------------------------------------------------
 
-x = 10
-z = 15
+x = 15
+z = 30
 
 # Geometric data
-nt = 4000; nz = 601; nx = 401 # grid numbers (adding for PMLs as well)
-dt = 0.94e-5; 
+nt = 2500; nz = 601; nx = 301 # grid numbers (adding for PMLs as well)
+dt = 2.35e-5; 
 dz = z/(nz-1) #; 
 dx = x/(nx-1) # grid intervals
 
 print('Spacing: ', dt, dz, dx)
 # Number of PMLs in each direction
 pml_z = True; pml_x = True # PML exist in both direction
-npml_top = 10; npml_bottom = 10; npml_left = 10; npml_right = 10
+npml_top = 20; npml_bottom = 20; npml_left = 20; npml_right = 20
 
 
 # Surface grid index in each direction (0 = no surface)
@@ -146,7 +146,7 @@ pml_npower_pml = 2.0
 damp_v_pml = Cp
 rcoef = 0.001
 k_max_pml = 1.0
-freq_pml = 800.0 # PML frequency in Hz
+freq_pml = 300.0 # PML frequency in Hz
 
 # -----------------------------------------------------
 
@@ -164,7 +164,7 @@ stf_type = 1; rtf_type = 0 # 1:velocity, 2:displacement
 # Creating source locations
 zsrc = np.array([nz/4, 2*nz/4, 3*nz/4], dtype=np.int32)
 
-xsrc = np.full((zsrc.size,), npml_left+10, dtype=np.int32)
+xsrc = np.full((zsrc.size,), npml_left+20, dtype=np.int32)
 nsrc = zsrc.size # counting number of sources from the source location data
 
 
@@ -175,8 +175,8 @@ src_shot_to_fire = np.arange(0,nsrc,1, dtype=np.int32)
 nshot = nsrc # fire each shot separately
 
 # Creating reciever locations
-zrec = np.arange((npml_top+10), (nz-npml_bottom-10), 2, dtype=np.int32)
-xrec = np.full((zrec.size,), nx-npml_right-10, dtype=np.int32)
+zrec = np.linspace((npml_top+20), (nz-npml_bottom-20), 40, dtype=np.int32)
+xrec = np.full((zrec.size,), nx-npml_right-20, dtype=np.int32)
 nrec = zrec.size
 
 

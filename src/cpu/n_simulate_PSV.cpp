@@ -13,8 +13,6 @@
 #include <iostream>
 #include <math.h>
 #include <omp.h>
-#include <fstream>
-#include <string>
 
 
 void simulate_fwd_PSV(int nt, int nz, int nx, real dt, real dz, real dx, 
@@ -207,21 +205,21 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     //PCG_old = new real[nz*nx*3];
     //PCG_dir = new real[nz*nx*3];
     //allocate_array(PCG_new, nz, nx);
-    allocate_array(PCG_lam, nz, nx);
-    allocate_array(PCG_mu, nz, nx);
-    allocate_array(PCG_rho, nz, nx);
+    // allocate_array(PCG_lam, nz, nx);
+    // allocate_array(PCG_mu, nz, nx);
+    // allocate_array(PCG_rho, nz, nx);
 
-    allocate_array(PCG_dir_lam, nz, nx);
-    allocate_array(PCG_dir_mu, nz, nx);
-    allocate_array(PCG_dir_rho, nz, nx);
+    // allocate_array(PCG_dir_lam, nz, nx);
+    // allocate_array(PCG_dir_mu, nz, nx);
+    // allocate_array(PCG_dir_rho, nz, nx);
     
-    for (int iz=0;iz<nz;iz++){
-        for (int ix=0;ix<nx;ix++){
-            PCG_dir_lam[iz][ix] = 0.0;
-            PCG_dir_mu[iz][ix] = 0.0;
-            PCG_dir_rho[iz][ix] = 0.0;
-        }
-    }
+    // for (int iz=0;iz<nz;iz++){
+    //     for (int ix=0;ix<nx;ix++){
+    //         PCG_dir_lam[iz][ix] = 0.0;
+    //         PCG_dir_mu[iz][ix] = 0.0;
+    //         PCG_dir_rho[iz][ix] = 0.0;
+    //     }
+    // }
 
 
     //-----------------------------------------------
@@ -244,17 +242,9 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     for (int ll=0;ll<1000;ll++){ L2_norm[ll] = 0.0;}
     real step_length = 0.01; // step length set to initial
     real step_length_rho = 0.01; // step length set to initial
-
-    real**gauss_filter, **gauss_temp_shot;
-    int hfs = 3;
-    int snap_nz = 1 + (snap_z2 - snap_z1)/snap_dz;
-    int snap_nx = 1 + (snap_x2 - snap_x1)/snap_dx;
-
-    //allocate_array(gauss_filter, 2*hfs+1, 2*hfs+1);
-    //allocate_array(gauss_temp_shot, snap_nz, snap_nx);
-    //gauss_filter_kernel(gauss_filter, hfs);
-
-    std::cout<< "Gauss filter calculated";
+    
+    double dif=0;
+   
 
     while (iter){ // currently 10 just for test (check the conditions later)
         //
@@ -380,7 +370,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
     //     }
     // }
 
-
+    //     std::cout << "This is test CPU>ADJOINT \nLAM_SHOT=" << l << " \nMU_SHOT=" << m << " \nRHO_SHOT=" << r << " \n\n";
 
         // Smoothen the grad shots
         // Applying gauss filter to material gradients
@@ -466,14 +456,12 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         //apply_gauss_filter(grad_mu, We_adj, gauss_filter, 0, nz, 0, nx, hfs);
         //apply_gauss_filter(grad_rho, We_adj, gauss_filter, 0, nz, 0, nx, hfs);
 
-        
+        /*
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+1);
         // Applying PSG method
         beta_i = 0.0; beta_j = 0.0;
-        
         for (int iz=0;iz<nz;iz++){
             for (int ix=0;ix<nx;ix++){
-                
 
                 // Fletcher-Reeves [Fletcher and Reeves, 1964]:
                 beta_i += grad_lam[iz][ix] * (grad_lam[iz][ix] - PCG_lam[iz][ix]);
@@ -490,8 +478,6 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
            
             }
         }
-        
-
         beta_PCG = (iterstep) ? (beta_i/beta_j) : 0.0;
         std::cout << "beta = "<< beta_PCG ;
         beta_PCG = (beta_PCG >0) ? beta_PCG : 0.0;
@@ -511,18 +497,7 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
            
             }
         }
-        
-        // removing gradient update in the region of air
-        for (int iz=0;iz<nz;iz++){
-            for (int ix=0;ix<nx;ix++){
-                if (rho[iz][ix] < 10){
-                    grad_lam[iz][ix] = 0.0;
-                    grad_mu[iz][ix] = 0.0;
-                    grad_rho[iz][ix] = 0.0;
-
-                }
-            }
-        }
+        */
 
         //write_mat(grad_lam, grad_mu, grad_rho, nz, nx, 1000*(iterstep+1)+2);
         // ----------------------
@@ -564,14 +539,14 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         */
      
         // Update material parameters to the gradients !!
-		update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 1000, step_length, nz, nx);
-        update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 1000, step_length, nz, nx);
+		update_mat2(lam, lam_copy, grad_lam, 4.8e+10, 0.0, step_length, nz, nx);
+        update_mat2(mu, mu_copy, grad_mu, 2.7e+10, 0.0, step_length, nz, nx);
 
         step_length_rho = 0.5 * step_length;
-        update_mat2(rho, rho_copy, grad_rho, 3000.0, 100, step_length_rho, nz, nx);
+        update_mat2(rho, rho_copy, grad_rho, 3000.0, 1.25, step_length_rho, nz, nx);
 
         double end = omp_get_wtime(); // end the timer
-        double dif = end - start;            // stores the difference in dif
+        dif = end - start;            // stores the difference in dif
         std::cout << "==================================" << std::endl;
         std::cout << "the time of single FWI iteration = " << dif << "s\n";
         std::cout << "==================================" << std::endl;
@@ -584,21 +559,9 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         if (mat_save_interval>0 && !(iterstep%mat_save_interval)){
             // Writing the accumulation array
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep ;
-
             write_mat(lam, mu, rho, nz, nx, iterstep);
-
             std::cout <<" <DONE>"<< std::endl;
         }
-        std::ofstream out("l2norm_out.txt");
-        std::streambuf *coutbuf = std::cout.rdbuf(); //save old buf
-        std::cout.rdbuf(out.rdbuf()); //redirect std::cout to out.txt!
-
-        std::cout << "L2 norm: " ;
-        for (int ii=0;ii<200;ii++){
-            std::cout << L2_norm[ii] << ", ";
-        }
-        std::cout << std::endl;
-
         
  
        //
@@ -617,7 +580,11 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
         write_mat(lam, mu, rho, nz, nx, iterstep);
         std::cout <<" <DONE>"<< std::endl;
     }
+    // writing the L2 norm
+    std::cout << "L2 norms: " << std::endl;
+    for (int iL2 = 0; iL2 < iterstep+1; iL2++){
+        std::cout << L2_norm[iL2] << ", " ;
+    }
 
-    
 }
 

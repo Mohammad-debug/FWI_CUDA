@@ -69,8 +69,8 @@ if (fwinv):
     maxiter = 14
     for ii in range(0,maxiter,1):
         # reading data from csv file
-        mat_dat = read_tensor("./bin/mat.bin", np.float64, (3, ndim[1], ndim[2]))
-        #mat_dat = read_tensor("../io/mat_save/iter"+np.str(ii)+"_mat copy.bin", np.float64, (3, ndim[1], ndim[2]))
+        #mat_dat = read_tensor("./bin/mat.bin", np.float64, (3, ndim[1], ndim[2]))
+        mat_dat = read_tensor("./bin/iter"+np.str(ii)+"_mat.bin", np.float64, (3, ndim[1], ndim[2]))
         
         lam = mat_dat[0][:][:]
         mu = mat_dat[1][:][:]
@@ -110,6 +110,7 @@ if (fwinv):
         else:
             plt.pause(0.005)
             plt.clf()
+        plt.savefig('./iter'+np.str(ii)+'_mat.png', format='png', bbox_inches='tight')
         
         #print('Figure '+np.str(ii)+' plotted.')
 
@@ -175,6 +176,7 @@ else:
         #pyplot.savefig('../io/vz_snap'+numpy.str(ii)+'.pdf', format='pdf',figsize=(10,7), dpi=1000)
         #plt.show()
         #plt.draw()
+        plt.savefig('./mat_fwd.png', format='png', bbox_inches='tight')
         plt.pause(0.01)
         plt.clf()
         
