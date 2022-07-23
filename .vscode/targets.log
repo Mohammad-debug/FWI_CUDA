@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jul 22 16:14:35 2022
+# Make data base, printed on Sat Jul 23 10:45:34 2022
 
 # Variables
 
@@ -63,7 +63,7 @@ LC_NAME = de_DE.UTF-8
 # environment
 VSCODE_CWD = /home/min
 # environment
-SSH_CONNECTION = 134.245.228.62 65189 134.245.30.91 22
+SSH_CONNECTION = 134.245.228.74 58265 134.245.30.91 22
 # environment
 PATH = /home/min/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
@@ -73,7 +73,7 @@ SRC_CUDA :=
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-140e5676-372b-459a-82eb-b78c38daa915.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-27ac03f6-2609-4802-adf2-e984c84e2383.sock
 # makefile (from 'Makefile', line 7)
 LDFLAGS := 
 # makefile (from 'Makefile', line 18)
@@ -101,7 +101,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 LOGNAME = min
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # automatic
 +F = $(notdir $+)
 # environment
@@ -117,7 +117,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 0
 # environment
-XDG_SESSION_ID = 332
+XDG_SESSION_ID = 381
 # environment
 USER = min
 # environment
@@ -132,8 +132,6 @@ INCLUDE := -Iinclude -Iinclude/cpu
 LC_TELEPHONE = de_DE.UTF-8
 # default
 MAKE_COMMAND := make
-# environment
-OLDPWD = /home/min/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # default
 .VARIABLES := 
 # automatic
@@ -143,7 +141,7 @@ MAKEFLAGS = pqrR
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_CLIENT = 134.245.228.62 65189 22
+SSH_CLIENT = 134.245.228.74 58265 22
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # makefile (from 'Makefile', line 4)
@@ -191,7 +189,7 @@ MOTD_SHOWN = pam
 # makefile (from 'Makefile', line 9)
 APP_DIR := bin
 # variable set hash-table stats:
-# Load=90/1024=9%, Rehash=0, Collisions=15/130=12%
+# Load=89/1024=9%, Rehash=0, Collisions=15/129=12%
 
 # Pattern-specific Variable Values
 
@@ -199,12 +197,12 @@ APP_DIR := bin
 
 # Directories
 
-# . (device 2050, inode 146474541): 33 files, no impossibilities.
+# . (device 2050, inode 146474541): 35 files, no impossibilities.
 # src/cpu (device 2050, inode 146669770): 8 files, no impossibilities.
 # src (device 2050, inode 146669769): 11 files, no impossibilities.
 # ext: could not be stat'd.
 
-# 52 files, no impossibilities in 4 directories.
+# 54 files, no impossibilities in 4 directories.
 
 # Implicit Rules
 
@@ -265,11 +263,10 @@ obj/src/cpu/n_PCG_PSV.o:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-22 16:14:10.628677315
+#  Last modified 2022-07-22 22:32:58.939460395
 #  File has been updated.
 #  Successfully updated.
 
- 
 # Not a target:
 obj/src/cpu/n_kernel_PSV.o:
 #  Implicit rule search has not been done.
@@ -284,6 +281,7 @@ debug: all
 #  File does not exist.
 #  File has not been updated.
 # variable set hash-table stats:
+ 
 # Load=1/32=3%, Rehash=0, Collisions=0/2=0%
 
 build:
@@ -388,7 +386,6 @@ obj/src/h_main.o:
 #  File has not been updated.
 
 # Not a target:
- 
 obj/src/h_holbergcoeff.o:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -408,12 +405,12 @@ obj/src/h_simulate_PSV.o:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 76 / storage = 1159 B / avg = 15 B
-# current buf: size = 8162 B / used = 1159 B / count = 76 / avg = 15 B
+# strcache buffers: 1 (0) / strings = 78 / storage = 1190 B / avg = 15 B
+# current buf: size = 8162 B / used = 1190 B / count = 78 / avg = 15 B
 
-# strcache performance: lookups = 106 / hit rate = 28%
+# strcache performance: lookups = 108 / hit rate = 27%
 # hash-table stats:
-# Load=76/8192=1%, Rehash=0, Collisions=4/106=4%
-# Finished Make data base on Fri Jul 22 16:14:35 2022
+# Load=78/8192=1%, Rehash=0, Collisions=4/108=4%
+# Finished Make data base on Sat Jul 23 10:45:34 2022
 
  

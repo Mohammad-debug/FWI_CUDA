@@ -46,7 +46,7 @@ x = 10
 z = 15
 
 # Geometric data
-nt = 4000; nz = 751; nx = 501 # grid numbers (adding for PMLs as well)
+nt = 4000; nz = 601; nx = 401 # grid numbers (adding for PMLs as well)
 dt = 0.94e-5; 
 dz = z/(nz-1) #; 
 dx = x/(nx-1) # grid intervals
