@@ -474,9 +474,9 @@ void fwi_grad2(
             // The time derivatives of the velocity may have to be computed differently
             s4 = ux[iz][ix] * accu_vx[tf][jz][jx] + uz[iz][ix] * accu_vz[tf][jz][jx];
 
-            grad_lam[jz][jx] += snap_dt * dt * s1;
-            grad_mu[jz][jx] += snap_dt * dt * (s3 + s1 + s2);
-            grad_rho[jz][jx] += snap_dt * dt * s4;
+            grad_lam[jz][jx] -= snap_dt * dt * s1;
+            grad_mu[jz][jx] -= snap_dt * dt * (s3 + s1 + s2);
+            grad_rho[jz][jx] -= snap_dt * dt * s4;
             
             jx++;
         }

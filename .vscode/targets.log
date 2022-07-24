@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jul 23 19:10:00 2022
+# Make data base, printed on Sun Jul 24 08:20:05 2022
 
 # Variables
 
@@ -63,7 +63,7 @@ LC_NAME = de_DE.UTF-8
 # environment
 VSCODE_CWD = /home/min
 # environment
-SSH_CONNECTION = 134.245.228.50 62246 134.245.30.91 22
+SSH_CONNECTION = 134.245.228.49 65441 134.245.30.91 22
 # environment
 PATH = /home/min/.vscode-server/bin/3b889b090b5ad5793f524b5d1d39fda662b96a2a/bin/remote-cli:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 # environment
@@ -73,7 +73,7 @@ SRC_CUDA :=
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-4048bc9a-e051-4f26-8e67-8ba78b480f41.sock
+VSCODE_IPC_HOOK_CLI = /run/user/1001/vscode-ipc-73caee96-b799-4fee-853e-2877378dc0f7.sock
 # makefile (from 'Makefile', line 7)
 LDFLAGS := 
 # makefile (from 'Makefile', line 18)
@@ -101,7 +101,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 LOGNAME = min
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # automatic
 +F = $(notdir $+)
 # environment
@@ -117,7 +117,7 @@ MAKECMDGOALS := all
 # environment
 SHLVL = 0
 # environment
-XDG_SESSION_ID = 400
+XDG_SESSION_ID = 429
 # environment
 USER = min
 # environment
@@ -141,7 +141,7 @@ MAKEFLAGS = pqrR
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_CLIENT = 134.245.228.50 62246 22
+SSH_CLIENT = 134.245.228.49 65441 22
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
 # makefile (from 'Makefile', line 4)
@@ -197,12 +197,12 @@ APP_DIR := bin
 
 # Directories
 
-# . (device 2050, inode 146474541): 35 files, no impossibilities.
+# . (device 2050, inode 146474541): 39 files, no impossibilities.
 # src/cpu (device 2050, inode 146669770): 8 files, no impossibilities.
 # src (device 2050, inode 146669769): 11 files, no impossibilities.
 # ext: could not be stat'd.
 
-# 54 files, no impossibilities in 4 directories.
+# 58 files, no impossibilities in 4 directories.
 
 # Implicit Rules
 
@@ -281,7 +281,6 @@ debug: all
 #  File does not exist.
 #  File has not been updated.
 # variable set hash-table stats:
- 
 # Load=1/32=3%, Rehash=0, Collisions=0/2=0%
 
 build:
@@ -365,7 +364,6 @@ run:
 	python3 ./scripts/post_proc.py
 
 clean:
- 
 #  Phony target (prerequisite of .PHONY).
 #  Implicit rule search has not been done.
 #  File does not exist.
@@ -403,15 +401,16 @@ obj/src/h_simulate_PSV.o:
 # VPATH Search Paths
 
 # No 'vpath' search paths.
+ 
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 78 / storage = 1190 B / avg = 15 B
-# current buf: size = 8162 B / used = 1190 B / count = 78 / avg = 15 B
+# strcache buffers: 1 (0) / strings = 82 / storage = 1244 B / avg = 15 B
+# current buf: size = 8162 B / used = 1244 B / count = 82 / avg = 15 B
 
-# strcache performance: lookups = 108 / hit rate = 27%
+# strcache performance: lookups = 112 / hit rate = 26%
 # hash-table stats:
-# Load=78/8192=1%, Rehash=0, Collisions=4/108=4%
-# Finished Make data base on Sat Jul 23 19:10:00 2022
+# Load=82/8192=1%, Rehash=0, Collisions=4/112=4%
+# Finished Make data base on Sun Jul 24 08:20:05 2022
 
  

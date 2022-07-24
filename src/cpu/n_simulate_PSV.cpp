@@ -561,7 +561,15 @@ void simulate_fwi_PSV(int nt, int nz, int nx, real dt, real dz, real dx,
             std::cout << "Writing updated material to binary file for ITERATION " << iterstep ;
             write_mat(lam, mu, rho, nz, nx, iterstep);
             std::cout <<" <DONE>"<< std::endl;
+
+            // writing the L2 norm
+            std::cout << "L2 norms: " << std::endl;
+            for (int iL2 = 0; iL2 < iterstep+1; iL2++){
+                std::cout << L2_norm[iL2] << ", " ;
+            }
         }
+
+
         
  
        //

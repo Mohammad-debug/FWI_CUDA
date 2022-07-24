@@ -42,12 +42,12 @@ cuda_computation = False # True: computation in GPU, False: in CPU
 # GRID PARAMETERS
 #--------------------------------------------------------------------
 
-x = 15
-z = 30
+x = 30
+z = 60
 
 # Geometric data
 nt = 2500; nz = 601; nx = 301 # grid numbers (adding for PMLs as well)
-dt = 2.35e-5; 
+dt = 4.0e-5; 
 dz = z/(nz-1) #; 
 dx = x/(nx-1) # grid intervals
 
@@ -65,20 +65,19 @@ isurf_top = 0; isurf_bottom = 0; isurf_left = 0; isurf_right = 0
 snap_t1 = 0; snap_t2 = nt-1 # snap in time steps
 snap_z1 = npml_top; snap_z2 = nz-npml_bottom  # snap boundaries z
 snap_x1 = npml_left; snap_x2 = nx-npml_right # snap boundaries x
-snap_dt = 5; snap_dz = 1; snap_dx = 1; # the snap intervals
+snap_dt = 3; snap_dz = 1; snap_dx = 1; # the snap intervals
 
-
+npml_all = 20
 # Taper position
 nz_snap = snap_z2 - snap_z1
 nx_snap = snap_x2 - snap_x1
 
 # taper relative to the total grid
 # t: top, b: bottom, l: left, r: right
-taper_t1 = snap_z1 + np.int32(nz_snap*0.05); taper_t2 = taper_t1 + np.int32(nz_snap*0.1)
-taper_b1 = snap_z2 - np.int32(nz_snap*0.05); taper_b2 = taper_b1 - np.int32(nz_snap*0.1)
-
-taper_l1 = snap_x1 + np.int32(nx_snap*0.05); taper_l2 = taper_l1 + np.int32(nx_snap*0.1)
-taper_r1 = snap_x2 - np.int32(nx_snap*0.05); taper_r2 = taper_r1 - np.int32(nx_snap*0.1)
+taper_t1 = snap_z1 + npml_all; taper_t2 = taper_t1 + npml_all
+taper_b1 = snap_z2 - npml_all; taper_b2 = taper_b1 - npml_all
+taper_l1 = snap_x1 + npml_all; taper_l2 = taper_l1 + npml_all
+taper_r1 = snap_x2 - npml_all; taper_r2 = taper_r1 - npml_all
 
 
 #------------------------------------------------------------------------------
@@ -146,7 +145,7 @@ pml_npower_pml = 2.0
 damp_v_pml = Cp
 rcoef = 0.001
 k_max_pml = 1.0
-freq_pml = 300.0 # PML frequency in Hz
+freq_pml = 200.0 # PML frequency in Hz
 
 # -----------------------------------------------------
 
