@@ -42,7 +42,7 @@ cuda_computation = False # True: computation in GPU, False: in CPU
 #---------------------------------------------------------------------
 
 # read the profile 
-xy_profile = np.loadtxt('./io/profile_P2.csv', delimiter=', ').T
+xy_profile = np.loadtxt('./io/profile_P2.csv', delimiter=',').T
 
 # getting x and y along the desired x
 
