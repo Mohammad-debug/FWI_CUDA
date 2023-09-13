@@ -27,12 +27,9 @@ __global__ void cuda_mat_grid2_GPU(real* lam, real* mu, real* rho, //remove the 
 
     if ( iz >= 0 && iz < nz && ix >= 0 && ix < nx)
     {
-
         lam[iz * nx + ix] = lam_sc;
         mu[iz * nx + ix] = mu_sc;
         rho[iz * nx +ix] = rho_sc;
-
-       // printf("GPU i=%d j=%d ans=%lf %lf %lf \n",iz,ix, lam[iz * nx + ix], mu[iz * nx + ix], rho[iz * nx + ix] );
     }
 }
 
@@ -50,13 +47,8 @@ void mat_grid2_GPU(
     dim3 threadsPerBlock(box1, box2);
     dim3 blocksPerGrid((nz) / box1 + 1, (nx) / box2 + 1);
 
-//    auto start_GPU = high_resolution_clock::now();
     cuda_mat_grid2_GPU << <blocksPerGrid, threadsPerBlock >> > (lam, mu, rho, lam_sc, mu_sc, rho_sc,
         snap_z1, snap_z2, snap_x1, snap_x2, nz, nx);
-    // auto stop_GPU = high_resolution_clock::now();
-    // auto duration_GPU = duration_cast<microseconds>(stop_GPU - start_GPU);
-    // cout << "Time taken by GPU: "
-    //     << duration_GPU.count() << " microseconds" << endl;
 
     cudaCheckError(cudaDeviceSynchronize());
 }
@@ -74,8 +66,6 @@ __global__ void cuda_copy_mat_GPU(real *lam_copy, real *mu_copy,  real *rho_copy
         lam_copy[iz*nx+ix]=lam[iz*nx+ix];
        mu_copy[iz*nx+ix]=mu[iz*nx+ix];
         rho_copy[iz*nx+ix]=rho[iz*nx+ix];
-
-        //printf("GPU i=%d j=%d ans=%lf %lf %lf \n",iz,ix, lam_copy[iz*nx+ ix], mu_copy[iz * nx + ix], rho_copy[iz * nx + ix] );
     }
 }
 
